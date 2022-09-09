@@ -1,4 +1,4 @@
-# [BBC Bangla API](https://BBC-Api.sy-uinuin.repl.co)
+# [BBC Bangla API](https://BBC-Api.sy-uinuin.repl.co/news)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. BBC has almost every languages!
 [BBC Bangla](https://bbc.com/bengali) is the site for Bangladeshi People as they serves News in `Bangla`.
