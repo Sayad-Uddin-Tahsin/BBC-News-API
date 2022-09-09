@@ -28,7 +28,7 @@ It should take some time to give the output because It need to fetch every singl
 
 ## The response looks so messy?
 Actually the response is given in `json` format. So, it can feel you so messy but don't worry, You can view the response after formatting that is so good to see!
-Just `Paste` the response in [Json Formatter](nformatter.curiousconcept.com/#) and press `Process`, after a while it will show you the exact same result but neatly!
+Just `Paste` the response in [Json Formatter](https://jsonformatter.curiousconcept.com/#) and press `Process`, after a while it will show you the exact same result but neatly!
 
 ## API Live
 The API is currently found [here](https://BBC-Api.sy-uinuin.repl.co/news/)(The News API Web). But it can be offline, Check if it is Online with [this link](https://BBC-Api.sy-uinuin.repl.co) and check if the `status` is `OK`!
