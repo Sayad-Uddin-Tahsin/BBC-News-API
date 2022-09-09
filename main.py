@@ -8,6 +8,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def main():
+    print(flask.request.url)
     return {'status': "OK"}
 
 
