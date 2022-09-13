@@ -20,7 +20,7 @@ BBC Bangla API is an API that serves you the News from [BBC Bangla](https://bbc.
 
 ## How to use?
 Once you run the [Code](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/main.py), a piece of URL will be printed in your `Console`!
-If you click the url you should get a result `{"status":"OK"}` according to [Line: 9 - 11](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/cb659ac66d972b0d96ed4d2a7e047171b9a48177/main.py#L10-L13). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/cb659ac66d972b0d96ed4d2a7e047171b9a48177/main.py#L10-L13
+If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/04971aa69fcebd758fbffb836af8d46115a3cc58/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/04971aa69fcebd758fbffb836af8d46115a3cc58/main.py#L11-L14
 If the Status says `OK` that means you've configured `Flask` perfectely! Now you just need to add `/news` after the Link printed before!
 It should take some time to give the output because It need to fetch every single News of [BBC Bangla](https://bbc.com/bengali).
 
