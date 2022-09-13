@@ -5,6 +5,7 @@ import time
 import json
 
 app = Flask(__name__)
+session = HTMLSession()
 
 
 @app.route("/")
@@ -16,7 +17,6 @@ def startup():
 @app.route("/news/")
 def head():
     try:
-        session = HTMLSession()
         r = session.get("https://bbc.com/bengali")
 
         match = r.html.find("div.e4rwlwd0")
