@@ -1,3 +1,4 @@
+import flask
 from flask import Flask
 from requests_html import HTMLSession
 import time
@@ -7,7 +8,7 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def main():
+def startup():
     return {'status': "OK"}
 
 
