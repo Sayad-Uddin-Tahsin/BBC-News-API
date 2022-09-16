@@ -15,8 +15,9 @@ def startup():
 
 
 @app.route("/news/")
-def head():
+async def head():
     try:
+        start = int(time.time())
         r = session.get("https://bbc.com/bengali")
 
         match = r.html.find("div.e4rwlwd0")
@@ -130,6 +131,9 @@ def head():
                 news['timestamp'] = int(time.time())
             except:
                 pass
+        end = int(time.time())
+        duration = end - start
+        news['elapsed time'] = f"{duration:.2f}s"
         return json.dumps(news, ensure_ascii=False)
     except:
         news = {}
