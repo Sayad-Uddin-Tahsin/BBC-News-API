@@ -14,13 +14,14 @@ BBC Bangla API is an API that serves you the News from [BBC Bangla](https://bbc.
 |        ---:|     :---:     | :---       |
 | [Python](https://python.org) | 3.9 | [`python.org`](https://www.python.org/downloads/release/python-390/) |
 | [Flask](https://pypi.org/project/Flask/2.2.2/) | 2.2.2 | `pip install Flask==2.2.2` |
+| [Asgiref](https://pypi.org/project/asgiref/3.5.2/) | 3.5.2 | `pip install asgiref==3.5.2` |
 | [Request-HTML](https://pypi.org/project/requests-html/0.10.0/) | 0.10.0 | `pip install requests-html==0.10.0` |
 | [Time](https://docs.python.org/3.9/library/time.html) | ------ | `builtin` |
 | [Json](https://docs.python.org/3.9/library/json.html) | ------ | `builtin` |
 
 ## How to use?
 Once you run the [Code](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/main.py), a piece of URL will be printed in your `Console`!
-If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/04971aa69fcebd758fbffb836af8d46115a3cc58/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/04971aa69fcebd758fbffb836af8d46115a3cc58/main.py#L11-L14
+If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/75eac37a13c44a7bd01823b81b4b728bf71e5b09/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/75eac37a13c44a7bd01823b81b4b728bf71e5b09/main.py#L11-L14
 If the Status says `OK` that means you've configured `Flask` perfectely! Now you just need to add `/news` after the Link printed before!
 It should take some time to give the output because It need to fetch every single News of [BBC Bangla](https://bbc.com/bengali).
 
