@@ -15,7 +15,7 @@ def startup():
 
 
 @app.route("/news/")
-def head():
+async def head():
     try:
         start = int(time.time())
         r = session.get("https://bbc.com/bengali")
