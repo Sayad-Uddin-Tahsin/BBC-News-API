@@ -3,7 +3,6 @@ from flask import Flask
 from requests_html import HTMLSession
 import time
 import json
-import asyncio
 
 app = Flask(__name__)
 session = HTMLSession()
@@ -16,8 +15,7 @@ def startup():
 
 
 @app.route("/news/")
-@asyncio.coroutine
-async def head():
+def head():
     try:
         start = int(time.time())
         r = session.get("https://bbc.com/bengali")
