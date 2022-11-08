@@ -1,4 +1,4 @@
-# [BBC Bangla API](https://BBC-Api.sy-uinuin.repl.co/news)
+# [BBC Bangla API](https://bbc-bangla-api.vercel.app/news)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages!
 [BBC Bangla](https://bbc.com/bengali) is the site for Bangladeshi People as they serves News in `Bangla`.
@@ -21,7 +21,7 @@ BBC Bangla API is an API that serves you the News from [BBC Bangla](https://bbc.
 
 ## How to use?
 Once you run the [Code](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/main.py), a piece of URL will be printed in your `Console`!
-If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/75eac37a13c44a7bd01823b81b4b728bf71e5b09/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/75eac37a13c44a7bd01823b81b4b728bf71e5b09/main.py#L11-L14
+If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/a36ebc89927ccc141998cb2ed9f2aa6b358501aa/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/a36ebc89927ccc141998cb2ed9f2aa6b358501aa/main.py#L11-L14
 If the Status says `OK` that means you've configured `Flask` perfectely! Now you just need to add `/news` after the Link printed before!
 It should take some time to give the output because It need to fetch every single News of [BBC Bangla](https://bbc.com/bengali).
 
@@ -44,10 +44,10 @@ Actually the response is given in json format. So, it might look a bit messy but
 Just `Paste` the response in [Json Formatter](https://jsonformatter.curiousconcept.com/#) and press `Process`, it will show you the exact same result but neatly!
 
 ## API Live
-The API is currently available [here](https://BBC-Api.sy-uinuin.repl.co/news/)(The News API Web). But it can be offline, Check if it is Online with [this link](https://BBC-Api.sy-uinuin.repl.co) and check if the `status` is `OK`!
+The API is currently available [here](https://BBC-Api.sy-uinuin.repl.co/news/)(The News API Web). But it can be offline, Check if it is Online with [this link](https://bbc-bangla-api.vercel.app/news) and check if the `status` is `OK`!
 
 > ***Don't forget to give a star on this repository!***
 
 **Thank you**
   
-  **- 09 September 2022/Tahsin**
+  **- 08 November 2022/Tahsin**
