@@ -44,7 +44,7 @@ Actually the response is given in json format. So, it might look a bit messy but
 Just `Paste` the response in [Json Formatter](https://jsonformatter.curiousconcept.com/#) and press `Process`, it will show you the exact same result but neatly!
 
 ## API Live
-The API is currently available [here](https://BBC-Api.sy-uinuin.repl.co/news/)(The News API Web). But it can be offline, Check if it is Online with [this link](https://bbc-bangla-api.vercel.app/news) and check if the `status` is `OK`!
+The API is currently available [here](https://bbc-bangla-api.vercel.app/news)(The News API Web). But it can be offline, Check if it is Online with [this link](https://bbc-bangla-api.vercel.app/) and check if the `status` is `OK`!
 
 > ***Don't forget to give a star on this repository!***
 
