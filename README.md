@@ -19,6 +19,8 @@ BBC Bangla API is an API that serves you the News from [BBC Bangla](https://bbc.
 | [Time](https://docs.python.org/3.9/library/time.html) | ------ | `builtin` |
 | [Json](https://docs.python.org/3.9/library/json.html) | ------ | `builtin` |
 
+All the modules are mentioned with versions in [requirements.txt](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/requirements.txt). You can use `pip install -r requirements.txt` after cloning the Repository, this will automatically install all the Modules mentioned/needed!
+
 ## How to use?
 Once you run the [Code](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/main.py), a piece of URL will be printed in your `Console`!
 If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/a36ebc89927ccc141998cb2ed9f2aa6b358501aa/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/a36ebc89927ccc141998cb2ed9f2aa6b358501aa/main.py#L11-L14
