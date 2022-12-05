@@ -28,7 +28,7 @@ async def head():
         for section in sections:
             data = []
             try:
-                m = section.find("li")
+                m = section.find("li.ebmt73l0")
                 sectitle = section.find("span.e1fapd9x2")[0].text
                 if sectitle != "অডিও ও ভিডিও":
                     for i in m:
