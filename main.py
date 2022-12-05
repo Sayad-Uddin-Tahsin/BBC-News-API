@@ -138,6 +138,7 @@ async def head():
     except:
         news = {}
         news['status'] = 500
+        news['error'] = "Something went wrong in the Server!"
         news['timestamp'] = int(time.time())
         return json.dumps(news, ensure_ascii=False)
 
