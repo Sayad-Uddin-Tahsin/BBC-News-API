@@ -23,7 +23,7 @@ All the modules are mentioned with versions in [requirements.txt](https://github
 
 ## How to use?
 Once you run the [Code](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/main.py), a piece of URL will be printed in your `Console`!
-If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/0e39715170d14cbacf16c223f6b2d771cd90eb96/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/0e39715170d14cbacf16c223f6b2d771cd90eb96/main.py#L11-L14
+If you click the url you should get a result `{"status":"OK"}` according to [Line: 11 - 14](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/63dfed8d758586f40ba561dc0e3e3fd03aefb5c6/main.py#L11-L14). https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/63dfed8d758586f40ba561dc0e3e3fd03aefb5c6/main.py#L11-L14
 If the Status says `OK` that means you've configured `Flask` perfectely! Now you just need to add `/news` after the Link printed before!
 It should take some time to give the output because It need to fetch every single News of [BBC Bangla](https://bbc.com/bengali).
 
