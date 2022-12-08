@@ -152,7 +152,7 @@ async def bengali(type):
             sections = match[0].find('section')
             news = {}
             news['status'] = 200
-            news['news'] = []
+            news['সর্বশেষ'] = ''
             section = sections[0]
             data = []
             try:
@@ -177,12 +177,12 @@ async def bengali(type):
                             "title": title,
                             "news_link": news_link
                         })
-                news['news'].append({
-                    sectitle: data
-                })
+                news[sectitle] = data
+
                 end = int(time.time())
                 duration = end - start
                 news['elapsed time'] = f"{duration:.2f}s"
+                news['সর্বশেষ'] = data[0]
                 return flask.Response(json.dumps(news, ensure_ascii=False), mimetype="application/json")
             except:
                 news = {}
@@ -204,16 +204,16 @@ async def bengali(type):
                 <title>400 Invalid Type!</title>
                 </head>
                 <body>
-                
+
                 <span><a style="font-size:35px"><b>Invalid Type!</b></a></span>
-                
-                
+
+
                 <br>
                 <br>
                 <a style="font-size:20px"><u>Endpoints:</u></a>
                   <li>News: <code>/news</code></li>
                   <li>Latest: <code>/latest</code></li>
-                
+
                 </body>
                 </html>
                 """
