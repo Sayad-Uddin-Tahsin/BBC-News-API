@@ -177,12 +177,13 @@ async def bengali(type):
                             "title": title,
                             "news_link": news_link
                         })
+                news['সর্বশেষ'] = data[0]
+                data.pop(0)
                 news[sectitle] = data
 
                 end = int(time.time())
                 duration = end - start
                 news['elapsed time'] = f"{duration:.2f}s"
-                news['সর্বশেষ'] = data[0]
                 return flask.Response(json.dumps(news, ensure_ascii=False), mimetype="application/json")
             except:
                 news = {}
