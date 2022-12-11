@@ -1,4 +1,4 @@
-# [BBC News API](https://bbc-api.vercel.app/info)
+# [BBC News API](https://bbc-news-api.vercel.app/info)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
 
@@ -34,7 +34,7 @@ Fetch our API URL with `GET` HTTP method! You can use any programming language t
 # pip install requests
 import requests
 
-response = requests.get("https://bbc-api.vercel.app/bengali/news").json()
+response = requests.get("https://bbc-news-api.vercel.app/bengali/news").json()
 print(response)
 ```
 
