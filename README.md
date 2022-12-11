@@ -1,4 +1,4 @@
-# [BBC News API](https://bbc-news-api.vercel.app/bengali/news)
+# [BBC News API](https://bbc-news-api.vercel.app/info)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
 
