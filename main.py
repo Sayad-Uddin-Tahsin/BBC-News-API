@@ -102,23 +102,29 @@ def startup():
     return {'status': "OK"}
 
 
-@app.route("/news/")
-async def head():
-    try:
-        start = int(time.time())
-        r = session.get("https://bbc.com/bengali")
+@app.route('/', defaults={'language': None})
+@app.route('/<language>/', defaults={'type': None})
+@app.route('/<language>/<type>/')
+async def bengali(language, type):
+    if str(language).lower() in urls:
+        url = urls.get(str(language).lower())
+    else:
+        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": [i.lower() for i in urls]}, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=400)
+    if str(type) == 'news':
+        try:
+            start = int(time.time())
+            r = session.get(url)
 
-        match = r.html.find("div.e4rwlwd0")
-        sections = match[0].find('section')
-        news = {}
-        news['status'] = 200
-        news['news'] = []
-        for section in sections:
-            data = []
-            try:
-                m = section.find("li")
-                sectitle = section.find("span.e1fapd9x2")[0].text
-                if sectitle != "অডিও ও ভিডিও":
+            match = r.html.find("div.e4rwlwd0")
+            sections = match[0].find('section')
+            news = {}
+            news['status'] = 200
+            news['news'] = []
+            for section in sections:
+                data = []
+                try:
+                    m = section.find("li.ebmt73l0")
+                    sectitle = section.find("span.e1fapd9x2")[0].text
                     for i in m:
                         t = i.find("h3", first=True)
                         title = t.find('a')[0].text
@@ -138,96 +144,133 @@ async def head():
                                 "title": title,
                                 "news_link": news_link
                             })
-                else:
-                    for i in range(len(m) - 2):
-                        i = m[i]
-                        t = i.find("h3", first=True)
-                        title = t.find('h3')[0].text
-                        news_link = str(t.absolute_links).replace('{\'', '').replace('\'}', '')
-                        try:
-                            image = \
-                                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                                  first=True).attrs[
-                                    'src']
-                            data.append({
-                                "title": title,
-                                "news_link": news_link,
-                                "image_link": image
-                            })
-                        except:
-                            data.append({
-                                "title": title,
-                                "news_link": news_link
-                            })
-                if data != []:
-                    news['news'].append({
-                        sectitle: data
-                    })
-                else:
-                    data_tw = []
-                    m = section.find("li")
-                    for i in m:
-                        t = i.find("h3", first=True)
-                        title = t.find('h3')[0].text
-                        news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
-                            '\'}', '')
-                        try:
-                            image = \
-                                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                                  first=True).attrs[
-                                    'src']
-                            data_tw.append({
-                                "title": title,
-                                "news_link": news_link,
-                                "image_link": image
-                            })
-                        except:
-                            data_tw.append({
-                                "title": title,
-                                "news_link": news_link
-                            })
-                        sectitle = section.find("span.e1fapd9x2")[0].text
+                    if data != []:
                         news['news'].append({
-                            sectitle: data_tw
+                            sectitle: data
                         })
-                    if data_tw == []:
-                        data_th = []
-                        m = section.find('div')[1]
-                        t = m.find("h3", first=True)
-                        title = t.find('h3')[0].text
-                        news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
-                            '\'}', '')
-                        try:
-                            image = \
-                                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                                  first=True).attrs[
-                                    'src']
-                            data_th.append({
-                                "title": title,
-                                "news_link": news_link,
-                                "image_link": image
+                    else:
+                        data_tw = []
+                        m = section.find("li")
+                        for i in m:
+                            t = i.find("h3", first=True)
+                            title = t.find('h3')[0].text
+                            news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
+                                '\'}', '')
+                            try:
+                                image = \
+                                    session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                                      first=True).attrs[
+                                        'src']
+                                data_tw.append({
+                                    "title": title,
+                                    "news_link": news_link,
+                                    "image_link": image
+                                })
+                            except:
+                                data_tw.append({
+                                    "title": title,
+                                    "news_link": news_link
+                                })
+                            sectitle = section.find("span.e1fapd9x2")[0].text
+                            news['news'].append({
+                                sectitle: data_tw
                             })
-                        except:
-                            data_th.append({
-                                "title": title,
-                                "news_link": news_link
+                        if data_tw == []:
+                            data_th = []
+                            m = section.find('div')[1]
+                            t = m.find("h3", first=True)
+                            title = t.find('h3')[0].text
+                            news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
+                                '\'}', '')
+                            try:
+                                image = \
+                                    session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                                      first=True).attrs[
+                                        'src']
+                                data_th.append({
+                                    "title": title,
+                                    "news_link": news_link,
+                                    "image_link": image
+                                })
+                            except:
+                                data_th.append({
+                                    "title": title,
+                                    "news_link": news_link
+                                })
+                            sectitle = section.find("span.e1fapd9x2")[0].text
+                            news['news'].append({
+                                sectitle: data_th
                             })
-                        sectitle = section.find("span.e1fapd9x2")[0].text
-                        news['news'].append({
-                            sectitle: data_th
+                    news['timestamp'] = int(time.time())
+                except:
+                    pass
+            end = int(time.time())
+            duration = end - start
+            news['elapsed time'] = f"{duration:.2f}s"
+            return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=200)
+        except:
+            news = {}
+            news['status'] = 500
+            news['error'] = "Something went wrong in the Server!"
+            news['timestamp'] = int(time.time())
+            return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=500)
+    elif str(type) == 'latest':
+        try:
+            start = int(time.time())
+            r = session.get(url)
+
+            match = r.html.find("div.e4rwlwd0")
+            sections = match[0].find('section')
+            news = {}
+            news['status'] = 200
+            news['latest'] = ''
+            section = sections[0]
+            data = []
+            try:
+                m = section.find("li.ebmt73l0")
+                sectitle = section.find("span.e1fapd9x2")[0].text
+                for i in m:
+                    t = i.find("h3", first=True)
+                    title = t.find('a')[0].text
+                    news_link = str(t.absolute_links).replace('{\'', '').replace('\'}', '')
+                    try:
+                        image = \
+                            session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                              first=True).attrs[
+                                'src']
+                        data.append({
+                            "title": title,
+                            "news_link": news_link,
+                            "image_link": image
                         })
-                news['timestamp'] = int(time.time())
+                    except:
+                        data.append({
+                            "title": title,
+                            "news_link": news_link
+                        })
+                news['latest'] = data[0]
+                data.pop(0)
+                news[sectitle] = data
+
+                end = int(time.time())
+                duration = end - start
+                news['elapsed time'] = f"{duration:.2f}s"
+                return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=200)
             except:
-                pass
-        end = int(time.time())
-        duration = end - start
-        news['elapsed time'] = f"{duration:.2f}s"
-        return json.dumps(news, ensure_ascii=False)
-    except:
-        news = {}
-        news['status'] = 500
-        news['timestamp'] = int(time.time())
-        return json.dumps(news, ensure_ascii=False)
+                news = {}
+                news['status'] = 500
+                news['error'] = "Something went wrong in the Server!"
+                news['timestamp'] = int(time.time())
+                return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=500)
+        except:
+            news = {}
+            news['status'] = 500
+            news['error'] = "Something went wrong in the Server!"
+            news['timestamp'] = int(time.time())
+            return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=500)
+
+    else:
+        return flask.Response(json.dumps({'status': 400, 'error': 'Invalid Type!', 'types': ['news', 'latest']}, ensure_ascii=False).encode('utf8'), mimetype="application/json", status=400)
 
 
 if __name__ == "__main__":
