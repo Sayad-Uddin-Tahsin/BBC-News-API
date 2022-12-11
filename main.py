@@ -102,10 +102,14 @@ def startup():
     return {'status': "OK"}
 
 
+@app.route('/info')
+async def info():
+    return Info
+
 @app.route('/', defaults={'language': None})
 @app.route('/<language>/', defaults={'type': None})
 @app.route('/<language>/<type>/')
-async def bengali(language, type):
+async def head(language, type):
     if str(language).lower() in urls:
         url = urls.get(str(language).lower())
     else:
