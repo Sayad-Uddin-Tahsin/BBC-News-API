@@ -8,16 +8,16 @@ Application Programming Interface(API) is a way for two or more computer program
 ## What is this API?
 BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language! The other Languages API is under development! Track our Workflow at [BBC API Project](https://github.com/users/Sayad-Uddin-Tahsin/projects/3).
 ### How it works?
-mermaid
+```mermaid
 graph TD;
+    yourpc["Your PC"]
     bbcweb["BBC Web"]
     api["API"]
-    yourpc["Your PC"]
     yourpc-- Request -->api;
     api-- Request-->bbcweb;
     bbcweb-- Response -->api;
     api-- Response -->yourpc;
-
+```
 
 ## Endpoints
 ### URL Formation: `https://bbc-news-api.vercel.app/<language>/<type>`
