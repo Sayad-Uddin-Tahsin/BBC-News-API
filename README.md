@@ -42,5 +42,6 @@ print(response)
 The response is received in `json` format. So, it might look a bit messy but don't worry, just `Paste` the response in [Json Formatter](https://jsonformatter.curiousconcept.com/#) and press `Process`, it will show you a nice structured result!
 
 In your code, you can get the `value` by calling the `key`. 
-json
+```json
 {"key": "value"}
+```
