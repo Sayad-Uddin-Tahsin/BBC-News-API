@@ -28,13 +28,13 @@ Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BB
 Fetch our API URL with `GET` HTTP method! You can use any programming language to use our API. Here are code examples, how you can use our API in different language.
 
 ### Python
-py
+```py
 # pip install requests
 import requests
 
 response = requests.get("https://bbc-news-api.vercel.app/bengali/news").json()
 print(response)
-
+```
 
 **NOTE: IF ANY ERROR ENCOUNTERED, FEEL FREE TO CREATE AN [ISSUE](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/issues)**
 
