@@ -24,6 +24,8 @@ graph TD;
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
+All the modules are mentioned with versions in [requirements.txt](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/requirements.txt). You can use `pip install -r requirements.txt` after cloning the Repository, this will automatically install all the Modules mentioned/needed!
+
 ## How to use?
 Fetch our API URL with `GET` HTTP method! You can use any programming language to use our API. Here are code examples, how you can use our API in different language.
 
