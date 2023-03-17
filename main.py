@@ -1,5 +1,6 @@
 import threading
 import flask
+from flask import Flask
 from requests_html import HTMLSession
 import time
 import json
@@ -8,19 +9,8 @@ import pytz
 from datetime import datetime
 
 
-# ================ LOGGING INITIATION ================
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
-console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
-console_handler.setFormatter(console_format)
-
-logger.addHandler(console_handler)
-
 # ================ FLASK INITIATION ================
-app = flask.Flask(__name__)
+app = Flask(__name__)
 session = HTMLSession()
 
 # ================ VARIABLES ================
@@ -279,14 +269,14 @@ def __get(lang):
 
 
 def __startupCache():
-    logging.info(f"{ctime}: [STARTUP] Startup Caching Started.")
+    print(f"{ctime}: [STARTUP] Startup Caching Started.")
     s = int(time.time())
     for lang in urls:
         news, latest = __get(lang)
         cache[lang] = {}
         cache[lang]['news'] = news
         cache[lang]['latest'] = latest
-    logging.info(f"{ctime}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
+    print(f"{ctime}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
 
 
 def __startBackgroundCaching():
@@ -298,7 +288,7 @@ def __checkExpired():
     while True:
         for lang in cache.copy():
             if (int(time.time()) - int(cache[lang]['news']['timestamp'])) > 60:
-                logging.info(f"{ctime}: [CACHING] Cached {lang}")
+                print(f"{ctime}: [CACHING] Cached {lang}")
                 news, latest = __get(lang)
                 cache[lang]['news'] = news
                 cache[lang]['latest'] = latest
@@ -325,7 +315,7 @@ async def doc():
 @app.route('/<language>/<type>/')
 async def news(language, type):
     if str(language).lower() not in urls:
-        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": f"{(flask.request.url)}/doc#languages"}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
+        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": f"https://{(flask.request.url).split('/')[2]}/doc#languages"}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
     if str(language).lower() not in cache:
         response = {}
         response["status"] = 500
