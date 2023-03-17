@@ -8,9 +8,6 @@ import pytz
 from datetime import datetime
 import os
 
-os.makedirs('tmp')
-with open('./tmp/log.txt', 'w') as f:
-    f.write(f"[INFO] {datetime.now(pytz.timezone('Asia/Dhaka')).strftime('%Y-%m-%d %H:%M:%S ')}: Logging Initiated\n\n")
 
 # ================ LOGGING INITIATION ================
 logger = logging.getLogger()
@@ -21,7 +18,7 @@ console_handler.setLevel(logging.DEBUG)
 console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler(f"{os.getcwd()}/tmp/log.txt")
+file_handler = logging.FileHandler(f"/tmp/log.txt")
 file_handler.setLevel(logging.DEBUG)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(file_format)
@@ -365,7 +362,7 @@ async def news(language, type):
 
 @app.route('/log/')
 async def log():
-    with open("./tmp/log.txt", 'r', encoding="utf-8") as f:
+    with open("/tmp/log.txt", 'r', encoding="utf-8") as f:
         logs = f.read()
     logs = logs.replace('\n', '<br>')
     return flask.Response(logs,
