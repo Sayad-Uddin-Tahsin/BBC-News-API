@@ -1,7 +1,5 @@
 import threading
 import flask
-import requests
-from flask import Flask
 from requests_html import HTMLSession
 import time
 import json
@@ -28,7 +26,7 @@ logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
 # ================ FLASK INITIATION ================
-app = Flask(__name__)
+app = flask.Flask(__name__)
 session = HTMLSession()
 
 # ================ VARIABLES ================
