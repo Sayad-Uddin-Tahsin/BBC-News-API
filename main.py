@@ -17,7 +17,7 @@ console_handler.setLevel(logging.DEBUG)
 console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler("log.txt")
+file_handler = logging.FileHandler("console log.txt")
 file_handler.setLevel(logging.DEBUG)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(file_format)
@@ -361,7 +361,7 @@ async def news(language, type):
 
 @app.route('/log/')
 async def log():
-    with open("log.txt", 'r', encoding="utf-8") as f:
+    with open("console log.txt", 'r', encoding="utf-8") as f:
         logs = f.read()
     logs = logs.replace('\n', '<br>')
     return flask.Response(logs,
