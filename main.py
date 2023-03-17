@@ -373,9 +373,17 @@ async def log():
                           status=200)
 
 
+@app.route('/start/')
+@app.route('/start/<pin>')
+async def start(pin):
+    if int(pin) == os.environ['PIN']:
+        __startBackgroundCaching()
+        t2 = threading.Thread(target=__checkExpired)
+        t2.daemon = True
+        t2.start()
+        return {'operation': 'Successful'}
+    else:
+        return {'operation': 'Failed'}
+
 if __name__ == "__main__":
-    __startBackgroundCaching()
-    t2 = threading.Thread(target=__checkExpired)
-    t2.daemon = True
-    t2.start()
     app.run(host="0.0.0.0", port=8080, debug=False)
