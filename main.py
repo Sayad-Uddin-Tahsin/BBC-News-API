@@ -34,8 +34,8 @@ session = HTMLSession()
 timezone = pytz.timezone('Asia/Dhaka')
 ctime = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S ')
 
-logging.info(f"{ctime}: [CACHING] Cached {lang}")
-logging.debug(f"{ctime}: [CACHING] Cached {lang}")
+logging.info(f"{ctime}: [CACHING] Cached 1")
+logging.debug(f"{ctime}: [CACHING] Cached 2")
 
 # ---------------- URL Dict ----------------
 urls = {
