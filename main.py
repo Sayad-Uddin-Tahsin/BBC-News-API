@@ -26,6 +26,8 @@ file_handler.setFormatter(file_format)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
+logging.info(f"{ctime}: [CACHING] Cached {lang}")
+logging.debug(f"{ctime}: [CACHING] Cached {lang}")
 # ================ FLASK INITIATION ================
 app = Flask(__name__)
 session = HTMLSession()
