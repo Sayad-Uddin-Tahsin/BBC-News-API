@@ -9,6 +9,23 @@ import pytz
 from datetime import datetime
 
 
+# ================ LOGGING INITIATION ================
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.DEBUG)
+console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+console_handler.setFormatter(console_format)
+
+file_handler = logging.FileHandler("/tmp/log.txt")
+file_handler.setLevel(logging.DEBUG)
+file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
+file_handler.setFormatter(file_format)
+
+logger.addHandler(console_handler)
+logger.addHandler(file_handler)
+
 # ================ FLASK INITIATION ================
 app = Flask(__name__)
 session = HTMLSession()
@@ -55,7 +72,7 @@ urls = {
 Info = """<!DOCTYPE html>
 <html>
   <head>
-    <title>BBC News API Documentation</title>
+    <title>Info!</title>
   </head>
   <body>
     <a id="urlFormation" style="font-size:20px">
@@ -269,14 +286,14 @@ def __get(lang):
 
 
 def __startupCache():
-    print(f"{ctime}: [STARTUP] Startup Caching Started.")
+    logging.info(f"{ctime}: [STARTUP] Startup Caching Started.")
     s = int(time.time())
     for lang in urls:
         news, latest = __get(lang)
         cache[lang] = {}
         cache[lang]['news'] = news
         cache[lang]['latest'] = latest
-    print(f"{ctime}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
+    logging.info(f"{ctime}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
 
 
 def __startBackgroundCaching():
@@ -288,7 +305,7 @@ def __checkExpired():
     while True:
         for lang in cache.copy():
             if (int(time.time()) - int(cache[lang]['news']['timestamp'])) > 60:
-                print(f"{ctime}: [CACHING] Cached {lang}")
+                logging.info(f"{ctime}: [CACHING] Cached {lang}")
                 news, latest = __get(lang)
                 cache[lang]['news'] = news
                 cache[lang]['latest'] = latest
@@ -341,6 +358,16 @@ async def news(language, type):
 
     else:
         return flask.Response(json.dumps({'status': 400, 'error': 'Invalid Type!', 'types': ['news', 'latest']}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
+
+
+@app.route('/log/')
+async def log():
+    with open("log.txt", 'r', encoding="utf-8") as f:
+        logs = f.read()
+    logs = logs.replace('\n', '<br>')
+    return flask.Response(logs,
+                          mimetype="text/html; charset=utf-8",
+                          status=200)
 
 
 if __name__ == "__main__":
