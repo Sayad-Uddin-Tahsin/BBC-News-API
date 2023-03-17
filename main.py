@@ -6,7 +6,11 @@ import json
 import logging
 import pytz
 from datetime import datetime
+import os
 
+os.makedirs('tmp')
+with open('./tmp/log.txt', 'w') as f:
+    f.write(f"[INFO] {datetime.now(pytz.timezone('Asia/Dhaka')).strftime('%Y-%m-%d %H:%M:%S ')}: Logging Initiated\n\n")
 
 # ================ LOGGING INITIATION ================
 logger = logging.getLogger()
