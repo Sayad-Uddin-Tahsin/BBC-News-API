@@ -6,11 +6,7 @@ import json
 import logging
 import pytz
 from datetime import datetime
-import os
 
-os.makedirs('/tmp')
-with open('/tmp/log.txt', 'w') as f:
-    f.write(f"[INFO] {datetime.now(pytz.timezone('Asia/Dhaka')).strftime('%Y-%m-%d %H:%M:%S ')}: Logging Initiated\n\n")
 
 # ================ LOGGING INITIATION ================
 logger = logging.getLogger()
@@ -21,13 +17,7 @@ console_handler.setLevel(logging.DEBUG)
 console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler(f"/tmp/log.txt")
-file_handler.setLevel(logging.DEBUG)
-file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
-file_handler.setFormatter(file_format)
-
 logger.addHandler(console_handler)
-logger.addHandler(file_handler)
 
 # ================ FLASK INITIATION ================
 app = flask.Flask(__name__)
@@ -361,17 +351,6 @@ async def news(language, type):
 
     else:
         return flask.Response(json.dumps({'status': 400, 'error': 'Invalid Type!', 'types': ['news', 'latest']}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
-
-
-@app.route('/log/')
-async def log():
-    with open("/tmp/log.txt", 'r', encoding="utf-8") as f:
-        logs = f.read()
-    logs = logs.replace('\n', '<br>')
-    print(logs)
-    return flask.Response(logs,
-                          mimetype="text/html; charset=utf-8",
-                          status=200)
 
 
 if __name__ == "__main__":
