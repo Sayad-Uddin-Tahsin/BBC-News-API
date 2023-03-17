@@ -365,6 +365,14 @@ async def log():
     with open("/tmp/log.txt", 'r', encoding="utf-8") as f:
         logs = f.read()
     logs = logs.replace('\n', '<br>')
+    print(logs)
+    try:
+        with open("./tmp/log.txt", 'r', encoding="utf-8") as f:
+        logs = f.read()
+        logs = logs.replace('\n', '<br>')
+        print(logs)
+    except:
+        pass
     return flask.Response(logs,
                           mimetype="text/html; charset=utf-8",
                           status=200)
