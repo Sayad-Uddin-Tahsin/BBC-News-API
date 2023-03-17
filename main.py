@@ -17,7 +17,7 @@ console_handler.setLevel(logging.DEBUG)
 console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler(".\\tmp\\log.txt")
+file_handler = logging.FileHandler("/tmp/log.txt")
 file_handler.setLevel(logging.DEBUG)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
 file_handler.setFormatter(file_format)
