@@ -325,7 +325,7 @@ async def doc():
 @app.route('/<language>/<type>/')
 async def news(language, type):
     if str(language).lower() not in urls:
-        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": f"{(flask.request.url).split('/')[2]}/info#languages"}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
+        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": f"{(flask.request.url)}/doc#languages"}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
     if str(language).lower() not in cache:
         response = {}
         response["status"] = 500
