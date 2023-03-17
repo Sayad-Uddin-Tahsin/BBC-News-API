@@ -26,8 +26,6 @@ file_handler.setFormatter(file_format)
 logger.addHandler(console_handler)
 logger.addHandler(file_handler)
 
-logging.info(f"{ctime}: [CACHING] Cached {lang}")
-logging.debug(f"{ctime}: [CACHING] Cached {lang}")
 # ================ FLASK INITIATION ================
 app = Flask(__name__)
 session = HTMLSession()
@@ -35,6 +33,9 @@ session = HTMLSession()
 # ================ VARIABLES ================
 timezone = pytz.timezone('Asia/Dhaka')
 ctime = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S ')
+
+logging.info(f"{ctime}: [CACHING] Cached {lang}")
+logging.debug(f"{ctime}: [CACHING] Cached {lang}")
 
 # ---------------- URL Dict ----------------
 urls = {
@@ -74,7 +75,7 @@ urls = {
 Info = """<!DOCTYPE html>
 <html>
   <head>
-    <title>Info!</title>
+    <title>BBC Bangla API Documentation</title>
   </head>
   <body>
     <a id="urlFormation" style="font-size:20px">
