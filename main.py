@@ -7,7 +7,9 @@ import json
 import logging
 import pytz
 from datetime import datetime
-import os
+from dotenv import dotenv_values
+
+secrets = dotenv_values(".env")
 
 
 # ================ LOGGING INITIATION ================
@@ -377,7 +379,7 @@ async def log():
 @app.route('/start/')
 @app.route('/start/<pin>')
 async def start(pin):
-    if int(pin) == os.environ['PIN']:
+    if int(pin) == secrets['PIN']:
         __startBackgroundCaching()
         t2 = threading.Thread(target=__checkExpired)
         t2.daemon = True
