@@ -379,7 +379,7 @@ async def log():
 @app.route('/start/')
 @app.route('/start/<pin>')
 async def start(pin):
-    if int(pin) == secrets['PIN']:
+    if int(pin) == int(secrets['PIN']):
         __startBackgroundCaching()
         t2 = threading.Thread(target=__checkExpired)
         t2.daemon = True
