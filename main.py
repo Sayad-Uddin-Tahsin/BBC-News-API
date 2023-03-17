@@ -55,7 +55,7 @@ urls = {
 Info = """<!DOCTYPE html>
 <html>
   <head>
-    <title>Info!</title>
+    <title>BBC News API Documentation</title>
   </head>
   <body>
     <a id="urlFormation" style="font-size:20px">
