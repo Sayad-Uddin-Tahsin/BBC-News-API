@@ -26,7 +26,7 @@ file_handler.setFormatter(file_format)
 class NoFlaskFilter(logging.Filter):
     def filter(self, record):
         message = record.getMessage()
-        return not ('HTTP/1.1' in message and 'GET' in message)
+        return not ('HTTP/1.1' in message and ('GET' in message or 'OPTIONS *'))
 
 console_handler.addFilter(NoFlaskFilter())
 file_handler.addFilter(NoFlaskFilter())
