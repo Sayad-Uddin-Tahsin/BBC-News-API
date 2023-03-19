@@ -130,8 +130,8 @@ dmypy.json
 
 # Replit
 .replit
-.replit.nix
+*.nix
 
 # Other Files
-.poetry.lock
-.pyproject.toml
+*.lock
+*.toml
