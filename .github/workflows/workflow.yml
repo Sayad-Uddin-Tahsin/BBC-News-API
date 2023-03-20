@@ -16,6 +16,7 @@ jobs:
       with:
         python-version: 3.7
     - name: Generate coverage report
+      working-directory: ./
       run: |
         pip install pytest
         pip install pytest-cov
