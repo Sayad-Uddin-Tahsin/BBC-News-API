@@ -1,4 +1,4 @@
-# [BBC News API](https://bbc-news-api.vercel.app/info)
+# [BBC News API](https://bbc-api.tah3.repl.co/doc)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
 
@@ -7,6 +7,9 @@ Application Programming Interface(API) is a way for two or more computer program
 
 ## What is this API?
 BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language! The other Languages API is under development! Track our Workflow at [BBC API Project](https://github.com/users/Sayad-Uddin-Tahsin/projects/3).
+
+<a href="https://snyk.io/test/github/Sayad-Uddin-Tahsin/BBC-News-API"><img src="https://snyk.io/test/github/Sayad-Uddin-Tahsin/BBC-News-API/badge.svg" height=22></a>
+
 ### How it works?
 ```mermaid
 graph TD;
