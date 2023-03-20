@@ -19,8 +19,8 @@ console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m
 console_handler.setFormatter(console_format)
 
 file_handler = logging.FileHandler("log.txt")
-file_handler.setLevel(logging.DEBUG)
-file_format = logging.Formatter("[%(levelname)s] %(message)s\n", datefmt="%Y-%m-%d %H:%M:%S")
+file_handler.setLevel(logging.INFO)
+file_format = logging.Formatter("[%(levelname)s] %(message)s\n")
 file_handler.setFormatter(file_format)
 
 class NoFlaskFilter(logging.Filter):
@@ -37,9 +37,11 @@ logger.addHandler(file_handler)
 app = Flask(__name__)
 session = HTMLSession()
 
-# ================ VARIABLES ================
-timezone = pytz.timezone('Asia/Dhaka')
-ctime = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S ')
+# ================ DHAKA TIME ================
+def ctime():
+  timezone = pytz.timezone('Asia/Dhaka')
+  ctime = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S ')
+  return ctime
 
 # ---------------- URL Dict ----------------
 urls = {
@@ -293,16 +295,16 @@ def __get(lang):
 
 
 def __startupCache():
-    logging.info(f"{ctime}: [STARTUP] Startup Caching Started.")
+    logging.info(f"{ctime()}: [STARTUP] Startup Caching Started.")
     s = int(time.time())
     for i, lang in enumerate(urls):
         news, latest = __get(lang)
         cache[lang] = {}
         cache[lang]['news'] = news
         cache[lang]['latest'] = latest
-        logging.info(f"{ctime}: [STARTUP] [{i+1}/{len(urls)}] Caching {str(lang).title()} Finished!")
+        logging.info(f"{ctime()}: [STARTUP] [{i+1}/{len(urls)}] Caching {str(lang).title()} Finished!")
       
-    logging.info(f"{ctime}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
+    logging.info(f"{ctime()}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
 
 
 def __startBackgroundCaching():
@@ -314,7 +316,7 @@ def __checkExpired():
     while True:
         for lang in cache.copy():
             if (int(time.time()) - int(cache[lang]['news']['timestamp'])) > 60:
-                logging.info(f"{ctime}: [CACHING] Cached {lang}")
+                logging.info(f"{ctime()}: [CACHING] Cached {lang}")
                 news, latest = __get(lang)
                 cache[lang]['news'] = news
                 cache[lang]['latest'] = latest
@@ -333,7 +335,7 @@ def main():
 
 @app.route('/doc')
 async def doc():
-    logger.info(f"{ctime}: [ENDPOINT] DOC endpoint called - 200")
+    logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
     return Info
 
 
@@ -349,7 +351,7 @@ async def news(language, type):
         response[
             "error"] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
         response["timestamp"] = int(time.time())
-        logger.info(f"{ctime}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 400 (Server Not Ready)")
+        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 400 (Server Not Ready)")
         return flask.Response(json.dumps(response, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
 
     if str(type) == 'news':
@@ -357,7 +359,7 @@ async def news(language, type):
         news = cache[str(language)]['news']
         news['timestamp'] = int(time.time())
         news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
-        logger.info(f"{ctime}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
+        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
         return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=200)
 
     elif str(type) == 'latest':
@@ -365,12 +367,12 @@ async def news(language, type):
         news = cache[str(language)]['latest']
         news['timestamp'] = int(time.time())
         news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
-        logger.info(f"{ctime}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
+        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
         return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8",
                               status=200)
 
     else:
-        logger.info(f"{ctime}: [ENDPOINT] NEWS (language: {language}) endpoint called - 400 (Invalid Type)")
+        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}) endpoint called - 400 (Invalid Type)")
         return flask.Response(json.dumps({'status': 400, 'error': 'Invalid Type!', 'types': ['news', 'latest']}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
 
 
@@ -383,12 +385,12 @@ async def log(pin):
         with open("log.txt", 'r', encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace('\n', '<br>')
-        logger.info(f"{ctime}: [ENDPOINT] LOG endpoint called - 200")
+        logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
         return flask.Response(logs,
                               mimetype="text/html; charset=utf-8",
                               status=200)
     else:
-        logger.info(f"{ctime}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)")
+        logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)")
         return flask.Response(
             json.dumps({'status': 400, 'error': 'Authorization Failed'}, ensure_ascii=False),
             mimetype="application/json; charset=utf-8",
