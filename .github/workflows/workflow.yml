@@ -16,11 +16,10 @@ jobs:
       with:
         python-version: 3.7
     - name: Generate coverage report
-      working-directory: ./
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest --cov=./ --cov-report=xml
+        pytest --cov=./ --cov-report=xml --rootdir=./
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
