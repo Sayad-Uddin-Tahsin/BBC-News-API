@@ -19,7 +19,7 @@ jobs:
       run: |
         pip install pytest
         pip install pytest-cov
-        pytest --cov=./ --cov-report=xml --rootdir=./
+        pytest --cov=./ --cov-report=xml --rootdir=.
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
