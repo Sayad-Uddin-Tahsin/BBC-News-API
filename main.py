@@ -15,7 +15,8 @@ logger.setLevel(logging.INFO)
 
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.DEBUG)
-console_format = logging.Formatter("[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
+console_format = logging.Formatter("[%(levelname)s] %(message)s",
+                                   datefmt="%Y-%m-%d %H:%M:%S")
 console_handler.setFormatter(console_format)
 
 file_handler = logging.FileHandler("log.txt")
@@ -23,10 +24,13 @@ file_handler.setLevel(logging.INFO)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n")
 file_handler.setFormatter(file_format)
 
+
 class NoFlaskFilter(logging.Filter):
-    def filter(self, record):
-        message = record.getMessage()
-        return not ('HTTP/1.1' in message and ('GET' in message or 'OPTIONS *'))
+
+  def filter(self, record):
+    message = record.getMessage()
+    return not ('HTTP/1.1' in message and ('GET' in message or 'OPTIONS *'))
+
 
 console_handler.addFilter(NoFlaskFilter())
 file_handler.addFilter(NoFlaskFilter())
@@ -37,45 +41,46 @@ logger.addHandler(file_handler)
 app = Flask(__name__)
 session = HTMLSession()
 
+
 # ================ DHAKA TIME ================
 def ctime():
   timezone = pytz.timezone('Asia/Dhaka')
   ctime = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S ')
   return ctime
 
+
 # ---------------- URL Dict ----------------
 urls = {
-        "arabic": "https://www.bbc.com/arabic",
-        "chinese": "https://www.bbc.com/zhongwen/simp",
-        "indonesian": "https://www.bbc.com/indonesia",
-        "kyrgyz": "https://www.bbc.com/kyrgyz",
-        "persian": "https://www.bbc.com/persian",
-        "somali": "https://www.bbc.com/somali",
-        "turkish": "https://www.bbc.com/turkce",
-        "vietnamese": "https://www.bbc.com/vietnamese",
-        "azeri": "https://www.bbc.com/azeri",
-        "french": "https://www.bbc.com/afrique",
-        "japanese": "https://www.bbc.com/japanese",
-        "marathi": "https://www.bbc.com/marathi",
-        "portuguese": "https://www.bbc.com/portuguese",
-        "spanish": "https://www.bbc.com/mundo",
-        "ukrainian": "https://www.bbc.com/ukrainian",
-        "bengali": "https://bbc.com/bengali",
-        "hausa": "https://bbc.com/hausa",
-        "kinyarwanda": "https://bbc.com/gahuza",
-        "nepali": "https://bbc.com/nepali",
-        "russian": "https://bbc.com/russian",
-        "swahili": "https://bbc.com/swahili",
-        "urdu": "https://www.bbc.com/urdu",
-        "burmese": "https://bbc.com/burmese",
-        "hindi": "https://bbc.com/hindi",
-        "kirundi": "https://bbc.com/gahuza",
-        "pashto": "https://bbc.com/pashto",
-        "sinhala": "https://bbc.com/sinhala",
-        "tamil": "https://bbc.com/tamil",
-        "uzbek": "https://bbc.com/uzbek"
-    }
-
+  "arabic": "https://www.bbc.com/arabic",
+  "chinese": "https://www.bbc.com/zhongwen/simp",
+  "indonesian": "https://www.bbc.com/indonesia",
+  "kyrgyz": "https://www.bbc.com/kyrgyz",
+  "persian": "https://www.bbc.com/persian",
+  "somali": "https://www.bbc.com/somali",
+  "turkish": "https://www.bbc.com/turkce",
+  "vietnamese": "https://www.bbc.com/vietnamese",
+  "azeri": "https://www.bbc.com/azeri",
+  "french": "https://www.bbc.com/afrique",
+  "japanese": "https://www.bbc.com/japanese",
+  "marathi": "https://www.bbc.com/marathi",
+  "portuguese": "https://www.bbc.com/portuguese",
+  "spanish": "https://www.bbc.com/mundo",
+  "ukrainian": "https://www.bbc.com/ukrainian",
+  "bengali": "https://bbc.com/bengali",
+  "hausa": "https://bbc.com/hausa",
+  "kinyarwanda": "https://bbc.com/gahuza",
+  "nepali": "https://bbc.com/nepali",
+  "russian": "https://bbc.com/russian",
+  "swahili": "https://bbc.com/swahili",
+  "urdu": "https://www.bbc.com/urdu",
+  "burmese": "https://bbc.com/burmese",
+  "hindi": "https://bbc.com/hindi",
+  "kirundi": "https://bbc.com/gahuza",
+  "pashto": "https://bbc.com/pashto",
+  "sinhala": "https://bbc.com/sinhala",
+  "tamil": "https://bbc.com/tamil",
+  "uzbek": "https://bbc.com/uzbek"
+}
 
 # ---------------- DOC HTML ----------------
 Info = """<!DOCTYPE html>
@@ -139,241 +144,309 @@ cache = {}
 
 
 # ================ HELPING Functions ================
+def __stractureTime(timestampFrom):
+  timestampNow = int(time.time())
+  min, sec = divmod((timestampNow - timestampFrom), 60)
+  hour, min = divmod(min, 60)
+  day, hour = divmod(hour, 24)
+
+  total_string = ''
+  if int(day) == 0:
+      pass
+  else:
+      total_string += str(int(day))
+      if day == 1:
+          total_string += ' day '
+      else:
+          total_string += ' days '
+
+  if int(hour) == 0:
+      pass
+  else:
+      total_string += str(int(hour))
+      if hour == 1:
+          total_string += ' hour '
+      else:
+          total_string += ' hours '
+
+  if int(min) == 0:
+      pass
+  else:
+      total_string += str(int(min))
+      if min == 1:
+          total_string += ' minute '
+      else:
+          total_string += ' minutes '
+
+  total_string += str(int(sec))
+  if int(sec) in [0, 1]:
+      total_string += ' second'
+  else:
+      total_string += ' seconds'
+  return timestampNow, f"{timestampFrom} ({total_string} ago)"
+
 def __get(lang):
-    try:
-        start = int(time.time())
-        r = session.get(urls[lang])
+  try:
+    start = int(time.time())
+    r = session.get(urls[lang])
 
-        match = r.html.find("div.e4rwlwd0")
-        sections = match[0].find('section')
-        news = {}
-        news['status'] = 200
-        news['news'] = []
-        for section in sections:
-            data = []
+    match = r.html.find("div.e4rwlwd0")
+    sections = match[0].find('section')
+    news = {}
+    news['status'] = 200
+    news['news'] = []
+    for section in sections:
+      data = []
+      try:
+        m = section.find("li.ebmt73l0")
+        sectitle = section.find("span.e1fapd9x2")[0].text
+        for i in m:
+          t = i.find("h3", first=True)
+          title = t.find('a')[0].text
+          news_link = str(t.absolute_links).replace('{\'',
+                                                    '').replace('\'}', '')
+          try:
+            image = \
+                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                  first=True).attrs[
+                    'src']
+            data.append({
+              "title": title,
+              "news_link": news_link,
+              "image_link": image
+            })
+          except:
+            data.append({"title": title, "news_link": news_link})
+        if data != []:
+          news['news'].append({sectitle: data})
+        else:
+          data_tw = []
+          m = section.find("li")
+          for i in m:
+            t = i.find("h3", first=True)
+            title = t.find('h3')[0].text
+            news_link = str(t.find('h3')[0].absolute_links).replace(
+              '{\'', '').replace('\'}', '')
             try:
-                m = section.find("li.ebmt73l0")
-                sectitle = section.find("span.e1fapd9x2")[0].text
-                for i in m:
-                    t = i.find("h3", first=True)
-                    title = t.find('a')[0].text
-                    news_link = str(t.absolute_links).replace('{\'', '').replace('\'}', '')
-                    try:
-                        image = \
-                            session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                              first=True).attrs[
-                                'src']
-                        data.append({
-                            "title": title,
-                            "news_link": news_link,
-                            "image_link": image
-                        })
-                    except:
-                        data.append({
-                            "title": title,
-                            "news_link": news_link
-                        })
-                if data != []:
-                    news['news'].append({
-                        sectitle: data
-                    })
-                else:
-                    data_tw = []
-                    m = section.find("li")
-                    for i in m:
-                        t = i.find("h3", first=True)
-                        title = t.find('h3')[0].text
-                        news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
-                            '\'}', '')
-                        try:
-                            image = \
-                                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                                  first=True).attrs[
-                                    'src']
-                            data_tw.append({
-                                "title": title,
-                                "news_link": news_link,
-                                "image_link": image
-                            })
-                        except:
-                            data_tw.append({
-                                "title": title,
-                                "news_link": news_link
-                            })
-                        sectitle = section.find("span.e1fapd9x2")[0].text
-                        news['news'].append({
-                            sectitle: data_tw
-                        })
-                    if data_tw == []:
-                        data_th = []
-                        m = section.find('div')[1]
-                        t = m.find("h3", first=True)
-                        title = t.find('h3')[0].text
-                        news_link = str(t.find('h3')[0].absolute_links).replace('{\'', '').replace(
-                            '\'}', '')
-                        try:
-                            image = \
-                                session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                                  first=True).attrs[
-                                    'src']
-                            data_th.append({
-                                "title": title,
-                                "news_link": news_link,
-                                "image_link": image
-                            })
-                        except:
-                            data_th.append({
-                                "title": title,
-                                "news_link": news_link
-                            })
-                        sectitle = section.find("span.e1fapd9x2")[0].text
-                        news['news'].append({
-                            sectitle: data_th
-                        })
+              image = \
+                  session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                    first=True).attrs[
+                      'src']
+              data_tw.append({
+                "title": title,
+                "news_link": news_link,
+                "image_link": image
+              })
             except:
-                pass
-        end = int(time.time())
-        duration = end - start
-        news['elapsed time'] = f"{duration:.2f}s"
-        news['timestamp'] = int(time.time())
-    except:
-        news = {}
-        news['status'] = 500
-        news['error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
-        news['timestamp'] = int(time.time())
-
-    try:
-        start = int(time.time())
-        match = r.html.find("div.e4rwlwd0")
-        sections = match[0].find('section')
-        latest = {}
-        latest['status'] = 200
-        latest['latest'] = ''
-        section = sections[0]
-        data = []
-        try:
-            m = section.find("li.ebmt73l0")
+              data_tw.append({"title": title, "news_link": news_link})
             sectitle = section.find("span.e1fapd9x2")[0].text
-            for i in m:
-                t = i.find("h3", first=True)
-                title = t.find('a')[0].text
-                news_link = str(t.absolute_links).replace('{\'', '').replace('\'}', '')
-                try:
-                    image = \
-                        session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
-                                                                                          first=True).attrs[
-                            'src']
-                    data.append({
-                        "title": title,
-                        "news_link": news_link,
-                        "image_link": image
-                    })
-                except:
-                    data.append({
-                        "title": title,
-                        "news_link": news_link
-                    })
-            latest['latest'] = data[0]
-            data.pop(0)
-            latest[sectitle] = data
+            news['news'].append({sectitle: data_tw})
+          if data_tw == []:
+            data_th = []
+            m = section.find('div')[1]
+            t = m.find("h3", first=True)
+            title = t.find('h3')[0].text
+            news_link = str(t.find('h3')[0].absolute_links).replace(
+              '{\'', '').replace('\'}', '')
+            try:
+              image = \
+                  session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                    first=True).attrs[
+                      'src']
+              data_th.append({
+                "title": title,
+                "news_link": news_link,
+                "image_link": image
+              })
+            except:
+              data_th.append({"title": title, "news_link": news_link})
+            sectitle = section.find("span.e1fapd9x2")[0].text
+            news['news'].append({sectitle: data_th})
+      except:
+        pass
+    end = int(time.time())
+    duration = end - start
+    news['elapsed time'] = f"{duration:.2f}s"
+    news['last update'] = int(time.time())
+    news['timestamp'] = int(time.time())
+  except:
+    news = {}
+    news['status'] = 500
+    news[
+      'error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
+    news['timestamp'] = int(time.time())
 
-            end = int(time.time())
-            duration = end - start
-            latest['elapsed time'] = f"{duration:.2f}s"
-            latest['timestamp'] = int(time.time())
+  try:
+    start = int(time.time())
+    match = r.html.find("div.e4rwlwd0")
+    sections = match[0].find('section')
+    latest = {}
+    latest['status'] = 200
+    latest['latest'] = ''
+    section = sections[0]
+    data = []
+    try:
+      m = section.find("li.ebmt73l0")
+      sectitle = section.find("span.e1fapd9x2")[0].text
+      for i in m:
+        t = i.find("h3", first=True)
+        title = t.find('a')[0].text
+        news_link = str(t.absolute_links).replace('{\'', '').replace('\'}', '')
+        try:
+          image = \
+              session.get(news_link).html.find('div.ebmt73l0', first=True).find('img',
+                                                                                first=True).attrs[
+                  'src']
+          data.append({
+            "title": title,
+            "news_link": news_link,
+            "image_link": image
+          })
         except:
-            latest = {}
-            latest['status'] = 500
-            latest['error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
-            latest['timestamp'] = int(time.time())
+          data.append({"title": title, "news_link": news_link})
+      latest['latest'] = data[0]
+      data.pop(0)
+      latest[sectitle] = data
+
+      end = int(time.time())
+      duration = end - start
+      latest['elapsed time'] = f"{duration:.2f}s"
+      latest['last update'] = int(time.time())
+      latest['timestamp'] = int(time.time())
     except:
-        latest = {}
-        latest['status'] = 500
-        latest['error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
-        latest['timestamp'] = int(time.time())
-    return news, latest
+      latest = {}
+      latest['status'] = 500
+      latest[
+        'error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
+      latest['timestamp'] = int(time.time())
+  except:
+    latest = {}
+    latest['status'] = 500
+    latest[
+      'error'] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
+    latest['timestamp'] = int(time.time())
+  return news, latest
 
 
 def __startupCache():
-    logging.info(f"{ctime()}: [STARTUP] Startup Caching Started.")
-    s = int(time.time())
-    for i, lang in enumerate(urls):
-        news, latest = __get(lang)
-        cache[lang] = {}
-        cache[lang]['news'] = news
-        cache[lang]['latest'] = latest
-        logging.info(f"{ctime()}: [STARTUP] [{i+1}/{len(urls)}] Caching {str(lang).title()} Finished!")
-      
-    logging.info(f"{ctime()}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s")
+  logging.info(f"{ctime()}: [STARTUP] Startup Caching Started.")
+  s = int(time.time())
+  for i, lang in enumerate(urls):
+    news, latest = __get(lang)
+    cache[lang] = {}
+    cache[lang]['news'] = news
+    cache[lang]['latest'] = latest
+    logging.info(
+      f"{ctime()}: [STARTUP] [{i+1}/{len(urls)}] Caching {str(lang).title()} Finished!"
+    )
+
+  logging.info(
+    f"{ctime()}: [STARTUP] Startup Caching Finished! Elapsed time: {int(time.time()) - s} s"
+  )
 
 
 def __startBackgroundCaching():
-    t = threading.Thread(target=__startupCache)
-    t.start()
+  t = threading.Thread(target=__startupCache)
+  t.start()
 
 
 def __checkExpired():
-    while True:
-        for lang in cache.copy():
-            if (int(time.time()) - int(cache[lang]['news']['timestamp'])) > 60:
-                logging.info(f"{ctime()}: [CACHING] Cached {lang}")
-                news, latest = __get(lang)
-                cache[lang]['news'] = news
-                cache[lang]['latest'] = latest
+  while True:
+    for lang in cache.copy():
+      if (int(time.time()) - int(cache[lang]['news']['timestamp'])) > 60:
+        logging.info(f"{ctime()}: [CACHING] Cached {lang}")
+        news, latest = __get(lang)
+        cache[lang]['news'] = news
+        cache[lang]['latest'] = latest
 
 
 # ================ ENDPOINTS ================
 @app.route("/")
 def main():
-    print(flask.request.url)
-    return flask.Response(
-        json.dumps({"status": "OK"}, ensure_ascii=False),
-        mimetype="application/json; charset=utf-8",
-        status=200,
-    )
+  print(flask.request.url)
+  return flask.Response(
+    json.dumps({"status": "OK"}, ensure_ascii=False),
+    mimetype="application/json; charset=utf-8",
+    status=200,
+  )
 
 
 @app.route('/doc')
 async def doc():
-    logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
-    return Info
+  logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
+  return Info
 
 
 @app.route('/', defaults={'language': None})
 @app.route('/<language>/', defaults={'type': None})
 @app.route('/<language>/<type>/')
 async def news(language, type):
-    if str(language).lower() not in urls:
-        return flask.Response(json.dumps({"status": 400, "error": "Invalid Language!", "languages": f"https://{(flask.request.url).split('/')[2]}/doc#languages"}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
-    if str(language).lower() not in cache:
-        response = {}
-        response["status"] = 500
-        response[
-            "error"] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
-        response["timestamp"] = int(time.time())
-        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 400 (Server Not Ready)")
-        return flask.Response(json.dumps(response, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
+  if str(language).lower() not in urls:
+    return flask.Response(json.dumps(
+      {
+        "status": 400,
+        "error": "Invalid Language!",
+        "languages":
+        f"https://{(flask.request.url).split('/')[2]}/doc#languages"
+      },
+      ensure_ascii=False).encode('utf8'),
+                          mimetype="application/json; charset=utf-8",
+                          status=400)
+  if str(language).lower() not in cache:
+    response = {}
+    response["status"] = 500
+    response[
+      "error"] = "Server encountered an unexpected condition that prevented it from fulfilling the request, maybe it's not ready yet to process your request. Please try again in 5 minutes."
+    response["timestamp"] = int(time.time())
+    logger.info(
+      f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 400 (Server Not Ready)"
+    )
+    return flask.Response(json.dumps(response,
+                                     ensure_ascii=False).encode('utf8'),
+                          mimetype="application/json; charset=utf-8",
+                          status=400)
 
-    if str(type) == 'news':
-        s = int(time.time())
-        news = cache[str(language)]['news']
-        news['timestamp'] = int(time.time())
-        news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
-        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
-        return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=200)
+  if str(type) == 'news':
+    s = int(time.time())
+    news = cache[str(language).lower()]['news']
+    timestamp, lastUpdate = __stractureTime(news['last update'])
+    news['last update'] = lastUpdate
+    news['timestamp'] = timestamp
+    news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
+    logger.info(
+      f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
+    )
+    return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'),
+                          mimetype="application/json; charset=utf-8",
+                          status=200)
 
-    elif str(type) == 'latest':
-        s = int(time.time())
-        news = cache[str(language)]['latest']
-        news['timestamp'] = int(time.time())
-        news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
-        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200")
-        return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8",
-                              status=200)
+  elif str(type) == 'latest':
+    s = int(time.time())
+    news = cache[str(language).lower()]['latest']
+    timestamp, lastUpdate = __stractureTime(news['last update'])
+    news['last update'] = lastUpdate
+    news['timestamp'] = timestamp
+    news['elapsed time'] = f"{(int(time.time()) - s):.2f}s"
+    logger.info(
+      f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
+    )
+    return flask.Response(json.dumps(news, ensure_ascii=False).encode('utf8'),
+                          mimetype="application/json; charset=utf-8",
+                          status=200)
 
-    else:
-        logger.info(f"{ctime()}: [ENDPOINT] NEWS (language: {language}) endpoint called - 400 (Invalid Type)")
-        return flask.Response(json.dumps({'status': 400, 'error': 'Invalid Type!', 'types': ['news', 'latest']}, ensure_ascii=False).encode('utf8'), mimetype="application/json; charset=utf-8", status=400)
+  else:
+    logger.info(
+      f"{ctime()}: [ENDPOINT] NEWS (language: {language}) endpoint called - 400 (Invalid Type)"
+    )
+    return flask.Response(json.dumps(
+      {
+        'status': 400,
+        'error': 'Invalid Type!',
+        'types': ['news', 'latest']
+      },
+      ensure_ascii=False).encode('utf8'),
+                          mimetype="application/json; charset=utf-8",
+                          status=400)
 
 
 @app.route('/log/', defaults={'pin': None})
@@ -381,25 +454,32 @@ async def news(language, type):
 @app.route('/logs/', defaults={'pin': None})
 @app.route('/logs/<pin>')
 async def log(pin):
-    if pin != None and int(pin) == int(os.environ['PIN']):
-        with open("log.txt", 'r', encoding="utf-8") as f:
-            logs = f.read()
-        logs = logs.replace('\n', '<br>')
-        logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
-        return flask.Response(logs,
-                              mimetype="text/html; charset=utf-8",
-                              status=200)
-    else:
-        logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)")
-        return flask.Response(
-            json.dumps({'status': 400, 'error': 'Authorization Failed'}, ensure_ascii=False),
-            mimetype="application/json; charset=utf-8",
-            status=400,
-        )
+  if pin != None and int(pin) == int(os.environ['PIN']):
+    with open("log.txt", 'r', encoding="utf-8") as f:
+      logs = f.read()
+    logs = logs.replace('\n', '<br>')
+    logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
+    return flask.Response(logs,
+                          mimetype="text/html; charset=utf-8",
+                          status=200)
+  else:
+    logger.info(
+      f"{ctime()}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)"
+    )
+    return flask.Response(
+      json.dumps({
+        'status': 400,
+        'error': 'Authorization Failed'
+      },
+                 ensure_ascii=False),
+      mimetype="application/json; charset=utf-8",
+      status=400,
+    )
+
 
 if __name__ == "__main__":
-    __startBackgroundCaching()
-    t2 = threading.Thread(target=__checkExpired)
-    t2.daemon = True
-    t2.start()
-    app.run(host="0.0.0.0", port=8080, debug=False)
+  __startBackgroundCaching()
+  t2 = threading.Thread(target=__checkExpired)
+  t2.daemon = True
+  t2.start()
+  app.run(host="0.0.0.0", port=8080, debug=False)
