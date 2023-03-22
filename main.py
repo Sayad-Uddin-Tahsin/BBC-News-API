@@ -183,7 +183,7 @@ def __stractureTime(timestampFrom):
       total_string += ' second'
   else:
       total_string += ' seconds'
-  return timestampNow, f"{timestampFrom} ({total_string} ago)"
+  return timestampNow, f"{total_string} ago"
 
 def __get(lang):
   try:
