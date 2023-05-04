@@ -1,4 +1,4 @@
-Flask==2.2.2
+Flask==2.2.5
 requests-html==0.10.0
 asgiref==3.5.2
 pytz==2022.7.1
