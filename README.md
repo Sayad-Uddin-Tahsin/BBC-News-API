@@ -1,4 +1,4 @@
-# [BBC News API](https://bbc-api.tah3.repl.co/doc)
+# BBC News API
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
 
@@ -21,7 +21,8 @@ graph TD;
 ```
 
 ## Endpoints
-### URL Formation: `https://bbc-api.tah3.repl.co/<language>/<type>`
+### ⚠ API service is currently unavailable
+URL Formation: `https://bbc-api.tah3.repl.co/<language>/<type>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
