@@ -1,0 +1,5 @@
+Flask==2.2.2
+requests-html==0.10.0
+asgiref==3.5.2
+pytz==2022.7.1
+Werkzeug==2.2.2
