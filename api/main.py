@@ -85,11 +85,13 @@ urls = {
 
 # ---------------- DOC HTML ----------------
 Info = """<!DOCTYPE html>
-<html>
-  <head>
+<html><head>
     <title>BBC News API Documentation</title>
   </head>
   <body>
+    <h1>BBC News API</h1>
+      
+      
     <a id="urlFormation" style="font-size:20px">
       URL Formation: <span style="font-size:18px"><code>/{language}/{type}</code></span>
     </a>
@@ -101,9 +103,9 @@ Info = """<!DOCTYPE html>
       <li>All News: <code>/news</code></li>
       <li>Latest News: <code>/latest</code></li>
       <span>
-    </a>
+    </span></span></a>
     <br>
-    <a id="languages"style="font-size:20px">
+    <a id="languages" style="font-size:20px">
       <u>Supported Languages</u>
     </a>
     <span style="font-size:15px">
@@ -137,8 +139,8 @@ Info = """<!DOCTYPE html>
       <li>Tamil: <code>/tamil/</code></li>
       <li>Uzbek: <code>/uzbek/</code></li>
    	</span>
-  </body>
-</html>"""
+  
+</body></html>"""
 
 # ================ ENDPOINTS ================
 @app.route("/")
@@ -270,7 +272,6 @@ async def news(language, type):
         response = _get1(urls[str(language).lower()], False)
         if len(response.keys()) < 4:
             response = _get2(urls[str(language).lower()], False)
-        response.pop("latest")
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
         )

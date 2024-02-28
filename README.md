@@ -1,4 +1,4 @@
-# BBC News API
+# [BBC News API](https://bbc-news-api.vercel.app/)
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
 
@@ -21,8 +21,7 @@ graph TD;
 ```
 
 ## Endpoints
-### ⚠ API service is currently unavailable
-URL Formation: `https://bbc-api.tah3.repl.co/<language>/<type>`
+URL Formation: `https://bbc-news-api.vercel.app/<language>/<type>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
@@ -38,7 +37,7 @@ Fetch our API URL with `GET` HTTP method! You can use any programming language t
 # pip install requests
 import requests
 
-response = requests.get("https://bbc-api.tah3.repl.co/bengali/news").json()
+response = requests.get("https://bbc-news-api.vercel.app/bengali/news").json()
 print(response)
 ```
 
@@ -52,7 +51,7 @@ print(response)
 ```js
 const axios = require('axios');
 
-axios.get('https://bbc-api.tah3.repl.co/chinese/news')
+axios.get('https://bbc-news-api.vercel.app/chinese/news')
   .then(response => {
     console.log(response.data);
   })
@@ -69,7 +68,7 @@ axios.get('https://bbc-api.tah3.repl.co/chinese/news')
 <summary>JavaScript (Browser)</summary>
 
 ```py
-fetch('https://bbc-api.tah3.repl.co/turkish/news')
+fetch('https://bbc-news-api.vercel.app/turkish/news')
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.log(error));
@@ -83,7 +82,7 @@ fetch('https://bbc-api.tah3.repl.co/turkish/news')
 <summary>PHP</summary>
 
 ```php
-$response = file_get_contents('https://bbc-api.tah3.repl.co/spanish/news');
+$response = file_get_contents('https://bbc-news-api.vercel.app/spanish/news');
 $data = json_decode($response);
 print_r($data);
 ```
@@ -99,7 +98,7 @@ print_r($data);
 require 'net/http'
 require 'json'
 
-uri = URI('https://bbc-api.tah3.repl.co/portuguese/news')
+uri = URI('https://bbc-news-api.vercel.app/portuguese/news')
 response = Net::HTTP.get(uri)
 data = JSON.parse(response)
 puts data
@@ -120,7 +119,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            URL url = new URL("https://bbc-api.tah3.repl.co/russian/news");
+            URL url = new URL("https://bbc-news-api.vercel.app/russian/news");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
