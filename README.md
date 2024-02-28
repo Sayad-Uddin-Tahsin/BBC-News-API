@@ -1,12 +1,12 @@
-# [BBC News API](https://bbc-news-api.vercel.app/)
+# [BBC News API](https://bbc-api.vercel.app/)
 ## BBC
-BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 40 languages. 
+BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of more than 30 languages. 
 
 ## API
 Application Programming Interface(API) is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software. A document or standard that describes how to build or use such a connection or interface is called an API specification.
 
 ## What is this API?
-BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language! The other Languages API is under development! Track our Workflow at [BBC API Project](https://github.com/users/Sayad-Uddin-Tahsin/projects/3).
+BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language (English is under development)!
 
 ### How it works?
 ```mermaid
@@ -21,7 +21,7 @@ graph TD;
 ```
 
 ## Endpoints
-URL Formation: `https://bbc-news-api.vercel.app/<language>/<type>`
+URL Formation: `https://bbc-api.vercel.app/<language>/<type>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
@@ -37,7 +37,7 @@ Fetch our API URL with `GET` HTTP method! You can use any programming language t
 # pip install requests
 import requests
 
-response = requests.get("https://bbc-news-api.vercel.app/bengali/news").json()
+response = requests.get("https://bbc-api.vercel.app/bengali/news").json()
 print(response)
 ```
 
@@ -51,7 +51,7 @@ print(response)
 ```js
 const axios = require('axios');
 
-axios.get('https://bbc-news-api.vercel.app/chinese/news')
+axios.get('https://bbc-api.vercel.app/chinese/news')
   .then(response => {
     console.log(response.data);
   })
@@ -68,7 +68,7 @@ axios.get('https://bbc-news-api.vercel.app/chinese/news')
 <summary>JavaScript (Browser)</summary>
 
 ```py
-fetch('https://bbc-news-api.vercel.app/turkish/news')
+fetch('https://bbc-api.vercel.app/turkish/news')
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.log(error));
@@ -82,7 +82,7 @@ fetch('https://bbc-news-api.vercel.app/turkish/news')
 <summary>PHP</summary>
 
 ```php
-$response = file_get_contents('https://bbc-news-api.vercel.app/spanish/news');
+$response = file_get_contents('https://bbc-api.vercel.app/spanish/news');
 $data = json_decode($response);
 print_r($data);
 ```
@@ -98,7 +98,7 @@ print_r($data);
 require 'net/http'
 require 'json'
 
-uri = URI('https://bbc-news-api.vercel.app/portuguese/news')
+uri = URI('https://bbc-api.vercel.app/portuguese/news')
 response = Net::HTTP.get(uri)
 data = JSON.parse(response)
 puts data
@@ -119,7 +119,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            URL url = new URL("https://bbc-news-api.vercel.app/russian/news");
+            URL url = new URL("https://bbc-api.vercel.app/russian/news");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();

@@ -91,7 +91,6 @@ Info = """<!DOCTYPE html>
   <body>
     <h1>BBC News API</h1>
       
-      
     <a id="urlFormation" style="font-size:20px">
       URL Formation: <span style="font-size:18px"><code>/{language}/{type}</code></span>
     </a>
@@ -139,7 +138,7 @@ Info = """<!DOCTYPE html>
       <li>Tamil: <code>/tamil/</code></li>
       <li>Uzbek: <code>/uzbek/</code></li>
    	</span>
-  
+    
 </body></html>"""
 
 # ================ ENDPOINTS ================
