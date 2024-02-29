@@ -92,7 +92,7 @@ Info = """<!DOCTYPE html>
     <h1>BBC News API</h1>
       
     <a id="urlFormation" style="font-size:20px">
-      URL Formation: <span style="font-size:18px"><code>{type}?lang={language}</code></span>
+      URL Formation: <span style="font-size:18px"><code>/{type}?lang={language}</code></span>
     </a>
     <br>
     <br>
@@ -147,7 +147,7 @@ def main():
     logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
 
     return flask.Response(
-        json.dumps({"status": "OK", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
+        json.dumps({"status": "OK", "documentation": f"https://{(flask.request.url).split('/')[2]}/doc", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
     )
