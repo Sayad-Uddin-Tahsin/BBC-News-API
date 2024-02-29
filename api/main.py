@@ -8,7 +8,7 @@ import pytz
 from datetime import datetime
 import os
 
-open("./tmp/log.txt", "w").close()
+open("/tmp/log.txt", "w").close()
 
 
 # ================ LOGGING INITIATION ================
@@ -22,7 +22,7 @@ console_format = logging.Formatter(
 )
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler("./tmp/log.txt")
+file_handler = logging.FileHandler("/tmp/log.txt")
 file_handler.setLevel(logging.INFO)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n")
 file_handler.setFormatter(file_format)
@@ -342,7 +342,7 @@ async def news(type):
 @app.route("/logs/<pin>")
 async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
-        with open("./tmp/log.txt", "r", encoding="utf-8") as f:
+        with open("/tmp/log.txt", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace("\n", "<br>")
         logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
