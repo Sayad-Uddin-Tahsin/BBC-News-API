@@ -92,15 +92,15 @@ Info = """<!DOCTYPE html>
     <h1>BBC News API</h1>
       
     <a id="urlFormation" style="font-size:20px">
-      URL Formation: <span style="font-size:18px"><code>/{type}?lang={language}</code></span>
+      URL Formation: <span style="font-size:18px"><code>{type}?lang={language}</code></span>
     </a>
     <br>
     <br>
     <a id="types" style="font-size:20px">
       <u>Types</u>
       <span style="font-size:16px">
-      <li>All News: <code>/news</code></li>
-      <li>Latest News: <code>/latest</code></li>
+      <li>All News: <code>news</code></li>
+      <li>Latest News: <code>latest</code></li>
       <span>
     </span></span></a>
     <br>
@@ -108,35 +108,35 @@ Info = """<!DOCTYPE html>
       <u>Supported Languages</u>
     </a>
     <span style="font-size:15px">
-      <li>Arabic: <code>/arabic/</code></li>
-      <li>Chinese: <code>/chinese/</code></li>
-      <li>Indonesian: <code>/indonesian/</code></li>
-      <li>Kyrgyz: <code>/kyrgyz/</code></li>
-      <li>Persian: <code>/persian/</code></li>
-      <li>Somali: <code>/somali/</code></li>
-      <li>Turkish: <code>/turkish/</code></li>
-      <li>Vietnamese: <code>/vietnamese/</code></li>
-      <li>Azeri: <code>/azeri/</code></li>
-      <li>French: <code>/french/</code></li>
-      <li>Japanese: <code>/japanese/</code></li>
-      <li>Marathi: <code>/marathi/</code></li>
-      <li>Portuguese: <code>/portuguese/</code></li>
-      <li>Spanish: <code>/spanish/</code></li>
-      <li>Ukrainian: <code>/ukrainian/</code></li>
-      <li>Bengali: <code>/bengali/</code></li>
-      <li>Hausa: <code>/hausa/</code></li>
-      <li>Kinyarwanda: <code>/kinyarwanda/</code></li>
-      <li>Nepali: <code>/nepali/</code></li>
-      <li>Russian: <code>/russian/</code></li>
-      <li>Swahili: <code>/swahili/</code></li>
-      <li>Urdu: <code>/urdu/</code></li>
-      <li>Burmese: <code>/burmese/</code></li>
-      <li>Hindi: <code>/hindi/</code></li>
-      <li>Kirundi: <code>/kirundi/</code></li>
-      <li>Pashto: <code>/pashto/</code></li>
-      <li>Sinhala: <code>/sinhala/</code></li>
-      <li>Tamil: <code>/tamil/</code></li>
-      <li>Uzbek: <code>/uzbek/</code></li>
+      <li>Arabic: <code>arabic</code></li>
+      <li>Chinese: <code>chinese</code></li>
+      <li>Indonesian: <code>indonesian</code></li>
+      <li>Kyrgyz: <code>kyrgyz</code></li>
+      <li>Persian: <code>persian</code></li>
+      <li>Somali: <code>somali</code></li>
+      <li>Turkish: <code>turkish</code></li>
+      <li>Vietnamese: <code>vietnamese</code></li>
+      <li>Azeri: <code>azeri</code></li>
+      <li>French: <code>french</code></li>
+      <li>Japanese: <code>japanese</code></li>
+      <li>Marathi: <code>marathi</code></li>
+      <li>Portuguese: <code>portuguese</code></li>
+      <li>Spanish: <code>spanish</code></li>
+      <li>Ukrainian: <code>ukrainian</code></li>
+      <li>Bengali: <code>bengali</code></li>
+      <li>Hausa: <code>hausa</code></li>
+      <li>Kinyarwanda: <code>kinyarwanda</code></li>
+      <li>Nepali: <code>nepali</code></li>
+      <li>Russian: <code>russian</code></li>
+      <li>Swahili: <code>swahili</code></li>
+      <li>Urdu: <code>urdu</code></li>
+      <li>Burmese: <code>burmese</code></li>
+      <li>Hindi: <code>hindi</code></li>
+      <li>Kirundi: <code>kirundi</code></li>
+      <li>Pashto: <code>pashto</code></li>
+      <li>Sinhala: <code>sinhala</code></li>
+      <li>Tamil: <code>tamil</code></li>
+      <li>Uzbek: <code>uzbek</code></li>
    	</span>
     
 </body></html>"""
