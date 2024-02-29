@@ -8,7 +8,7 @@ import pytz
 from datetime import datetime
 import os
 
-open("/tmp/log.txt", "w").close()
+open("./tmp/log.txt", "w").close()
 
 
 # ================ LOGGING INITIATION ================
@@ -22,7 +22,7 @@ console_format = logging.Formatter(
 )
 console_handler.setFormatter(console_format)
 
-file_handler = logging.FileHandler("/tmp/log.txt")
+file_handler = logging.FileHandler("./tmp/log.txt")
 file_handler.setLevel(logging.INFO)
 file_format = logging.Formatter("[%(levelname)s] %(message)s\n")
 file_handler.setFormatter(file_format)
@@ -92,7 +92,7 @@ Info = """<!DOCTYPE html>
     <h1>BBC News API</h1>
       
     <a id="urlFormation" style="font-size:20px">
-      URL Formation: <span style="font-size:18px"><code>/{language}/{type}</code></span>
+      URL Formation: <span style="font-size:18px"><code>/{type}?lang={language}</code></span>
     </a>
     <br>
     <br>
@@ -147,14 +147,25 @@ def main():
     logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
 
     return flask.Response(
-        json.dumps({"status": "OK"}, ensure_ascii=False),
+        json.dumps({"status": "OK", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
     )
 
+@app.route("/ping/")
+def ping():
+    logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
+
+    return flask.Response(
+        json.dumps({"status": 200}, ensure_ascii=False),
+        mimetype="application/json; charset=utf-8",
+        status=200,
+    )
 
 @app.route("/doc")
 @app.route("/doc/")
+@app.route("/docs")
+@app.route("/docs/")
 async def doc():
     logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
     return Info
@@ -249,11 +260,43 @@ def _get2(lang, latest):
     return response
 
 
-@app.route("/", defaults={"language": None})
-@app.route("/<language>/", defaults={"type": None})
-@app.route("/<language>/<type>/")
-async def news(language, type):
+@app.route("/", defaults={"type": None})
+@app.route("/<type>")
+async def news(type):
+    if type not in ['latest', 'news']:
+        logger.info(
+            f"{ctime()}: [ENDPOINT] NEWS endpoint called - 400 (Invalid Type)"
+        )
+        return flask.Response(
+            json.dumps(
+                {"status": 400, "error": "Invalid Type!", "types": ["news", "latest"]},
+                ensure_ascii=False,
+            ).encode("utf8"),
+            mimetype="application/json; charset=utf-8",
+            status=400,
+        )
+    language = flask.request.args.get('lang')
+    if language is None:
+        logger.info(
+            f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
+        )
+        return flask.Response(
+            json.dumps(
+                {
+                    "status": 400,
+                    "error": "Language Parameter Required!",
+                    "example url": f"https://{(flask.request.url).split('/')[2]}/{type}?lang=<language>",
+                    "languages": f"https://{(flask.request.url).split('/')[2]}/doc#languages"
+                },
+                ensure_ascii=False,
+            ).encode("utf8"),
+            mimetype="application/json; charset=utf-8",
+            status=400,
+        )
     if str(language).lower() not in urls:
+        logger.info(
+            f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
+        )
         return flask.Response(
             json.dumps(
                 {
@@ -291,20 +334,7 @@ async def news(language, type):
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=200,
-        )
-    else:
-        logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS (language: {language}) endpoint called - 400 (Invalid Type)"
-        )
-        return flask.Response(
-            json.dumps(
-                {"status": 400, "error": "Invalid Type!", "types": ["news", "latest"]},
-                ensure_ascii=False,
-            ).encode("utf8"),
-            mimetype="application/json; charset=utf-8",
-            status=400,
-        )
-
+        )        
 
 @app.route("/log/", defaults={"pin": None})
 @app.route("/log/<pin>")
@@ -312,7 +342,7 @@ async def news(language, type):
 @app.route("/logs/<pin>")
 async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
-        with open("/tmp/log.txt", "r", encoding="utf-8") as f:
+        with open("./tmp/log.txt", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace("\n", "<br>")
         logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
