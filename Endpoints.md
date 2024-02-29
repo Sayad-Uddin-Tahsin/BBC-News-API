@@ -1,4 +1,4 @@
-## URL Formation: `https://bbc-api.vercel.app/<language>/<type>`
+## URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`
 
 ## Languages
 | Name | Endpoint | Name | Endpoint | 
@@ -27,8 +27,8 @@
 
 ## Example Link
 #### Arabic
-- All News: `https://bbc-api.vercel.app/arabic/news`
-- Latest News: `https://bbc-api.vercel.app/arabic/lastest`
+- All News: `https://bbc-api.vercel.app/news?lang=arabic`
+- Latest News: `https://bbc-api.vercel.app/lastest?lang=arabic`
 #### Chinese
-- All News: `https://bbc-api.vercel.app/chinese/news`
-- Latest News: `https://bbc-api.vercel.app/chinese/lastest`
+- All News: `https://bbc-api.vercel.app/news?lang=chinese`
+- Latest News: `https://bbc-api.vercel.app/lastest?lang=chinese`

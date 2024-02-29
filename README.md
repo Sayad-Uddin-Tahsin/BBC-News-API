@@ -21,7 +21,7 @@ graph TD;
 ```
 
 ## Endpoints
-URL Formation: `https://bbc-api.vercel.app/<language>/<type>`
+URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
@@ -37,7 +37,7 @@ Fetch our API URL with `GET` HTTP method! You can use any programming language t
 # pip install requests
 import requests
 
-response = requests.get("https://bbc-api.vercel.app/bengali/news").json()
+response = requests.get("https://bbc-api.vercel.app/news?lang=bengali").json()
 print(response)
 ```
 
@@ -51,7 +51,7 @@ print(response)
 ```js
 const axios = require('axios');
 
-axios.get('https://bbc-api.vercel.app/chinese/news')
+axios.get('https://bbc-api.vercel.app/news?lang=chinese')
   .then(response => {
     console.log(response.data);
   })
@@ -68,7 +68,7 @@ axios.get('https://bbc-api.vercel.app/chinese/news')
 <summary>JavaScript (Browser)</summary>
 
 ```py
-fetch('https://bbc-api.vercel.app/turkish/news')
+fetch('https://bbc-api.vercel.app/news?lang=turkish')
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.log(error));
@@ -82,7 +82,7 @@ fetch('https://bbc-api.vercel.app/turkish/news')
 <summary>PHP</summary>
 
 ```php
-$response = file_get_contents('https://bbc-api.vercel.app/spanish/news');
+$response = file_get_contents('https://bbc-api.vercel.app/news?lang=spanish');
 $data = json_decode($response);
 print_r($data);
 ```
@@ -98,7 +98,7 @@ print_r($data);
 require 'net/http'
 require 'json'
 
-uri = URI('https://bbc-api.vercel.app/portuguese/news')
+uri = URI('https://bbc-api.vercel.app/news?lang=portuguese')
 response = Net::HTTP.get(uri)
 data = JSON.parse(response)
 puts data
@@ -119,7 +119,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            URL url = new URL("https://bbc-api.vercel.app/russian/news");
+            URL url = new URL("https://bbc-api.vercel.app/news?lang=russian");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
