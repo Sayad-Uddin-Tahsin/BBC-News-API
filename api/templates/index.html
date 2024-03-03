@@ -8,7 +8,33 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
+            color: #333; /* Default text color */
+            background-color: #fff; /* Default background color */
         }
+        
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                color: #ddd; /* Dark mode text color */
+                background-color: #222; /* Dark mode background color */
+            }
+            a {
+                color: #0070f3; /* Link color in dark mode */
+            }
+            code {
+                background-color: #111; /* Code block background color in dark mode */
+                color: #ddd; /* Code text color in dark mode */
+            }
+        }
+        
+        /* Light mode */
+        @media (prefers-color-scheme: light) {
+            code {
+                background-color: #F0F0F0; /* Code block background color in light mode */
+                color: #333; /* Code text color in light mode */
+            }
+        }
+        
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -27,7 +53,6 @@
             margin-bottom: 10px;
         }
         code {
-            background-color: #f0f0f0;
             padding: 2px 5px;
             border-radius: 3px;
             font-size: 14px;
@@ -44,8 +69,8 @@
         li {
             margin-bottom: 5px;
         }
-	a {
-            color: #007bff;
+        a {
+            color: #0070f3; /* Link color */
         }
     </style>
 </head>
