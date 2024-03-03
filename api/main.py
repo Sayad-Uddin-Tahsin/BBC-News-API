@@ -255,6 +255,7 @@ def get_eng(latest):
     response["elapsed time"] = f"{duration:.2f}s"
     response["last update"] = int(time.time())
     response["timestamp"] = int(time.time())
+    logger.info(response.keys())
     return response
 
 @app.route("/", defaults={"type": None})
