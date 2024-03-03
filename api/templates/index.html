@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BBC News API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+	a {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BBC News API Documentation</h1>
+        
+        <section>
+            <h2>URL Formation</h2>
+            <p>URL Formation: <code>/{{ type }}?lang={{ language }}</code></p>
+        </section>
+
+        <section>
+            <h2>Types</h2>
+            <ul>
+                <li>All News: <code>news</code></li>
+                <li>Latest News: <code>latest</code></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Supported Languages</h2>
+            <ul>
+                <li>Azeri: <code>azeri</code></li>
+                <li>Arabic: <code>arabic</code></li>
+                <li>Bengali: <code>bengali</code></li>
+                <li>Burmese: <code>burmese</code></li>
+                <li>Chinese: <code>chinese</code></li>
+                <li>English: <code>english</code></li>
+                <li>French: <code>french</code></li>
+                <li>Hausa: <code>hausa</code></li>
+                <li>Hindi: <code>hindi</code></li>
+                <li>Indonesian: <code>indonesian</code></li>
+                <li>Japanese: <code>japanese</code></li>
+                <li>Kinyarwanda: <code>kinyarwanda</code></li>
+                <li>Kirundi: <code>kirundi</code></li>
+                <li>Kyrgyz: <code>kyrgyz</code></li>
+                <li>Marathi: <code>marathi</code></li>
+                <li>Nepali: <code>nepali</code></li>
+                <li>Pashto: <code>pashto</code></li>
+                <li>Persian: <code>persian</code></li>
+                <li>Portuguese: <code>portuguese</code></li>
+                <li>Russian: <code>russian</code></li>
+                <li>Sinhala: <code>sinhala</code></li>
+                <li>Somali: <code>somali</code></li>
+                <li>Spanish: <code>spanish</code></li>
+                <li>Swahili: <code>swahili</code></li>
+                <li>Tamil: <code>tamil</code></li>
+                <li>Turkish: <code>turkish</code></li>
+                <li>Ukrainian: <code>ukrainian</code></li>
+                <li>Urdu: <code>urdu</code></li>
+                <li>Uzbek: <code>uzbek</code></li>
+                <li>Vietnamese: <code>vietnamese</code></li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Example URL - {{ lang }}</h2>
+            <ul>
+                <li>News: <code><a href="{{ urlForNews }}">{{ urlForNews }}</a></code></li>
+                <li>Latest: <code><a href="{{ urlForLatest }}">{{ urlForLatest }}</a></code></li>
+            </ul>
+        </section>
+
+        <hr>
+
+        <section>
+            <h2>Get in Touch</h2>
+            <p>If you have any questions, feedback, or encounter any issues with our API, feel free to reach out to us via the following channels:</p>
+            <ul>
+                <li>Email: <a href="mailto:tahsin.ict@outlook.com?body=%0A%0ARedirected%20from%20BBC%20News%20API" target="_blank">tahsin.ict@outlook.com</a></li>
+                <li>Issue Tracker: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues" target="_blank">BBC-News-API/Issues</a></li>
+                <li>Repository: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API" target="_blank">Sayad-Uddin-Tahsin/BBC-News-API</a></li>
+            </ul>
+        </section>
+	
+	<hr>
+	
+	<footer>
+            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. | © Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank">MIT License</a></p></center>
+        </footer>
+    </div>
+</body>
+</html>

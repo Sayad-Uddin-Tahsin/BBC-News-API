@@ -3,21 +3,21 @@
 ## Languages
 | Name | Endpoint | Name | Endpoint | 
 |        ---: | :---       |         ---: | :---       |
-| Arabic | `arabic` | Ukrainian | `ukrainian` | 
-| Chinese | `chinese` | Bengali | `bengali` | 
-| Indonesian | `indonesian` | Hausa | `hausa` | 
-| Kyrgyz | `kyrgyz` | Kinyarwanda | `kinyarwanda` | 
-| Persian | `persian` | Nepali | `nepali` | 
-| Somali | `somali` | Russian | `russian` | 
-| Turkish | `turkish` | Swahili | `swahili` | 
-| Vietnamese | `vietnamese` | Urdu | `urdu` | 
-| Azeri | `azeri` | Burmese | `burmese` | 
-| French | `french` | Hindi | `hindi` | 
-| Japanese | `japanese` | Kirundi | `kirundi` | 
-| Marathi | `marathi` | Pashto | `pashto` | 
-| Portuguese | `portuguese` | Sinhala | `sinhala` | 
-| Spanish | `spanish` | Tamil | `tamil` | 
-| Uzbek | `uzbek` | 
+| Arabic | `arabic` | Azeri | `azeri` |
+| Bengali | `bengali` | Burmese | `burmese` |
+| Chinese | `chinese` | English | `english` |
+| French | `french` | Hausa | `hausa` |
+| Hindi | `hindi` | Indonesian | `indonesian` |
+| Japanese | `japanese` | Kirundi | `kirundi` |
+| Kinyarwanda | `kinyarwanda` | Kyrgyz | `kyrgyz` |
+| Marathi | `marathi` | Nepali | `nepali` |
+| Pashto | `pashto` | Persian | `persian` |
+| Portuguese | `portuguese` | Russian | `russian` |
+| Sinhala | `sinhala` | Somali | `somali` |
+| Spanish | `spanish` | Swahili | `swahili` |
+| Tamil | `tamil` | Turkish | `turkish` |
+| Ukrainian | `ukrainian` | Urdu | `urdu` |
+| Uzbek | `uzbek` | Vietnamese | `vietnamese` |
 
 ## Types
 | Name | Endpoint | Description |
@@ -25,7 +25,7 @@
 | All News | `news` | Shows all the News. |
 | Latest News | `latest` | Shows the Latest and the Top Category News. |
 
-## Example Link
+## Example URL
 #### Arabic
 - All News: `https://bbc-api.vercel.app/news?lang=arabic`
 - Latest News: `https://bbc-api.vercel.app/lastest?lang=arabic`
