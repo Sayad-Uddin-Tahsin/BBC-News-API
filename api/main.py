@@ -248,8 +248,8 @@ def get_eng(latest):
                             response[fsectitle].append({"title": str(media_link.text), "link": str(list(media_link.absolute_links)[0])})
                         else:
                             response[fsectitle] = [{"title": str(media_link.text), "link": str(list(media_link.absolute_links)[0])}]
-            except:
-                pass
+            except Exception as e:
+                raise e
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
