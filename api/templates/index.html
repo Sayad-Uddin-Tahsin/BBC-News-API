@@ -18,9 +18,6 @@
                 color: #ddd; /* Dark mode text color */
                 background-color: #222; /* Dark mode background color */
             }
-            a {
-                color: #0070f3; /* Link color in dark mode */
-            }
             code {
                 background-color: #111; /* Code block background color in dark mode */
                 color: #ddd; /* Code text color in dark mode */
@@ -69,9 +66,7 @@
         li {
             margin-bottom: 5px;
         }
-        a {
-            color: #0070f3; /* Link color */
-        }
+
     </style>
 </head>
 <body>
@@ -79,12 +74,12 @@
         <h1>BBC News API Documentation</h1>
         
         <section>
-            <h2>URL Formation</h2>
+            <h2><a id="url-formation" href="#url-formation" style="color: inherit; text-decoration: none;">URL Formation</a></h2>
             <p>URL Formation: <code>/{{ type }}?lang={{ language }}</code></p>
         </section>
 
         <section>
-            <h2>Types</h2>
+            <h2><a id="types" href="#types" style="color: inherit; text-decoration: none;">Types</a></h2>
             <ul>
                 <li>All News: <code>news</code></li>
                 <li>Latest News: <code>latest</code></li>
@@ -92,7 +87,7 @@
         </section>
 
         <section>
-            <h2>Supported Languages</h2>
+            <h2><a id="languages" href="#languages" style="color: inherit; text-decoration: none;">Supported Languages</a></h2>
             <ul>
                 <li>Azeri: <code>azeri</code></li>
                 <li>Arabic: <code>arabic</code></li>
@@ -127,29 +122,29 @@
         </section>
 
         <section>
-            <h2>Example URL - {{ lang }}</h2>
+            <h2><a id="example-url" href="#example-url" style="color: inherit; text-decoration: none;">Example URL - {{ lang }}</a></h2>
             <ul>
-                <li>News: <code><a href="{{ urlForNews }}">{{ urlForNews }}</a></code></li>
-                <li>Latest: <code><a href="{{ urlForLatest }}">{{ urlForLatest }}</a></code></li>
+                <li>News: <code><a href="{{ urlForNews }}" style="color: #0070f3;">{{ urlForNews }}</a></code></li>
+                <li>Latest: <code><a href="{{ urlForLatest }}" style="color: #0070f3;">{{ urlForLatest }}</a></code></li>
             </ul>
         </section>
 
         <hr>
 
         <section>
-            <h2>Get in Touch</h2>
+            <h2><a id="get-in-touch" href="#get-in-touch" style="color: inherit; text-decoration: none;">Get in Touch</a></h2>
             <p>If you have any questions, feedback, or encounter any issues with our API, feel free to reach out to us via the following channels:</p>
             <ul>
-                <li>Email: <a href="mailto:tahsin.ict@outlook.com?body=%0A%0ARedirected%20from%20BBC%20News%20API" target="_blank">tahsin.ict@outlook.com</a></li>
-                <li>Issue Tracker: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues" target="_blank">BBC-News-API/Issues</a></li>
-                <li>Repository: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API" target="_blank">Sayad-Uddin-Tahsin/BBC-News-API</a></li>
+                <li>Email: <a href="mailto:tahsin.ict@outlook.com?body=%0A%0ARedirected%20from%20BBC%20News%20API" target="_blank" style="color: #0070f3;">tahsin.ict@outlook.com</a></li>
+                <li>Issue Tracker: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues" target="_blank" style="color: #0070f3;">BBC-News-API/Issues</a></li>
+                <li>Repository: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API" target="_blank" style="color: #0070f3;">Sayad-Uddin-Tahsin/BBC-News-API</a></li>
             </ul>
         </section>
 	
 	<hr>
 	
 	<footer>
-            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. | © Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank">MIT License</a></p></center>
+            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. | © Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank" style="color: #0070f3;">MIT License</a></p></center>
         </footer>
     </div>
 </body>
