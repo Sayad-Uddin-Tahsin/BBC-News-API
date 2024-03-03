@@ -210,6 +210,7 @@ def get_eng(latest):
     matches = r.html.find("section.module")
     response = {}
     response["status"] = 200
+    logger.info(matches)
     for match in matches:
         module_content = match.find("div.module__content")
         if module_content:
