@@ -82,9 +82,9 @@ urls = {
     "pashto": "https://bbc.com/pashto",
     "sinhala": "https://bbc.com/sinhala",
     "tamil": "https://bbc.com/tamil",
-    "uzbek": "https://bbc.com/uzbek",
-    "english": "https://bbc.com"
+    "uzbek": "https://bbc.com/uzbek"
 }
+    # "english": "https://bbc.com"
 
 # ================ ENDPOINTS ================
 @app.route("/")
@@ -314,12 +314,12 @@ async def news(type):
         )
 
     if str(type) == "news":
-        if str(language).lower() == 'english':
-            response = get_eng(False)
-        else:
-            response = _get1(urls[str(language).lower()], False)
-            if len(response.keys()) < 4:
-                response = _get2(urls[str(language).lower()], False)
+        # if str(language).lower() == 'english':
+        #     response = get_eng(False)
+        # else:
+        response = _get1(urls[str(language).lower()], False)
+        if len(response.keys()) < 4:
+            response = _get2(urls[str(language).lower()], False)
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
@@ -329,12 +329,12 @@ async def news(type):
             status=200,
         )
     elif str(type) == "latest":
-        if str(language).lower() == 'english':
-            response = get_eng(True)
-        else:
-            response = _get1(urls[str(language).lower()], True)
-            if len(response.keys()) < 4:
-                response = _get2(urls[str(language).lower()], True)
+        # if str(language).lower() == 'english':
+        #     response = get_eng(True)
+        # else:
+        response = _get1(urls[str(language).lower()], True)
+        if len(response.keys()) < 4:
+            response = _get2(urls[str(language).lower()], True)
 
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
@@ -368,13 +368,19 @@ async def log(pin):
             status=400,
         )
 
-@app.route("/get")
-def get():
-    url = flask.request.args.get('lang')
-    r = requests.get(url)
-    with open("/tmp/html.html", "w") as f:
-        f.write(r.text)
-    return flask.send_file("/tmp/html.html", as_attachment=True)
+@app.route("/get/", defaults={"pin": None})
+@app.route("/get/<pin>")
+def get(pin):
+    if pin != None and int(pin) == int(os.environ["PIN"]):
+        url = flask.request.args.get('url')
+        r = requests.get(url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Cookie": "atuserid={%22val%22:%229e21b0e5-c6c0-4030-bea9-a4fb1cda1754%22}; ckns_privacy=july2019; dnsDisplayed=undefined; ccpaApplies=true; signedLspa=undefined; _sp_su=true; consentUUID=5d2eaaeb-44b1-4b19-bbe1-6b8a09c3d150; ckns_explicit=2; ckns_policy=111; ckpf_ppid=f2ea68c46ea3480489bbe6ae285a3767; ccpaUUID=3640e858-f91f-4794-923b-cb2728cba2d0; optimizelyEndUserId=oeu1709139927736r0.3322733709103538; blaize_session=9a6badbc-49a3-4777-b776-7cc0674acfaa; blaize_tracking_id=a1cf112e-5150-4e36-8db1-35ce77f5b57b; ckns_mvt=2617071d-1b7e-4440-9fda-03344c790402; _pctx=%7Bu%7DN4IgrgzgpgThIC4B2YA2qA05owMoBcBDfSREQpAeyRCwgEt8oBJAEzIGYA2ABi644AmQQFYALDwDsYgIwiR3AJwgAvkA; _pcid=%7B%22browserId%22%3A%22lta7zuj6le34yek0%22%7D; __tbc=%7Bkpex%7DyR4t02jrk6b8dQWPLS938OZjrMtg0ZQeLMs8GbTFrEIDZTCrEaa8DnixAlsSJgqs; xbc=%7Bkpex%7D7GKrSjX8hzvt59EbA7KHl_T49kKyC2tJ_if2gPN28uc; __gads=ID=6a53c22a55484a5b:T=1709042774:RT=1709472724:S=ALNI_MZ7a6Zu2LRhQLDxpKyfqTuhBs2J6g; _chartbeat2=.1709042773941.1709472795170.110111.BiRxC5BokbRBUpG1kBMrxe2jUI-8.1; _cb_svref=external; _chartbeat4=t=DdcF9kDjQGPjtyOF1qBlvEC74M5T&E=0&x=5877&c=2.89&y=8580&w=654; atuserid=%7B%22name%22%3A%22atuserid%22%2C%22val%22%3A%229e21b0e5-c6c0-4030-bea9-a4fb1cda1754%22%2C%22options%22%3A%7B%22end%22%3A%222025-04-04T13%3A36%3A10.137Z%22%2C%22path%22%3A%22%2F%22%7D%7D; ecos.dt=1709473012974"
+        })
+        with open("/tmp/html.html", "w") as f:
+            f.write(r.text)
+        return flask.send_file("/tmp/html.html", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)

@@ -6,7 +6,7 @@ BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage 
 Application Programming Interface(API) is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software. A document or standard that describes how to build or use such a connection or interface is called an API specification.
 
 ## What is this API?
-BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 30 Languages (All supported languages by BBC)!
+BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language (English is under development)!
 
 ### How it works?
 ```mermaid
