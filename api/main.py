@@ -207,7 +207,7 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
-    print(r)
+    print(r.html)
     matches = r.html.find("section.module")
     response = {}
     response["status"] = 200
