@@ -207,17 +207,18 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
+    print(r)
     matches = r.html.find("section.module")
     response = {}
     response["status"] = 200
-    logger.info(matches)
+    # logger.info(matches)
     for match in matches:
         module_content = match.find("div.module__content")
         if module_content:
             news = []
             title = match.find("h2", first=True)
             if not title:
-                title = "lastest"
+                title = "latest"
             try:
                 media_list = module_content[0].find("ul.media-list")
                 media_list_items = media_list[0].find("li.media-list__item")
