@@ -8,6 +8,7 @@ import pytz
 from datetime import datetime
 import os
 import random
+import requests
 
 open("/tmp/log.txt", "w").close()
 
@@ -207,7 +208,6 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
-    print(r.html)
     matches = r.html.find("section.module")
     response = {}
     response["status"] = 200
@@ -368,6 +368,13 @@ async def log(pin):
             status=400,
         )
 
+@app.route("/get")
+def get():
+    url = flask.request.args.get('lang')
+    r = requests.get(url)
+    with open("/tmp/html.html", "w") as f:
+        f.write(r.text)
+    return flask.send_file("/tmp/html.html", as_attachment=True)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
