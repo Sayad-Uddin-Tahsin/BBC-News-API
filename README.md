@@ -21,7 +21,7 @@ graph TD;
 ```
 
 ## Documentation
-The official BBC News API documentation can be found [here](http://www.bbc-api.vercel.app/doc)
+The official BBC News API documentation can be found [here](http://bbc-api.vercel.app/doc)
 
 ## Endpoints
 URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`
