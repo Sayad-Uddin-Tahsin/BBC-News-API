@@ -350,7 +350,7 @@ async def news(type):
 @app.route("/logs/", defaults={"pin": None})
 @app.route("/logs/<pin>")
 async def log(pin):
-    if pin != None and int(pin) == int(os.environ["PIN"]):
+    if pin != None and int(pin) == int(9840):
         with open("/tmp/log.txt", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace("\n", "<br>")
@@ -373,7 +373,7 @@ async def log(pin):
 def get(pin):
     if pin != None and int(pin) == int(9840):
         url = flask.request.args.get('url')
-        r = requests.get(url, headers=flask.request.headers)
+        r = requests.get(url)
         with open("/tmp/html.html", "w") as f:
             f.write(r.text)
         return flask.send_file("/tmp/html.html", as_attachment=True)
