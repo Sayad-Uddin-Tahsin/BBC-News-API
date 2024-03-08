@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
+    <meta property="og:title" content="BBC News API Documentation">
+    <meta property="og:description" content="BBC News API provides access to news articles and headlines from various categories and sources.">
+    <meta property="og:image" content="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/Assets/Documentation%20Banner.png">
+    <meta property="og:url" content="https://bbc-api.vercel.app/documentation">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BBC News API Documentation">
+
+    <meta name="twitter:title" content="BBC News API Documentation">
+    <meta name="twitter:description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Documentation%20Banner.png">
     <title>BBC News API Documentation</title>
     <style>
         body {
@@ -79,6 +91,14 @@
         </section>
 
         <section>
+            <h2><a id="example-url" href="#example-url" style="color: inherit; text-decoration: none;">Example URL - {{ lang }}</a></h2>
+            <ul>
+                <li>News: <code><a href="{{ urlForNews }}" style="color: #0070f3; text-decoration: none;">{{ urlForNews }}</a></code></li>
+                <li>Latest: <code><a href="{{ urlForLatest }}" style="color: #0070f3; text-decoration: none;">{{ urlForLatest }}</a></code></li>
+            </ul>
+        </section>
+
+        <section>
             <h2><a id="types" href="#types" style="color: inherit; text-decoration: none;">Types</a></h2>
             <ul>
                 <li>All News: <code>news</code></li>
@@ -94,6 +114,7 @@
                 <li>Bengali: <code>bengali</code></li>
                 <li>Burmese: <code>burmese</code></li>
                 <li>Chinese: <code>chinese</code></li>
+                <li>English: <code>english</code></li>
                 <li>French: <code>french</code></li>
                 <li>Hausa: <code>hausa</code></li>
                 <li>Hindi: <code>hindi</code></li>
@@ -121,14 +142,6 @@
             </ul>
         </section>
 
-        <section>
-            <h2><a id="example-url" href="#example-url" style="color: inherit; text-decoration: none;">Example URL - {{ lang }}</a></h2>
-            <ul>
-                <li>News: <code><a href="{{ urlForNews }}" style="color: #0070f3; text-decoration: none;">{{ urlForNews }}</a></code></li>
-                <li>Latest: <code><a href="{{ urlForLatest }}" style="color: #0070f3; text-decoration: none;">{{ urlForLatest }}</a></code></li>
-            </ul>
-        </section>
-
         <hr>
 
         <section>
@@ -144,7 +157,7 @@
 	<hr>
 	
 	<footer>
-            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. | © Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank" style="color: #0070f3;">MIT License</a></p></center>
+            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. <br>© Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank" style="color: #0070f3;">MIT License</a></p></center>
         </footer>
     </div>
 </body>

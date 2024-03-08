@@ -1,4 +1,5 @@
-# [BBC News API](https://bbc-api.vercel.app/)
+# <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png"><img alt="Logo" src="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png" height=40 width=40></picture> [BBC News API](https://bbc-api.vercel.app/)
+
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 30 languages. 
 
@@ -6,7 +7,7 @@ BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage 
 Application Programming Interface(API) is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software. A document or standard that describes how to build or use such a connection or interface is called an API specification.
 
 ## What is this API?
-BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 29 Language (English is under development)!
+BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 30 Languages (All supported languages by BBC)!
 
 ### How it works?
 ```mermaid
@@ -21,7 +22,7 @@ graph TD;
 ```
 
 ## Documentation
-The official BBC News API documentation can be found [here](http://bbc-api.vercel.app/doc)
+The official BBC News API documentation can be found [here](http://bbc-api.vercel.app/documentation)
 
 ## Endpoints
 URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`

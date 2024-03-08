@@ -82,9 +82,9 @@ urls = {
     "pashto": "https://bbc.com/pashto",
     "sinhala": "https://bbc.com/sinhala",
     "tamil": "https://bbc.com/tamil",
-    "uzbek": "https://bbc.com/uzbek"
+    "uzbek": "https://bbc.com/uzbek",
+    "english": "https://bbc.com"
 }
-    # "english": "https://bbc.com"
 
 # ================ ENDPOINTS ================
 @app.route("/")
@@ -92,7 +92,7 @@ def main():
     logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
 
     return flask.Response(
-        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/doc", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
+        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
     )
@@ -111,6 +111,8 @@ def ping():
 @app.route("/doc/")
 @app.route("/docs")
 @app.route("/docs/")
+@app.route("/documentation")
+@app.route("/documentation/")
 async def doc():
     lang = random.choice(list(urls.keys()))
     logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
@@ -208,56 +210,51 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
-    matches = r.html.find("section.module")
+    response = {}
+    article = r.html.find("article", first=True)
+    section = article.find("section", first=True)
+    code = section.find("div", first=True).find("div", first=True).find("div", first=True).attrs['class'][0]
+    d = r.html.find(f"div.{code}")
+    d = [i for i in d if i is not None]
     response = {}
     response["status"] = 200
-    # logger.info(matches)
-    for match in matches:
-        module_content = match.find("div.module__content")
-        if module_content:
-            news = []
-            title = match.find("h2", first=True)
-            if not title:
-                title = "latest"
-            try:
-                media_list = module_content[0].find("ul.media-list")
-                media_list_items = media_list[0].find("li.media-list__item")
-                for media_list_item in media_list_items:
-                    newstitle = media_list_item.find("a.media__link", first=True)
-                    if newstitle:
-                        news.append({"title": str(newstitle.text), "link": list(newstitle.absolute_links)[0]})
-                if news:
-                    response[str(title.text) if type(title) != str else title] = news
-                    if latest:
-                        break
-                top_list = module_content[0].find("div.top-list", first=True)
-                if top_list:
-                    top_list_news = []
-                    sectitle = top_list.find("h2", first=True).text
-                    items = top_list.find("li.top-list-item")
-                    for item in items:
-                        top_list_news.append({"title": str(item.text), "link": str(list(item.absolute_links)[0])})
-                    if top_list_news:
-                        response[sectitle] = top_list_news
-            except IndexError:
-                feature_list = module_content[0].find("li.feature")
-                if feature_list:
-                    for feature in feature_list:
-                        fsectitle = feature.find("h2", first=True).text
-                        content = feature.find("div.feature__content", first=True)
-                        media_link = content.find("a.media__link", first=True)
-                        if fsectitle in response:
-                            response[fsectitle].append({"title": str(media_link.text), "link": str(list(media_link.absolute_links)[0])})
-                        else:
-                            response[fsectitle] = [{"title": str(media_link.text), "link": str(list(media_link.absolute_links)[0])}]
-            except Exception as e:
-                raise e
+    for i in d:
+        title_wrapper = i.find("div.sc-8a80f6eb-1", first=True)
+        if title_wrapper:
+            th2 = title_wrapper.find("h2", first=True)
+            if th2:
+                sectitle = th2.text
+        else:
+            sectitle = "latest"
+        
+        newsWrappers = i.find("div.sc-4befc967-0")
+        for wrapper in newsWrappers:
+            link_wrapper = wrapper.find("a.sc-4befc967-1", first=True)
+            link = list(link_wrapper.absolute_links)[0]
+            newsDiv = wrapper.find(f"div.{code}")
+            text_wrapper = wrapper.find("div.sc-4fedabc7-0", first=True)
+            if text_wrapper != None:
+                newstitle = text_wrapper.find("h2", first=True).text
+            description_wrapper = wrapper.find("p.sc-b8778340-4", first=True)
+            if description_wrapper != None:
+                newsdescription = description_wrapper.text
+            
+            dict_wrapped = {
+                "title": newstitle,
+                "news_description": newsdescription,
+                "news_link": link
+            }
+            if sectitle in response:
+                response[sectitle].append(dict_wrapped)
+            else:
+                response[sectitle] = [dict_wrapped]
+        if latest:
+            break
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
     response["last update"] = int(time.time())
     response["timestamp"] = int(time.time())
-    logger.info(response.keys())
     return response
 
 @app.route("/", defaults={"type": None})
@@ -314,12 +311,12 @@ async def news(type):
         )
 
     if str(type) == "news":
-        # if str(language).lower() == 'english':
-        #     response = get_eng(False)
-        # else:
-        response = _get1(urls[str(language).lower()], False)
-        if len(response.keys()) < 4:
-            response = _get2(urls[str(language).lower()], False)
+        if str(language).lower() == 'english':
+            response = get_eng(False)
+        else:
+            response = _get1(urls[str(language).lower()], False)
+            if len(response.keys()) < 4:
+                response = _get2(urls[str(language).lower()], False)
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
@@ -329,12 +326,12 @@ async def news(type):
             status=200,
         )
     elif str(type) == "latest":
-        # if str(language).lower() == 'english':
-        #     response = get_eng(True)
-        # else:
-        response = _get1(urls[str(language).lower()], True)
-        if len(response.keys()) < 4:
-            response = _get2(urls[str(language).lower()], True)
+        if str(language).lower() == 'english':
+            response = get_eng(True)
+        else:
+            response = _get1(urls[str(language).lower()], True)
+            if len(response.keys()) < 4:
+                response = _get2(urls[str(language).lower()], True)
 
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
@@ -367,17 +364,6 @@ async def log(pin):
             mimetype="application/json; charset=utf-8",
             status=400,
         )
-
-@app.route("/get/", defaults={"pin": None})
-@app.route("/get/<pin>")
-def get(pin):
-    if pin != None and int(pin) == int(9840):
-        url = flask.request.args.get('url')
-        r = requests.get(url)
-        with open("/tmp/html.html", "w") as f:
-            f.write(r.text)
-        return flask.send_file("/tmp/html.html", as_attachment=True)
-        
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
