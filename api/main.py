@@ -154,7 +154,6 @@ def _get1(lang, latest):
         end = int(time.time())
         duration = end - start
         response["elapsed time"] = f"{duration:.2f}s"
-        response["last update"] = int(time.time())
         response["timestamp"] = int(time.time())
     except IndexError:
         pass
@@ -203,7 +202,6 @@ def _get2(lang, latest):
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
-    response["last update"] = int(time.time())
     response["timestamp"] = int(time.time())
     return response
 
@@ -253,7 +251,6 @@ def get_eng(latest):
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
-    response["last update"] = int(time.time())
     response["timestamp"] = int(time.time())
     return response
 
