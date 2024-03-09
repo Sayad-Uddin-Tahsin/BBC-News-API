@@ -1,4 +1,8 @@
-# <picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png"><img alt="Logo" src="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" height=40 width=40></picture> [BBC News API](https://bbc-api.vercel.app/)
+<p align="center">
+    <a href="https://bbc-api.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png"><img alt="Logo" src="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" height=100 width=100></picture></a>
+</p>
+
+# BBC News API
 
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 30 languages. 
