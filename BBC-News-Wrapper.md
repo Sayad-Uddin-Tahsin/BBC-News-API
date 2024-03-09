@@ -4,7 +4,7 @@
 
 # bbc-news
 
-The `bbc-news`` Python library provides a simple and intuitive interface for accessing the BBC News API, allowing developers to fetch the latest news articles from the British Broadcasting Corporation (BBC) programmatically. This library aims to streamline the integration of BBC news content into Python applications with ease.
+The `bbc-news` Python library provides a simple and intuitive interface for accessing the BBC News API, allowing developers to fetch the latest news articles from the British Broadcasting Corporation (BBC) programmatically. This library aims to streamline the integration of BBC news content into Python applications with ease.
 
 <a href="https://pypi.org/project/bbc-news"><img src="https://img.shields.io/pypi/status/bbc-news?label=Status&logo=pypi&logoColor=ffffff" height=22></a>
 <a href="https://pypi.org/project/bbc-news"><img src="https://img.shields.io/pypi/v/bbc-news?label=PyPI Version&logo=pypi&logoColor=ffffff" height=22></a>
