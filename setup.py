@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open('BBC-News-Wrapper.md', 'r', encoding='utf-8') as f:
+with open('./bbc/BBC-News-Wrapper.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
