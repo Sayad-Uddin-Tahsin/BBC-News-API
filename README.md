@@ -3,6 +3,11 @@
 </p>
 
 # BBC News API
+Discover the world of news through the lens of the BBC News API. With access to a rich array of news content spanning over 30 languages, this API serves as a gateway to the latest updates from the British Broadcasting Corporation (BBC). Seamlessly integrate trusted news sources into your applications, offering users a diverse and comprehensive view of current events. Empower your audience with timely and reliable information, curated by one of the most respected news organizations worldwide.
+
+<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/website?url=https%3A%2F%2Fbbc-api.vercel.app%2Fping&up_message=Online&down_message=Offline&label=API" height=22></a>
+<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbbc-api.vercel.app%2Fnews%3Flang%3Dbengali&query=%24%5B'elapsed%20time'%5D&label=Latency" height=22></a>
+<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/github/license/Sayad-Uddin-Tahsin/BBC-News-API" height=22></a>
 
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 30 languages. 
