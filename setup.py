@@ -13,6 +13,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/Sayad-Uddin-Tahsin/BBC-News-API',
     packages=['bbc'],
+    include_package_data=True,
     package_data={
         '': ['BBC-News-Wrapper.md', 'LICENSE', 'requirements.txt']
     },
