@@ -11,10 +11,10 @@ The `bbc-news` Python library provides a simple and intuitive interface for acce
 <a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/bbc-news?label=Python&logo=python&logoColor=ffdd54" height=22></a>
 
 ## Features
-- Easy-to-use Interface: The library offers a straightforward interface for accessing the BBC News API.
-- Language Support: Users can retrieve news content in over 30 languages supported by the BBC.
-- Customizable Queries: Developers can tailor their queries to fetch news articles based on specific topics, regions, or categories.
-- Error Handling: The library includes built-in error handling mechanisms to handle API errors gracefully.
+- **Easy-to-use Interface:** The library offers a straightforward interface for accessing the BBC News API.
+- **Language Support:** Users can retrieve news content in over 30 languages supported by the BBC.
+- **Customizable Queries:** Developers can tailor their queries to fetch news articles based on specific topics, regions, or categories.
+- **Error Handling:** The library includes built-in error handling mechanisms to handle API errors gracefully.
 
 ## Installation
 You can install the bbc-news library via pip:
