@@ -134,23 +134,27 @@ def _get1(lang, latest):
                 news = []
                 lis = section.find("li")
                 for li in lis:
-                    promo_image = (
-                        li.find("div.promo-image")[0].find("img")[0].attrs["src"]
-                    )
-                    promo_text = li.find("div.promo-text")[0].find("h3")[0]
-                    title = promo_text.text
-                    link = list(promo_text.absolute_links)[0]
-                    news.append(
-                        {
-                            "title": str(title),
-                            "news_link": str(link),
-                            "image_link": str(promo_image),
-                        }
-                    )
-                if news:
-                    response[section_name[0].text.strip()] = news
-                    if latest:
-                        break
+                    try:
+                        promo_image = (
+                            li.find("div.promo-image")[0].find("img")[0].attrs["src"]
+                        )
+
+                        promo_text = li.find("div.promo-text")[0].find("h3")[0]
+                        title = promo_text.text
+                        link = list(promo_text.absolute_links)[0]
+                        news.append(
+                            {
+                                "title": str(title),
+                                "news_link": str(link),
+                                "image_link": str(promo_image),
+                            }
+                        )
+                        if news:
+                            response[section_name[0].text.strip()] = news
+                            if latest:
+                                break
+                    except IndexError:
+                        pass
         end = int(time.time())
         duration = end - start
         response["elapsed time"] = f"{duration:.2f}s"
@@ -158,7 +162,6 @@ def _get1(lang, latest):
     except IndexError:
         pass
     return response
-
 
 def _get2(lang, latest):
     start = int(time.time())
