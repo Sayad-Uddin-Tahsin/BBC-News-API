@@ -94,7 +94,7 @@ def visit_register(func):
     async def wrapper(*args, **kwargs):
         result = await func(*args, **kwargs)
 
-        if result[0].get("isBot") != "YES" or "Shields" not in str(result[0].get("User-Agent")):
+        if result[0].get("isBot") != "YES" and "Shields" not in str(result[0].get("User-Agent")):
             requests.post(
                 f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
                 headers=json.loads(os.environ.get("HEADERS")),
