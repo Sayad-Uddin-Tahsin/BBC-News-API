@@ -11,6 +11,8 @@ import requests
 import functools
 import os
 
+os.environ['HEADERS'] = '{"X-Machine-Generated": "ORIGINAL"}'
+os.environ["API_KEY"] = 'tahsinprojectkey'
 open("/tmp/log.txt", "w").close()
 
 
@@ -263,11 +265,11 @@ async def main():
 async def ping():
     logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
 
-    return (flask.request.headers, flask.Response(
+    return flask.Response(
         json.dumps({"status": 200}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
-    ))
+    )
 
 @app.route("/doc")
 @app.route("/doc/")
