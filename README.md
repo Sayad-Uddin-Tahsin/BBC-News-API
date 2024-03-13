@@ -9,6 +9,9 @@ Discover the world of news through the lens of the BBC News API. With access to 
 <a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbbc-api.vercel.app%2Fnews%3Flang%3Dbengali&query=%24%5B'elapsed%20time'%5D&label=Latency" height=22></a>
 <a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/github/license/Sayad-Uddin-Tahsin/BBC-News-API" height=22></a>
 
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/visit-badge?theme=dark"><img alt="Requests Badge" src="https://web-badge-psi.vercel.app/visit-badge?theme=light"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/latency-badge?theme=dark"><img alt="Latency Badge" src="https://web-badge-psi.vercel.app/latency-badge?theme=light"></picture>
+
 ## BBC
 BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 30 languages. 
 
@@ -38,13 +41,69 @@ URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
+## Wrapper
+### [bbc-news](https://pypi.org/project/bbc-news) for Python
+
+<a href="https://pypi.org/project/bbc-news"><img src="https://img.shields.io/pypi/status/bbc-news?label=Status&logo=pypi&logoColor=ffffff" height=22></a>
+<a href="https://pypi.org/project/bbc-news"><img src="https://img.shields.io/pypi/v/bbc-news?label=PyPI Version&logo=pypi&logoColor=ffffff" height=22></a>
+<a href="https://python.org"><img src="https://img.shields.io/pypi/pyversions/bbc-news?label=Python&logo=python&logoColor=ffdd54" height=22></a>
+
+The `bbc-news` Python wrapper provides convenient access to the BBC News API from your Python projects. It allows you to easily fetch news content and integrate it into your applications. You can install the wrapper via pip:
+
+```sh
+pip install bbc-news
+```
+Example usage in Python: [Quick start with bbc-news](https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/bbc/BBC-News-Wrapper.md#quick-start)
+
 ## How to use?
 Fetch our API URL with `GET` HTTP method! You can use any programming language to use our API. Here are code examples, how you can use our API in different language.
 
 <!-- Python -->
 <details open>
+<summary><b>Python</b></summary>
 
-<summary>Python</summary>
+
+<details open>
+<summary>With Wrapper</summary>
+
+```python
+# pip install bbc-news
+
+# Import the Library
+import bbc
+
+# Get the News for Bengali
+news = bbc.news.get_news(bbc.Languages.Bengali)
+
+# Get the Category Titles
+categories = news.news_categories()
+
+# Loop through the category titles
+for category in categories:
+    # Get the Category News
+    section_news = news.news_category(category)
+
+    # Loop through the news dictionary
+    for news_dict in section_news:
+        # Print the Title
+        print(news_dict['title'])
+
+        # Print the Image Link
+        print(news_dict['image_link'])
+
+        # Print the News Link
+        print(news_dict["news_link"])
+                
+        # Print a Blank Line
+        print("---")
+
+```
+
+</details>
+
+
+<details>
+<summary>With requests</summary>
 
 ```py
 # pip install requests
@@ -54,6 +113,7 @@ response = requests.get("https://bbc-api.vercel.app/news?lang=bengali").json()
 print(response)
 ```
 
+</details>
 </details>
 
 <!-- JavaScript (Node.js) -->

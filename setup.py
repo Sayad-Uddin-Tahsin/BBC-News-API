@@ -8,7 +8,7 @@ setup(
     version='1.0.0',
     author='Sayad Uddin Tahsin',
     author_email='tahsin.ict@outlook.com',
-    description='A Wrapper of BBC News API for serving BBC News on various languages!',
+    description='A simple and yet easy-to-use API for BBC News',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/Sayad-Uddin-Tahsin/BBC-News-API',

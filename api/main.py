@@ -6,9 +6,10 @@ import json
 import logging
 import pytz
 from datetime import datetime
-import os
 import random
 import requests
+import functools
+import os
 
 open("/tmp/log.txt", "w").close()
 
@@ -86,37 +87,24 @@ urls = {
     "english": "https://bbc.com"
 }
 
-# ================ ENDPOINTS ================
-@app.route("/")
-def main():
-    logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
+# ================ HELPING FUNCTIONS ================
 
-    return flask.Response(
-        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
-        mimetype="application/json; charset=utf-8",
-        status=200,
-    )
+def visit_register(func):
+    @functools.wraps(func)
+    async def wrapper(*args, **kwargs):
+        result = await func(*args, **kwargs)
+        print(args, kwargs)
 
-@app.route("/ping/")
-def ping():
-    logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
+        requests.post(
+            f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
+            headers=json.loads(os.environ.get("HEADERS")),
+            json={
+                'func_name': str(func.__name__)
+            }
+        )
+        return result
+    return wrapper
 
-    return flask.Response(
-        json.dumps({"status": 200}, ensure_ascii=False),
-        mimetype="application/json; charset=utf-8",
-        status=200,
-    )
-
-@app.route("/doc")
-@app.route("/doc/")
-@app.route("/docs")
-@app.route("/docs/")
-@app.route("/documentation")
-@app.route("/documentation/")
-async def doc():
-    lang = random.choice(list(urls.keys()))
-    logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
-    return flask.render_template("index.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year))
 
 
 def _get1(lang, latest):
@@ -257,8 +245,46 @@ def get_eng(latest):
     response["timestamp"] = int(time.time())
     return response
 
+
+# ================ ENDPOINTS ================
+
+@app.route("/")
+@visit_register
+async def main():
+    logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
+
+    return flask.Response(
+        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
+        mimetype="application/json; charset=utf-8",
+        status=200,
+    )
+
+@app.route("/ping/")
+async def ping():
+    logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
+
+    return flask.Response(
+        json.dumps({"status": 200}, ensure_ascii=False),
+        mimetype="application/json; charset=utf-8",
+        status=200,
+    )
+
+@app.route("/doc")
+@app.route("/doc/")
+@app.route("/docs")
+@app.route("/docs/")
+@app.route("/documentation")
+@app.route("/documentation/")
+@visit_register
+async def doc():
+    lang = random.choice(list(urls.keys()))
+    logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
+    return flask.render_template("index.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year))
+
+
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
+@visit_register
 async def news(type):
     if type == "favicon.ico":
         return "None"
@@ -276,6 +302,7 @@ async def news(type):
             status=400,
         )
     language = flask.request.args.get('lang')
+
     if language is None:
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
@@ -346,6 +373,7 @@ async def news(type):
 @app.route("/log/<pin>")
 @app.route("/logs/", defaults={"pin": None})
 @app.route("/logs/<pin>")
+@visit_register
 async def log(pin):
     if pin != None and int(pin) == int(9840):
         with open("/tmp/log.txt", "r", encoding="utf-8") as f:
