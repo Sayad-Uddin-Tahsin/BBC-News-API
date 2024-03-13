@@ -93,16 +93,16 @@ def visit_register(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         result = await func(*args, **kwargs)
-        print(args, kwargs)
 
-        requests.post(
-            f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
-            headers=json.loads(os.environ.get("HEADERS")),
-            json={
-                'func_name': str(func.__name__)
-            }
-        )
-        return result
+        if result[0].get("isBot") != "YES":
+            requests.post(
+                f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
+                headers=json.loads(os.environ.get("HEADERS")),
+                json={
+                    'func_name': str(func.__name__)
+                }
+            )
+        return result[1]
     return wrapper
 
 
@@ -253,21 +253,21 @@ def get_eng(latest):
 async def main():
     logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
 
-    return flask.Response(
+    return (flask.request.headers, flask.Response(
         json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
-    )
+    ))
 
 @app.route("/ping/")
 async def ping():
     logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
 
-    return flask.Response(
+    return (flask.request.headers, flask.Response(
         json.dumps({"status": 200}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
-    )
+    ))
 
 @app.route("/doc")
 @app.route("/doc/")
@@ -279,7 +279,7 @@ async def ping():
 async def doc():
     lang = random.choice(list(urls.keys()))
     logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
-    return flask.render_template("index.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year))
+    return (flask.request.headers, flask.render_template("index.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
 
 
 @app.route("/", defaults={"type": None})
@@ -287,27 +287,27 @@ async def doc():
 @visit_register
 async def news(type):
     if type == "favicon.ico":
-        return "None"
+        return (flask.request.headers, "None")
     
     if type not in ['latest', 'news']:
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS endpoint called - 400 (Invalid Type)"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(
                 {"status": 400, "error": "Invalid Type!", "types": ["news", "latest"]},
                 ensure_ascii=False,
             ).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=400,
-        )
+        ))
     language = flask.request.args.get('lang')
 
     if language is None:
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(
                 {
                     "status": 400,
@@ -319,12 +319,12 @@ async def news(type):
             ).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=400,
-        )
+        ))
     if str(language).lower() not in urls:
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(
                 {
                     "status": 400,
@@ -335,7 +335,7 @@ async def news(type):
             ).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=400,
-        )
+        ))
 
     if str(type) == "news":
         if str(language).lower() == 'english':
@@ -347,11 +347,11 @@ async def news(type):
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=200,
-        )
+        ))
     elif str(type) == "latest":
         if str(language).lower() == 'english':
             response = get_eng(True)
@@ -363,11 +363,11 @@ async def news(type):
         logger.info(
             f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=200,
-        )        
+        ))
 
 @app.route("/log/", defaults={"pin": None})
 @app.route("/log/<pin>")
@@ -380,18 +380,18 @@ async def log(pin):
             logs = f.read()
         logs = logs.replace("\n", "<br>")
         logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
-        return flask.Response(logs, mimetype="text/html; charset=utf-8", status=200)
+        return (flask.request.headers, flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
     else:
         logger.info(
             f"{ctime()}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)"
         )
-        return flask.Response(
+        return (flask.request.headers, flask.Response(
             json.dumps(
                 {"status": 400, "error": "Authorization Failed"}, ensure_ascii=False
             ),
             mimetype="application/json; charset=utf-8",
             status=400,
-        )
+        ))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
