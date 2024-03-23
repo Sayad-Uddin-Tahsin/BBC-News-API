@@ -352,4 +352,4 @@ https://www.bbc.com/culture/article/20240307-oscars-1999-controversial-best-pict
 Contributions to the bbc-news Python library are welcome! If you encounter any issues, have suggestions for improvements, or would like to contribute new features, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/Sayad-Uddin-Tahsin/BBC-News-API).
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE) file for details.
