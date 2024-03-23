@@ -5,7 +5,7 @@ with open('./bbc/BBC-News-Wrapper.md', 'r', encoding='utf-8') as f:
 
 setup(
     name='bbc-news',
-    version='1.0.0',
+    version='1.0.1',
     author='Sayad Uddin Tahsin',
     author_email='tahsin.ict@outlook.com',
     description='A simple and yet easy-to-use API for BBC News',
