@@ -2,10 +2,14 @@ import bbc
 import requests
 import bbc.exceptions
 
+HEADERS = {
+    "User-Agent": "BBC News Wrapper (PY)"
+}
+
 class News():
     def __init__(self, response: dict) -> None:
         self.raw_response = response
-
+    
     def news_category(self, category_name: str) -> list[dict]:
         """
         Returns news from specified category.
@@ -45,7 +49,7 @@ def get_news(language: bbc.Languages) -> News:
     if language.title() not in bbc.languages.__languages__:
         raise AttributeError(f"Invalid language `{type(language).__name__}`, please use `bbc.Languages` for choosing language!")
     
-    _res = requests.get(f"https://bbc-api.vercel.app/news?lang={language}")
+    _res = requests.get(f"https://bbc-api.vercel.app/news?lang={language}", headers=HEADERS)
     if _res.status_code != 200:
         raise bbc.exceptions.APIError("API didn't respond properly!")
     _res = _res.json()
@@ -72,7 +76,7 @@ def get_latest_news(language: bbc.Languages) -> list[dict]:
     if language.title() not in bbc.languages.__languages__:
         raise AttributeError(f"Invalid language `{type(language).__name__}`, please use `bbc.Languages` for choosing language!")
     
-    _res = requests.get(f"https://bbc-api.vercel.app/latest?lang={language}")
+    _res = requests.get(f"https://bbc-api.vercel.app/latest?lang={language}", headers=HEADERS)
     if _res.status_code != 200:
         raise bbc.exceptions.APIError("API didn't respond properly!")
     _res = _res.json()

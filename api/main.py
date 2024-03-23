@@ -259,7 +259,7 @@ async def main():
         status=200,
     ))
 
-@app.route("/ping/")
+@app.route("/ping")
 async def ping():
     logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
 
