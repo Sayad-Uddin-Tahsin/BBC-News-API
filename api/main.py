@@ -254,7 +254,7 @@ async def main():
     logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
 
     return (flask.request.headers, flask.Response(
-        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
+        json.dumps({"status": "OK", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "url formation": f"https://{(flask.request.url).split('/')[2]}/documentation#url-formation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
         mimetype="application/json; charset=utf-8",
         status=200,
     ))
