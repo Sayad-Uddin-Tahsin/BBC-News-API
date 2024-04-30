@@ -1,5 +1,6 @@
 import flask
 from flask import Flask
+from flask import send_from_directory
 from requests_html import HTMLSession
 import time
 import json
@@ -279,8 +280,12 @@ async def ping():
 async def doc():
     lang = random.choice(list(urls.keys()))
     logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
-    return (flask.request.headers, flask.render_template("index.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
+    return (flask.request.headers, flask.render_template("documentation.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join("/".join(app.root_path.split("/")[:3]), "Assets"),
+                          'favicon.ico' ,mimetype='image/vnd.microsoft.icon')
 
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
