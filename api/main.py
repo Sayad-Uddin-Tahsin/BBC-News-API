@@ -78,15 +78,12 @@ class NoFlaskFilter(logging.Filter):
         message = record.getMessage()
         return True and (not ("HTTP/1.1" in message and ("GET" in message or "OPTIONS *")))
 
-# logger.addFilter(NoFlaskFilter("ENDPOINT"))
 
 console_handler.addFilter(NoFlaskFilter("ENDPOINT"))
 file_handler.addFilter(NoFlaskFilter("ENDPOINT"))
 
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
-# logger.addHandler(console_handler)
-# logger.addHandler(file_handler)
 
 # ================ FLASK INITIATION ================
 app = Flask(__name__)
