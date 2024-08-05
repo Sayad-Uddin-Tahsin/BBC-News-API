@@ -201,7 +201,7 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
-    with open("code.html", 'wb') as f:
+    with open("/tmp/code.html", 'wb') as f:
         f.write(r.content)
 
     response = {}
@@ -293,7 +293,7 @@ def favicon():
 
 @app.route("/code")
 def temp_end():
-    return flask.send_from_directory("../", 'code.html')
+    return flask.send_from_directory("/tmp/", 'code.html')
 
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
