@@ -11,38 +11,82 @@ import random
 import requests
 import functools
 import os
-# import load_env
 
-open("/tmp/log.txt", "w").close()
+open("/tmp/api.log", "w").close()
 
 
 # ================ LOGGING INITIATION ================
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger = logging.getLogger('BBC-API')
+logger.setLevel(logging.DEBUG)
+
+file_handler = logging.FileHandler('/tmp/api.log')
+file_handler.setLevel(logging.DEBUG)  # Log all levels to the file
 
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
-console_format = logging.Formatter(
-    "[%(levelname)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-)
-console_handler.setFormatter(console_format)
+console_handler.setLevel(logging.INFO)  # Log INFO and above to the console
 
-file_handler = logging.FileHandler("/tmp/log.txt")
-file_handler.setLevel(logging.INFO)
-file_format = logging.Formatter("[%(levelname)s] %(message)s\n")
-file_handler.setFormatter(file_format)
+custom_format = '%(asctime)s - %(filename)s - %(levelname)s - %(message)s'
 
+class ColoredFormatter(logging.Formatter):
+    # Define color codes for different log levels
+    LEVEL_COLORS = {
+        'DEBUG': '\033[34m',    # Blue
+        'INFO': '\033[32m',     # Green
+        'WARNING': '\033[33m',  # Yellow
+        'ERROR': '\033[31m',    # Red
+        'CRITICAL': '\033[41m'  # Red background
+    }
 
+    MESSAGE_COLORS = {
+        'DEBUG': '\033[36m',    # Cyan
+        'INFO': '\033[32m',     # Green
+        'WARNING': '\033[33m',  # Yellow
+        'ERROR': '\033[31m',    # Red
+        'CRITICAL': '\033[35m'  # Magenta
+    }
+    
+    RESET = '\033[0m'  # Reset color
+
+    def format(self, record):
+        # Get the color for the log level and message based on the level name
+        level_color = self.LEVEL_COLORS.get(record.levelname, self.RESET)
+        message_color = self.MESSAGE_COLORS.get(record.levelname, self.RESET)
+
+        # Format the message with the colors
+        log_fmt = (
+            f'\033[1;34m%(asctime)s\033[0m - \033[1;36m%(filename)s\033[0m - '
+            f'{level_color}\033[1m%(levelname)s\033[0m - '
+            f'{message_color}%(message)s{self.RESET}'
+        )
+        
+        formatter = logging.Formatter(log_fmt)
+        return formatter.format(record)
+
+formatter = logging.Formatter(custom_format)
+
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(ColoredFormatter())
+
+# Define a custom logging filter to add the filename
 class NoFlaskFilter(logging.Filter):
+    def __init__(self, name: str = None) -> None:
+        self.name = name if name is not None else __file__
+        super().__init__(name)
+    
     def filter(self, record):
+        record.filename = f"{self.name}"
         message = record.getMessage()
-        return not ("HTTP/1.1" in message and ("GET" in message or "OPTIONS *"))
+        return True and (not ("HTTP/1.1" in message and ("GET" in message or "OPTIONS *")))
 
+# logger.addFilter(NoFlaskFilter("ENDPOINT"))
 
-console_handler.addFilter(NoFlaskFilter())
-file_handler.addFilter(NoFlaskFilter())
-logger.addHandler(console_handler)
+console_handler.addFilter(NoFlaskFilter("ENDPOINT"))
+file_handler.addFilter(NoFlaskFilter("ENDPOINT"))
+
 logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+# logger.addHandler(console_handler)
+# logger.addHandler(file_handler)
 
 # ================ FLASK INITIATION ================
 app = Flask(__name__)
@@ -141,10 +185,10 @@ def _get1(lang, latest):
                         )
                         if news:
                             response[section_name[0].text.strip()] = news
-                            if latest:
-                                break
                     except IndexError:
                         pass
+            if response != {} and latest:
+                break
         end = int(time.time())
         duration = end - start
         response["elapsed time"] = f"{duration:.2f}s"
@@ -190,8 +234,8 @@ def _get2(lang, latest):
                     continue
             if news:
                 response[section_name[0].text.strip()] = news
-                if latest:
-                    break
+        if response != {} and latest:
+            break
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
@@ -199,51 +243,74 @@ def _get2(lang, latest):
     return response
 
 def get_eng(latest):
+    def extract_info_from_div(div):
+        heading = div.find('h2[data-testid="card-headline"]', first=True)
+        heading_text = heading.text if heading else None
+        
+        summary = div.find('p[data-testid="card-description"]', first=True)
+        summary_text = summary.text if summary else None
+        
+        images = div.find('img')
+        image_src = None
+        for image in images:
+            if image:
+                if 'srcset' in image.attrs and image.attrs['srcset']:
+                    image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
+                else:
+                    image_src = image.attrs.get('src', None)
+        
+        link = div.find('a', first=True)
+        news_link = link.attrs['href'] if link else None
+
+        return heading_text, summary_text, image_src, news_link
+
     start = int(time.time())
-    r = session.get("https://bbc.com")
-    with open("/tmp/code.html", 'wb') as f:
-        f.write(r.content)
+    r = session.get('https://www.bbc.com/')
+    divs = r.html.find('div')
+    section_divs = [div for div in divs if div.attrs.get('data-testid', '').endswith('-section')]
 
     response = {}
-    article = r.html.find("article", first=True)
-    section = article.find("section", first=True)
-    code = section.find("div", first=True).find("div", first=True).find("div", first=True).attrs['class'][0]
-    d = r.html.find(f"div.{code}")
-    d = [i for i in d if i is not None]
-    response = {}
     response["status"] = 200
-    for i in d:
-        title_wrapper = i.find("div.sc-8a80f6eb-1", first=True)
-        if title_wrapper:
-            th2 = title_wrapper.find("h2", first=True)
-            if th2:
-                sectitle = th2.text
-        else:
-            sectitle = "latest"
-        
-        newsWrappers = i.find("div.sc-4befc967-0")
-        for wrapper in newsWrappers:
-            link_wrapper = wrapper.find("a.sc-4befc967-1", first=True)
-            link = list(link_wrapper.absolute_links)[0]
-            newsDiv = wrapper.find(f"div.{code}")
-            text_wrapper = wrapper.find("div.sc-4fedabc7-0", first=True)
-            if text_wrapper != None:
-                newstitle = text_wrapper.find("h2", first=True).text
-            description_wrapper = wrapper.find("p.sc-b8778340-4", first=True)
-            if description_wrapper != None:
-                newsdescription = description_wrapper.text
+
+    for section_div in section_divs:
+        title_wrapper_divs = section_div.find('div')
+        titles = [title for title in title_wrapper_divs if title.attrs.get('data-testid', '').endswith('-title-wrapper')]
+        if len(titles) == 0:  # for the latest category
+            sec_news = []
+            news_card_divs = section_div.find("div")
+            cards = [card for card in news_card_divs if card.attrs.get('data-testid', '').endswith('-card')]
+            for card in cards:
+                heading, summary, image, news_link = extract_info_from_div(card)
+                sec_news.append({
+                    "title": heading,
+                    "summary": summary,
+                    "image_link": image,
+                    "news_link": f"{urls['english']}{news_link}"
+                })
+            response["Latest"] = sec_news
+            if latest:
+                break
+            continue
+
+        for title_wrapper in titles:
+            sec_news = []
+            h2_titles = title_wrapper.find('h2')
+            title = None
+            for h2 in h2_titles:
+                title = h2.text
+            news_card_divs = section_div.find("div")
+            cards = [card for card in news_card_divs if card.attrs.get('data-testid', '').endswith('-card')]
+            for card in cards:
+                heading, summary, image, news_link = extract_info_from_div(card)
+                sec_news.append({
+                    "title": heading,
+                    "summary": summary,
+                    "image_link": image,
+                    "news_link": f"{urls['english']}{news_link}"
+                })
+            response[title] = sec_news
             
-            dict_wrapped = {
-                "title": newstitle,
-                "news_description": newsdescription,
-                "news_link": link
-            }
-            if sectitle in response:
-                response[sectitle].append(dict_wrapped)
-            else:
-                response[sectitle] = [dict_wrapped]
-        if latest:
-            break
+    response = {k: v for k, v in response.items() if v not in [None, []]}
     end = int(time.time())
     duration = end - start
     response["elapsed time"] = f"{duration:.2f}s"
@@ -256,7 +323,7 @@ def get_eng(latest):
 @app.route("/")
 @visit_register
 async def main():
-    logger.info(f"{ctime()}: [ENDPOINT] STATUS endpoint called - 200")
+    logger.info(f"{ctime()}: STATUS endpoint called - 200")
 
     return (flask.request.headers, flask.Response(
         json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
@@ -266,7 +333,7 @@ async def main():
 
 @app.route("/ping")
 async def ping():
-    logger.info(f"{ctime()}: [ENDPOINT] Ping endpoint called - 200")
+    logger.info(f"{ctime()}: Ping endpoint called - 200")
 
     return flask.Response(
         json.dumps({"status": 200}, ensure_ascii=False),
@@ -283,7 +350,7 @@ async def ping():
 @visit_register
 async def doc():
     lang = random.choice(list(urls.keys()))
-    logger.info(f"{ctime()}: [ENDPOINT] DOC endpoint called - 200")
+    logger.info(f"{ctime()}: DOC endpoint called - 200")
     return (flask.request.headers, flask.render_template("documentation.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
 
 @app.route('/favicon.ico')
@@ -304,7 +371,7 @@ async def news(type):
     
     if type not in ['latest', 'news']:
         logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS endpoint called - 400 (Invalid Type)"
+            f"{ctime()}: NEWS endpoint called - 400 (Invalid Type)"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(
@@ -318,7 +385,7 @@ async def news(type):
 
     if language is None:
         logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
+            f"{ctime()}: NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(
@@ -335,7 +402,7 @@ async def news(type):
         ))
     if str(language).lower() not in urls:
         logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
+            f"{ctime()}: NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(
@@ -358,7 +425,7 @@ async def news(type):
             if len(response.keys()) < 4:
                 response = _get2(urls[str(language).lower()], False)
         logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
+            f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
@@ -374,7 +441,7 @@ async def news(type):
                 response = _get2(urls[str(language).lower()], True)
 
         logger.info(
-            f"{ctime()}: [ENDPOINT] NEWS (language: {language}, type: {type}) endpoint called - 200"
+            f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
@@ -389,14 +456,14 @@ async def news(type):
 @visit_register
 async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
-        with open("/tmp/log.txt", "r", encoding="utf-8") as f:
+        with open("/tmp/api.log", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace("\n", "<br>")
-        logger.info(f"{ctime()}: [ENDPOINT] LOG endpoint called - 200")
+        logger.info(f"{ctime()}: LOG endpoint called - 200")
         return (flask.request.headers, flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
     else:
         logger.info(
-            f"{ctime()}: [ENDPOINT] LOG endpoint called - 400 (Authorization Failed)"
+            f"{ctime()}: LOG endpoint called - 400 (Authorization Failed)"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(

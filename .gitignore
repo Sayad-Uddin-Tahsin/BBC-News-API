@@ -136,3 +136,6 @@ dmypy.json
 *.lock
 *.toml
 load_env.py
+
+# include
+!api.log
