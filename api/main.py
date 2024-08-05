@@ -11,7 +11,7 @@ import random
 import requests
 import functools
 import os
-import load_env
+# import load_env
 
 open("/tmp/log.txt", "w").close()
 
