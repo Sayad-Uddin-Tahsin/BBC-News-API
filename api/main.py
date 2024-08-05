@@ -200,6 +200,7 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
+    logger.info(r.html)
     response = {}
     article = r.html.find("article", first=True)
     section = article.find("section", first=True)
