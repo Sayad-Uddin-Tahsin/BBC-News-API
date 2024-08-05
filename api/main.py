@@ -11,6 +11,7 @@ import random
 import requests
 import functools
 import os
+import load_env
 
 open("/tmp/log.txt", "w").close()
 
@@ -200,7 +201,9 @@ def _get2(lang, latest):
 def get_eng(latest):
     start = int(time.time())
     r = session.get("https://bbc.com")
-    logger.info(r.html)
+    with open("code.html", 'wb') as f:
+        f.write(r.content)
+
     response = {}
     article = r.html.find("article", first=True)
     section = article.find("section", first=True)
@@ -287,6 +290,10 @@ async def doc():
 def favicon():
     return send_from_directory(os.path.join("/".join(app.root_path.split("/")[:3]), "Assets"),
                           'favicon.ico' ,mimetype='image/vnd.microsoft.icon')
+
+@app.route("/code")
+def temp_end():
+    return flask.send_from_directory("../", 'code.html')
 
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
@@ -381,7 +388,7 @@ async def news(type):
 @app.route("/logs/<pin>")
 @visit_register
 async def log(pin):
-    if pin != None and int(pin) == int(9840):
+    if pin != None and int(pin) == int(os.environ["PIN"]):
         with open("/tmp/log.txt", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = logs.replace("\n", "<br>")
