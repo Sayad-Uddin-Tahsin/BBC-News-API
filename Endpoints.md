@@ -17,7 +17,8 @@
 | Spanish | `spanish` | Swahili | `swahili` |
 | Tamil | `tamil` | Turkish | `turkish` |
 | Ukrainian | `ukrainian` | Urdu | `urdu` |
-| Uzbek | `uzbek` | Vietnamese | `vietnamese` |
+| Uzbek | `uzbek` | Vietnamese | `vietnamese` 
+| Yoruba | `yoruba` |
 
 ## Types
 | Name | Endpoint | Description |

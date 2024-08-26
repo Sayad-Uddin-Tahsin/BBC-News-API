@@ -3,23 +3,24 @@
 </p>
 
 # BBC News API
-Discover the world of news through the lens of the BBC News API. With access to a rich array of news content spanning over 30 languages, this API serves as a gateway to the latest updates from the British Broadcasting Corporation (BBC). Seamlessly integrate trusted news sources into your applications, offering users a diverse and comprehensive view of current events. Empower your audience with timely and reliable information, curated by one of the most respected news organizations worldwide.
+Discover the world of news through the lens of the BBC News API. With access to a rich array of news content spanning over 31 languages, this API serves as a gateway to the latest updates from the British Broadcasting Corporation (BBC). Seamlessly integrate trusted news sources into your applications, offering users a diverse and comprehensive view of current events. Empower your audience with timely and reliable information, curated by one of the most respected news organizations worldwide.
 
 <a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/website?url=https%3A%2F%2Fbbc-api.vercel.app%2Fping&up_message=Online&down_message=Offline&label=API" height=22></a>
 <a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbbc-api.vercel.app%2Fnews%3Flang%3Dbengali&query=%24%5B'elapsed%20time'%5D&label=Latency" height=22></a>
 <a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/github/license/Sayad-Uddin-Tahsin/BBC-News-API" height=22></a>
+<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/Supported%20Language-31-deepgreen" height=22></a>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/visit-badge?theme=dark"><img alt="Requests Badge" src="https://web-badge-psi.vercel.app/visit-badge?theme=light"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/latency-badge?theme=dark"><img alt="Latency Badge" src="https://web-badge-psi.vercel.app/latency-badge?theme=light"></picture>
 
 ## BBC
-BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 30 languages. 
+BBC, British Broadcasting Corporation is a Trustable News Site. It has coverage of 31 languages. 
 
 ## API
-Application Programming Interface(API) is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software. A document or standard that describes how to build or use such a connection or interface is called an API specification.
+Application Programming Interface (API) is a way for two or more computer programs to communicate with each other. It is a type of software interface, offering a service to other pieces of software. A document or standard that describes how to build or use such a connection or interface is called an API specification.
 
 ## What is this API?
-BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 30 Languages (All supported languages by BBC)!
+BBC News API is the API for serving the news from all the BBC Services according to your need. This API has a coverage of 31 Languages!
 
 ### How it works?
 ```mermaid
