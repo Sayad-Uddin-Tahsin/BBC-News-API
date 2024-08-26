@@ -235,14 +235,13 @@ https://www.bbc.com/arabic/articles/c723xvpkplko
 import bbc
 # Get the Latest News for English
 news = bbc.news.get_news(bbc.Languages.English)
-print(news)
 # Get the Category Titles
 categories = news.news_categories()
 # Loop through the category titles
 for category in categories:
     # Get the Category News
     section_news = news.news_category(category)
-    print(section_news)
+
     # Loop through the news dictionary
     for news_dict in section_news:
         # Print the Title
