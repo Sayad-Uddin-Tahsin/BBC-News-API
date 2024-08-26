@@ -95,7 +95,7 @@ for category in categories:
         # Print the News Link
         print(news_dict["news_link"])
                 
-        # Print a Blank Line
+        # Print a Separator Line
         print("---")
 
 ```

@@ -101,7 +101,7 @@ for category in categories:
         # Print the News Link
         print(news_dict["news_link"])
                 
-        # Print a Blank Line
+        # Print a Separator Line
         print("---")
 ```
 
@@ -168,7 +168,7 @@ for news_dict in news_list:
     # Print the News Link
     print(news_dict["news_link"])
             
-    # Print a Blank Line
+    # Print a Separator Line
     print("---")
 
 ```
@@ -233,39 +233,29 @@ https://www.bbc.com/arabic/articles/c723xvpkplko
 ```python
 # Import the Library
 import bbc
-
 # Get the Latest News for English
-news = bbc.news.get_news(bbc.Languages.English)
-
+news = bbc.news.get_news(bbc.Languages.Bengali)
+print(news)
 # Get the Category Titles
 categories = news.news_categories()
-
 # Loop through the category titles
 for category in categories:
     # Get the Category News
     section_news = news.news_category(category)
-
+    print(section_news)
     # Loop through the news dictionary
     for news_dict in section_news:
         # Print the Title
         print(news_dict['title'])
-
-        # Print the News Description
-        print(news_dict['news_description'])
-
-        # ---------------- Note ----------------
-        # | English News' Image Link couldn't  |
-        # |            be retrived             |
-        # |====================================|
-        # |    Sorry for the inconvenience     |
-        # --------------------------------------
-
+        # Print the News Description according to availability  (Returns None if unavailable)
+        print(news_dict['summary'])
+        # Print the News Image according to availability (Returns None if unavailable)
+        print(news_dict['image_link'])
         # Print the News Link
         print(news_dict["news_link"])
         
-        # Print a Blank Line
+        # Print a Separator Line
         print("---")
-
 ```
 
 </details>
