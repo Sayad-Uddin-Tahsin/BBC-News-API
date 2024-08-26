@@ -29,6 +29,7 @@ class Languages:
     Urdu = "urdu"
     Uzbek = "uzbek"
     Vietnamese = "vietnamese"
+    Yoruba = "yoruba"
 
 __languages__ = {
     "Arabic": "arabic",
@@ -60,5 +61,6 @@ __languages__ = {
     "Ukrainian": "ukrainian",
     "Urdu": "urdu",
     "Uzbek": "uzbek",
-    "Vietnamese": "vietnamese"
+    "Vietnamese": "vietnamese",
+    "Yoruba": "yoruba"
 }

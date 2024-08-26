@@ -1,6 +1,7 @@
 import bbc
 import requests
 import bbc.exceptions
+import typing
 
 HEADERS = {
     "User-Agent": "BBC News Wrapper (PY)"
@@ -33,11 +34,11 @@ class News():
 
         return categories
 
-def get_news(language: bbc.Languages) -> News:
+def get_news(language: typing.Union[str, bbc.Languages]) -> News:
     """
     Returns all news of a language.
 
-    :param language: Language name (`bbc.Languages`)
+    :param language: Language name (`str`, `bbc.Languages`)
 
     :raise AttributeError: raises when on language  mismatch 
     :raise bbc.exceptions.APIError: raises on API related error
@@ -61,11 +62,11 @@ def get_news(language: bbc.Languages) -> News:
     return News(_res)
 
 
-def get_latest_news(language: bbc.Languages) -> list[dict]:
+def get_latest_news(language: typing.Union[str, bbc.Languages]) -> list[dict]:
     """
     Returns all latest news of a language.
 
-    :param language: Language name (`bbc.Languages`)
+    :param language: Language name (`str`, `bbc.Languages`)
     
     :raise AttributeError: raises when on language type mismatch 
     :raise bbc.exceptions.APIError: raises on API related error
