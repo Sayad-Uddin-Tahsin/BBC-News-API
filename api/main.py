@@ -127,7 +127,8 @@ urls = {
     "sinhala": "https://bbc.com/sinhala",
     "tamil": "https://bbc.com/tamil",
     "uzbek": "https://bbc.com/uzbek",
-    "english": "https://bbc.com"
+    "english": "https://bbc.com",
+    "yoruba": "https://www.bbc.com/yoruba"
 }
 
 # ================ HELPING FUNCTIONS ================
@@ -348,7 +349,7 @@ async def ping():
 async def doc():
     lang = random.choice(list(urls.keys()))
     logger.info(f"{ctime()}: DOC endpoint called - 200")
-    return (flask.request.headers, flask.render_template("documentation.html", type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
+    return (flask.request.headers, flask.render_template("documentation.html", listOfLangs="\n".join([f"<li>{key.capitalize()}: <code>{key}</code></li>" for key in sorted(urls.keys())]), type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
 
 @app.route('/favicon.ico')
 def favicon():
