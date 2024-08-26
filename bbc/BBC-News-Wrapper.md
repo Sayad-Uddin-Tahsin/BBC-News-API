@@ -234,7 +234,7 @@ https://www.bbc.com/arabic/articles/c723xvpkplko
 # Import the Library
 import bbc
 # Get the Latest News for English
-news = bbc.news.get_news(bbc.Languages.Bengali)
+news = bbc.news.get_news(bbc.Languages.English)
 print(news)
 # Get the Category Titles
 categories = news.news_categories()
@@ -254,8 +254,9 @@ for category in categories:
         # Print the News Link
         print(news_dict["news_link"])
         
-        # Print a Separator Line
+        # Print a Blank Line
         print("---")
+
 ```
 
 </details>
@@ -266,69 +267,25 @@ for category in categories:
 <summary>Output</summary>
 
 ```console
-Why is Florida 'breaking up' with spring break?
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/travel/article/20240307-why-is-florida-breaking-up-with-spring-break
+Israel and Hezbollah exchange heavy fire in major escalation
+Hezbollah says it fired hundreds of rockets after Israel says it launched pre-emptive strikes on Sunday morning.
+https://ichef.bbci.co.uk/news/240/cpsprodpb/c16f/live/604e1f70-6354-11ef-8665-19cd0ac0261f.jpg.webp
+https://bbc.com/news/articles/cq6rzvyz9p6o
 ---
-I was cyberbullied while pregnant, says Meghan
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/news/entertainment-arts-68518526
+Matthew Perry's death reveals Hollywood's ketamine 'wild west'
+Doctors say ketamine has become "super easy" to get through a network of online clinics that exploit government loopholes.
+https://ichef.bbci.co.uk/news/240/cpsprodpb/11ab/live/fa8ebf00-617d-11ef-8c32-f3c2bc7494c6.jpg.webp
+https://bbc.com/news/articles/czrgp7pj4g2o
 ---
-Why is Florida 'breaking up' with spring break?
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/travel/article/20240307-why-is-florida-breaking-up-with-spring-break
+Israel and Hezbollah exchange heavy fire in major escalation
+Hezbollah says it fired hundreds of rockets after Israel says it launched pre-emptive strikes on Sunday morning.
+https://ichef.bbci.co.uk/news/240/cpsprodpb/c16f/live/604e1f70-6354-11ef-8665-19cd0ac0261f.jpg.webp
+https://bbc.com/news/articles/cq6rzvyz9p6o
 ---
-Gaza aid ship expected to set sail from Cyprus
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/news/world-middle-east-68518918
----
-New life springs from rescued Sycamore Gap tree
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/news/science-environment-68497720
----
-'Confused' TikTokers deluge US lawmakers' phones
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/news/world-us-canada-68517607
----
-What the world made of Biden's big speech
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/news/world-us-canada-68510250
----
-One of the most controversial Oscars wins ever
-What started as an escape for college swimmers has evolved into a debaucherous party. But after recent crackdowns, some Florida cities may be "breaking up" with the popular pastime.
-https://www.bbc.com/culture/article/20240307-oscars-1999-controversial-best-picture-win
----
-Can women hold onto chief sustainability jobs?
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/worklife/article/20240307-women-chief-sustainability-officer-jobs
----
-HelloFresh shares plunge 40% after earnings warning
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/news/articles/cgevn1kkjwzo
----
-Intuit's AI leader on swapping astrophysics for data science
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/worklife/article/20240307-nhung-ho-ai-intuit-bbc-executive-interview
----
-Production of Duvel beer hit by cyber-attack
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/news/technology-68512156
----
-TikTok sparks user revolt in US over sale plan
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/news/world-us-canada-68505405
----
-Barbie 2? 'We'd love to,' says Warner Bros boss
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/news/entertainment-arts-68485346
----
-The Brit up for three visual effects Oscars
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/news/entertainment-arts-68518072
----
-One of the most controversial Oscars wins ever
-From a small island in Venice, a 15th-Century monk designed an astonishingly accurate planisphere of the world.
-https://www.bbc.com/culture/article/20240307-oscars-1999-controversial-best-picture-win
+Matthew Perry's death reveals Hollywood's ketamine 'wild west'
+Doctors say ketamine has become "super easy" to get through a network of online clinics that exploit government loopholes.
+https://ichef.bbci.co.uk/news/240/cpsprodpb/11ab/live/fa8ebf00-617d-11ef-8c32-f3c2bc7494c6.jpg.webp
+https://bbc.com/news/articles/czrgp7pj4g2o
 
 ...
 ...
