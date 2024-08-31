@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open('./bbc/BBC-News-Wrapper.md', 'r', encoding='utf-8') as f:
+with open('./bbc/README.md', 'r', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
@@ -15,7 +15,7 @@ setup(
     packages=['bbc'],
     include_package_data=True,
     package_data={
-        '': ['BBC-News-Wrapper.md', 'LICENSE', 'requirements.txt']
+        '': ['README.md', 'LICENSE', 'requirements.txt']
     },
     install_requires=[
         'requests>=2.28.2'

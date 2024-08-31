@@ -11,8 +11,6 @@ import random
 import requests
 import functools
 import os
-import dotenv
-dotenv.load_dotenv()
 
 open("/tmp/api.log", "w").close()
 
@@ -185,12 +183,13 @@ def _get(lang, latest):
 
                         section_news.append({
                             "title": news_title,
-                            "link": news_link,
-                            "image": image_link,
                             "summary": news_summary,
+                            "news_link": news_link,
+                            "image_link": image_link
                         })
                 elif method_2:
                     for news_li in news_lis:
+                        news_li = news_li.find('div[data-e2e="story-promo"]', first=True)
                         image_link = news_li.find('img', first=True).attrs.get('src')
                         
                         title_tag = news_li.find('h3 a', first=True)
@@ -202,11 +201,12 @@ def _get(lang, latest):
                         
                         section_news.append({
                             "title": news_title,
-                            "link": news_link,
-                            "image": image_link,
                             "summary": news_summary,
+                            "news_link": news_link,
+                            "image_link": image_link
                         })
-                response[title] = section_news
+                if section_news:
+                    response[title] = section_news
                 if latest:
                     break                        
         else:
@@ -237,7 +237,7 @@ def get_eng(latest):
                 image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
             else:
                 image_src = image.attrs.get('src', None)
-        
+        image_src = (image_src if 'grey-placeholder.png' not in image_src else None) if image_src else None
         link = div.find('a', first=True)
         news_link = link.attrs['href'] if link else None
 
@@ -248,7 +248,6 @@ def get_eng(latest):
 
     try:
         r = session.get('https://www.bbc.com/')
-
         if r.status_code != 200:
             response["status"] = 503
             response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
@@ -300,7 +299,7 @@ def get_eng(latest):
     end = time.time()
     response["elapsed time"] = f"{end - start:.3f}s"
     response["timestamp"] = int(time.time())
-
+    session.close()
     return response
 
 

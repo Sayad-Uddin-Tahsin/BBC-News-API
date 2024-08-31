@@ -60,7 +60,7 @@ print(categories)
 <summary>Output</summary>
 
 ```console
-['Top story - Zhongwen', '必看', '深度报道', '新闻时事 趋势动态', '知识资讯 观点角度', '特别推荐', '台湾大选2024']
+['Top story - Zhongwen', '必看', '深度报道', '新闻时事 趋势动态', '知识资讯 观点角度', '特别推荐']
 ```
 
 </details>
@@ -68,7 +68,7 @@ print(categories)
 
 <!-- Example: Printing Category News -->
 <details>
-<summary>Printing category news' title, image link and news link</summary>
+<summary>Printing category news' title, summary, image link and news link</summary>
 
 <!-- Code: Start -->
 <details open>
@@ -95,6 +95,9 @@ for category in categories:
         # Print the Title
         print(news_dict['title'])
 
+        # Print the News Summary/Description according to availability  (Returns None if unavailable)
+        print(news_dict['summary'])
+
         # Print the Image Link
         print(news_dict['image_link'])
 
@@ -113,28 +116,21 @@ for category in categories:
 <summary>Output</summary>
 
 ```console
-ভারতের মুহাম্মদ আসফান যেভাবে রাশিয়া-ইউক্রেন যুদ্ধে মারা গেলেন
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/fd83/live/b9cd1d20-dc91-11ee-9a5b-e35447f6c53b.jpg
-https://www.bbc.com/bengali/articles/c720rl118yro
+রূপগঞ্জে গাজী টায়ার কারখানায় গিয়ে যা দেখলেন বিবিসি সংবাদদাতা
+গাজী টায়ারস ফ্যাক্টরির যে ভবনে ২৫ শে অগাস্ট অগ্নিসংযোগ করা হয়েছিল সেটি পুড়ে ছাই হয়ে গেছে। ভবনটি ঝুঁকিপূর্ণ ঘোষণার পর ফায়ার সার্ভিস এর ভেতরে অভিযান বন্ধ রেখেছে। সেখানে গিয়ে বিভিন্ন জায়গায় থেমে থেমে আগুন জ্বলতে দেখা যায়।
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/5b0d/live/acc7a540-66df-11ef-8c32-f3c2bc7494c6.jpg.webp
+https://www.bbc.com/bengali/articles/clyn2eydejlo
 ---
-গাজায় বিমান থেকে ফেলা ত্রাণের বস্তার নিচে চাপা পড়ে পাঁচ ফিলিস্তিনি নিহত
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4f7d/live/a3523c10-ddc7-11ee-8bf3-195418ba9285.jpg
-https://www.bbc.com/bengali/articles/cd1841llw6eo
+'সম্পর্ক ঝালাইয়ে নজর দিল্লির'
+৩১শে অগাস্ট শনিবার প্রকাশিত পত্রিকাগুলোর প্রথম পাতায় বন্যায় ক্ষয়ক্ষতি সংক্রান্ত খবর বেশ প্রাধান্য পেয়েছে সেইসাথে গুম প্রতিরোধ দিবসকে ঘিরে নানা কর্মসূচির খবর, মানবাধিকার লঙ্ঘন তদন্তে জাতিসঙ্ঘের হস্তক্ষেপ, দুর্নীতিসহ আরো নানা প্রসঙ্গ আলোচনায় রয়েছে।
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/e21a/live/f8ac1610-6740-11ef-b970-9f202720b57a.jpg.webp
+https://www.bbc.com/bengali/articles/clynrl8yzvvo
 ---
-'বৈশ্বিক গণতান্ত্রিক সূচকে অবনতি বাংলাদেশের'
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d1ea/live/7af76d90-ddbc-11ee-9080-d35818d60ed3.jpg
-https://www.bbc.com/bengali/articles/cpv0wvkprwvo
----
-গাজার মাঝ বরাবর ইসরায়েল রাস্তা তৈরি করছে কেন ?
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3927/live/81f882d0-dd55-11ee-b292-af90e1cb0639.jpg
-https://www.bbc.com/bengali/articles/c1e8zxwqwyno
----
-জনসংখ্যা কমায় বিপাকে থাকা দেশগুলো থেকে ভারত, পাকিস্তান, বাংলাদেশ কী পেতে পারে?
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3400/live/a073cc20-dd36-11ee-9a5b-e35447f6c53b.jpg
-https://www.bbc.com/bengali/articles/c280gpg8wexo
+কালো টাকা সাদা করার বিধান বাতিল হলে কী হবে অর্থনীতিতে?
+অপ্রদর্শিত অর্থের মোড়কে অবৈধভাবে অর্জিত কালো টাকা সাদা করার সুযোগ দেওয়াকে শুরু থেকেই বৈষম্যমূলক এবং অনৈতিক বলে দাবি করেছেন অর্থনীতিবিদরা।
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/7039/live/5b0af020-66d7-11ef-b970-9f202720b57a.jpg.webp
+https://www.bbc.com/bengali/articles/cr7r3xz8y12o
 
-...
-...
 ...
 ```
 
@@ -162,6 +158,9 @@ for news_dict in news_list:
     # Print the Title
     print(news_dict['title'])
 
+    # Print the News Summary/Description according to availability  (Returns None if unavailable)
+    print(news_dict['summary'])
+
     # Print the Image Link
     print(news_dict['image_link'])
 
@@ -181,41 +180,22 @@ for news_dict in news_list:
 <summary>Output</summary>
 
 ```console
-الأمم المتحدة تنتقد إنشاء ممر بحري لإيصال المساعدات في غزة وخمسة قتلى خلال إنزال جوي
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1cc9/live/6e28cad0-ddaa-11ee-be08-970469947e0a.jpg
-https://www.bbc.com/arabic/articles/ce9rn7l6r1lo
+كيف كانت الأوضاع داخل مخيم جنين أثناء مداهمة الجيش الإسرائيلي؟
+كانت الشوراع داخل المخيم خالية، وحتى سيارات الإسعاف كانت تسير وفقاً لتوجيهات محددة، وتعرضت للتفتيش.
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/f580/live/8b704870-66da-11ef-8c32-f3c2bc7494c6.jpg.webp
+https://www.bbc.com/arabic/articles/c1l57yz7r40o
 ---
-كندا تستأنف تمويل وكالة الأونروا بعد قرار تعليقها
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/536e/live/69575680-ddb3-11ee-8bf3-195418ba9285.jpg
-https://www.bbc.com/arabic/articles/c9945z477k8o
+ماذا نعرف عن خطة التطعيم ضد شلل الأطفال في غزة؟
+ستبدأ سلسلة من "التوقف الإنساني" عن القتال في غزة يوم الأحد، بهدف تمكين مئات الآلاف من الأطفال من تلقي لقاح شلل الأطفال.
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/cc93/live/f32bc090-66fb-11ef-a006-fb0775301171.jpg.webp
+https://www.bbc.com/arabic/articles/c5yp5wqvge4o
 ---
-مبادرة إنسانية لغزة من أول بلد أوروبي يعترف بالدولة الفلسطينية
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/e629/live/0f753c40-dca5-11ee-b83b-0f87a864f372.jpg
-https://www.bbc.com/arabic/articles/cv2ymd20rzjo
----
-الضفة الغربية: "رغم محاولتي حماية طفلي إلا أنه قُتِل"!
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/98db/live/f707d570-dd97-11ee-8bf3-195418ba9285.jpg
-https://www.bbc.com/arabic/articles/c3gm1eg1deko
----
-ما الذي نعرفه عن الممر البحري الذي يشرف الجيش الأمريكي على إنشائه قبالة غزة؟
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a783/live/9130c4a0-dd3d-11ee-b83b-0f87a864f372.png
-https://www.bbc.com/arabic/articles/clejnlz58x1o
----
-صور الأقمار الصناعية تظهر اكتمال الطريق الذي أنشأه الجيش الإسرائيلي عبر غزة
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3dfd/live/3c82b530-dce3-11ee-8f28-259790e80bba.jpg
-https://www.bbc.com/arabic/articles/ckk7y2k5117o
----
-"مؤامرة إجرامية" يكشف عنها الجيش الأمريكي حاكها أحد جنوده مع الصين
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/9cdb/live/66b71d80-dd21-11ee-b83b-0f87a864f372.jpg
-https://www.bbc.com/arabic/articles/cj7ve1mr9v9o
----
-بياناتك الشخصية متاحة للجميع، فهل هناك طريقة أفضل للحفاظ على خصوصيتها؟
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/0cf2/live/c5be7b30-dd93-11ee-8be9-db11b274404f.jpg
-https://www.bbc.com/arabic/articles/c3gq1kxjp72o
----
-اكتشاف بقايا أحفورية لأقدم غابة في العالم تعود لنحو 400 مليون سنة
-https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/0008/live/18a10cf0-dd3f-11ee-9a5b-e35447f6c53b.jpg
-https://www.bbc.com/arabic/articles/c723xvpkplko
+المقاتلون الروس يغادرون بوركينا فاسو للمساعدة في حرب أوكرانيا
+المقاتلون الروس يغادرون بوركينا فاسو لمساعدة القوات الروسية في صد الهجمات الأوكرنية على منطقة كورسك،.
+https://ichef.bbci.co.uk/ace/ws/240/cpsprodpb/3030/live/36e81670-6702-11ef-8c32-f3c2bc7494c6.jpg.webp
+https://www.bbc.com/arabic/articles/c04930zve6wo
+
+...
 ```
 
 </details>
@@ -223,7 +203,7 @@ https://www.bbc.com/arabic/articles/c723xvpkplko
 
 <!-- Example: Printing News of English -->
 <details>
-<summary>Printing News of English</summary>
+<summary>Printing News (English)</summary>
 
 <!-- Code: Start -->
 <details open>
@@ -233,10 +213,13 @@ https://www.bbc.com/arabic/articles/c723xvpkplko
 ```python
 # Import the Library
 import bbc
+
 # Get the Latest News for English
 news = bbc.news.get_news(bbc.Languages.English)
+
 # Get the Category Titles
 categories = news.news_categories()
+
 # Loop through the category titles
 for category in categories:
     # Get the Category News
@@ -246,10 +229,13 @@ for category in categories:
     for news_dict in section_news:
         # Print the Title
         print(news_dict['title'])
-        # Print the News Description according to availability  (Returns None if unavailable)
+
+        # Print the News Summary/Description according to availability  (Returns None if unavailable)
         print(news_dict['summary'])
+
         # Print the News Image according to availability (Returns None if unavailable)
         print(news_dict['image_link'])
+        
         # Print the News Link
         print(news_dict["news_link"])
         
