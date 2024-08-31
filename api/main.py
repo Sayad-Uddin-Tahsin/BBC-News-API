@@ -149,95 +149,77 @@ def visit_register(func):
         return result[1]
     return wrapper
 
-
-
-def _get1(lang, latest):
-    start = int(time.time())
-    r = session.get(lang)
-    match = r.html.find("div.bbc-1ajedpd")
+def _get(lang, latest):
+    start = time.time()
     response = {}
-    response["status"] = 200
     try:
-        sections = match[0].find("section")
-        sections.pop(len(sections) - 1)
-        for section in sections:
-            section_name = section.find("h2")
-            if section_name:
-                news = []
-                lis = section.find("li")
-                for li in lis:
-                    try:
-                        promo_image = (
-                            li.find("div.promo-image")[0].find("img")[0].attrs["src"]
-                        )
+        r = session.get(lang)
+        response["status"] = r.status_code
+        
+        if r.status_code == 200:
+            sections = r.html.find('section[aria-labelledby]:not([data-testid])')
+            checked, method_2 = False, False
+            for section in sections:
+                title = section.find("h2", first=True).text
+                news_lis = section.find('li:not(role)')
+                news_lis = [li for li in news_lis if any(cls.startswith('bbc-') for cls in li.attrs.get('class', [])) and 'role' not in li.attrs]
+                if not checked and news_lis[0].find('div[data-e2e="story-promo"]'):
+                    checked, method_2 = True, True
+                else:
+                    checked = True
+                section_news = []
+                if not method_2:
+                    for news_li in news_lis:
+                        image_link = news_li.find('div.promo-image', first=True).find('img', first=True).attrs.get('src')
+                        
+                        promo_div = news_li.find('div.promo-text', first=True)
+                        
+                        title_tag = promo_div.find('h3 a', first=True)
+                        news_title = title_tag.text
+                        news_link = list(title_tag.absolute_links)[0]
+                        
+                        summary_tag = promo_div.find('p', first=True)
+                        news_summary = summary_tag.text if summary_tag else None
 
-                        promo_text = li.find("div.promo-text")[0].find("h3")[0]
-                        title = promo_text.text
-                        link = list(promo_text.absolute_links)[0]
-                        news.append(
-                            {
-                                "title": str(title),
-                                "news_link": str(link),
-                                "image_link": str(promo_image),
-                            }
-                        )
-                        if news:
-                            response[section_name[0].text.strip()] = news
-                    except IndexError:
-                        pass
-            if response != {} and latest:
-                break
-        end = int(time.time())
-        duration = end - start
-        response["elapsed time"] = f"{duration:.2f}s"
-        response["timestamp"] = int(time.time())
-    except IndexError:
-        pass
-    return response
-
-def _get2(lang, latest):
-    start = int(time.time())
-    r = session.get(lang)
-    div = r.html.find("div", first=True)
-    response = {}
-    response["status"] = 200
-    sections = div.find("section")
-    sections.pop(len(sections) - 1)
-    for section in sections:
-        section_name = section.find("h2")
-        if section_name:
-            news = []
-            lis = section.find("li.ebmt73l0")
-            for li in lis:
-                try:
-                    promo_image = (
-                        li.find("picture", first=True)
-                        .find("source")[0]
-                        .attrs["srcset"]
-                        .split(", ")[-1]
-                    )
-                    promo_text = li.find("h3")[0]
-                    title = promo_text.text
-                    link = list(promo_text.absolute_links)[0]
-                    news.append(
-                        {
-                            "title": str(title),
-                            "news_link": str(link),
-                            "image_link": str(promo_image),
-                        }
-                    )
-                except IndexError:
-                    continue
-                except AttributeError:
-                    continue
-            if news:
-                response[section_name[0].text.strip()] = news
-        if response != {} and latest:
-            break
-    end = int(time.time())
+                        section_news.append({
+                            "title": news_title,
+                            "summary": news_summary,
+                            "news_link": news_link,
+                            "image_link": image_link
+                        })
+                elif method_2:
+                    for news_li in news_lis:
+                        news_li = news_li.find('div[data-e2e="story-promo"]', first=True)
+                        image_link = news_li.find('img', first=True).attrs.get('src')
+                        
+                        title_tag = news_li.find('h3 a', first=True)
+                        news_title = title_tag.text
+                        news_link = list(title_tag.absolute_links)[0]
+                        
+                        summary_tag = news_li.find('p', first=True)
+                        news_summary = summary_tag.text if summary_tag else None
+                        
+                        section_news.append({
+                            "title": news_title,
+                            "summary": news_summary,
+                            "news_link": news_link,
+                            "image_link": image_link
+                        })
+                if section_news:
+                    response[title] = section_news
+                if latest:
+                    break                        
+        else:
+            response['status'] = 503
+            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+    except Exception as e:
+        response["status"] = 500
+        response["error"] = str(e)
+    end = time.time()
     duration = end - start
-    response["elapsed time"] = f"{duration:.2f}s"
+    response["elapsed time"] = f"{duration:.3f}s"
     response["timestamp"] = int(time.time())
+
     return response
 
 def get_eng(latest):
@@ -248,71 +230,76 @@ def get_eng(latest):
         summary = div.find('p[data-testid="card-description"]', first=True)
         summary_text = summary.text if summary else None
         
-        images = div.find('img')
+        image = div.find('img', first=True)
         image_src = None
-        for image in images:
-            if image:
-                if 'srcset' in image.attrs and image.attrs['srcset']:
-                    image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
-                else:
-                    image_src = image.attrs.get('src', None)
-        
+        if image:
+            if 'srcset' in image.attrs and image.attrs['srcset']:
+                image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
+            else:
+                image_src = image.attrs.get('src', None)
+        image_src = (image_src if 'grey-placeholder.png' not in image_src else None) if image_src else None
         link = div.find('a', first=True)
         news_link = link.attrs['href'] if link else None
 
         return heading_text, summary_text, image_src, news_link
 
-    start = int(time.time())
-    r = session.get('https://www.bbc.com/')
-    divs = r.html.find('div')
-    section_divs = [div for div in divs if div.attrs.get('data-testid', '').endswith('-section')]
-
     response = {}
-    response["status"] = 200
+    start = time.time()
 
-    for section_div in section_divs:
-        title_wrapper_divs = section_div.find('div')
-        titles = [title for title in title_wrapper_divs if title.attrs.get('data-testid', '').endswith('-title-wrapper')]
-        if len(titles) == 0:  # for the latest category
-            sec_news = []
-            news_card_divs = section_div.find("div")
-            cards = [card for card in news_card_divs if card.attrs.get('data-testid', '').endswith('-card')]
-            for card in cards:
-                heading, summary, image, news_link = extract_info_from_div(card)
-                sec_news.append({
-                    "title": heading,
-                    "summary": summary,
-                    "image_link": image,
-                    "news_link": f"{urls['english']}{news_link}"
-                })
-            response["Latest"] = sec_news
-            if latest:
-                break
-            continue
+    try:
+        r = session.get('https://www.bbc.com/')
+        if r.status_code != 200:
+            response["status"] = 503
+            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+            return response
 
-        for title_wrapper in titles:
-            sec_news = []
-            h2_titles = title_wrapper.find('h2')
-            title = None
-            for h2 in h2_titles:
-                title = h2.text
-            news_card_divs = section_div.find("div")
-            cards = [card for card in news_card_divs if card.attrs.get('data-testid', '').endswith('-card')]
-            for card in cards:
-                heading, summary, image, news_link = extract_info_from_div(card)
-                sec_news.append({
-                    "title": heading,
-                    "summary": summary,
-                    "image_link": image,
-                    "news_link": f"{urls['english']}{news_link}"
-                })
-            response[title] = sec_news
-            
-    response = {k: v for k, v in response.items() if v not in [None, []]}
-    end = int(time.time())
-    duration = end - start
-    response["elapsed time"] = f"{duration:.2f}s"
+        divs = r.html.find('div')
+        section_divs = [div for div in divs if div.attrs.get('data-testid', '').endswith('-section')]
+
+        response["status"] = r.status_code
+
+        for section_div in section_divs:
+            title_wrapper_divs = section_div.find('div')
+            titles = [title for title in title_wrapper_divs if title.attrs.get('data-testid', '').endswith('-title-wrapper')]
+            if not titles:  # For the latest category
+                sec_news = []
+                cards = section_div.find('div[data-testid$="-card"]')
+                for card in cards:
+                    heading, summary, image, news_link = extract_info_from_div(card)
+                    sec_news.append({
+                        "title": heading,
+                        "summary": summary,
+                        "image_link": image,
+                        "news_link": f"{urls['english']}{news_link}"
+                    })
+                response["Latest"] = sec_news
+                if latest:
+                    break
+            else:
+                for title_wrapper in titles:
+                    sec_news = []
+                    title = title_wrapper.find('h2', first=True)
+                    title_text = title.text if title else "Untitled"
+                    cards = section_div.find('div[data-testid$="-card"]')
+                    for card in cards:
+                        heading, summary, image, news_link = extract_info_from_div(card)
+                        sec_news.append({
+                            "title": heading,
+                            "summary": summary,
+                            "image_link": image,
+                            "news_link": f"{urls['english']}{news_link}"
+                        })
+                    response[title_text] = sec_news
+
+        response = {k: v for k, v in response.items() if v not in [None, []]}
+    except Exception as e:
+        response["status"] = 500
+        response["error"] = str(e)
+    
+    end = time.time()
+    response["elapsed time"] = f"{end - start:.3f}s"
     response["timestamp"] = int(time.time())
+    session.close()
     return response
 
 
@@ -419,24 +406,20 @@ async def news(type):
         if str(language).lower() == 'english':
             response = get_eng(False)
         else:
-            response = _get1(urls[str(language).lower()], False)
-            if len(response.keys()) < 4:
-                response = _get2(urls[str(language).lower()], False)
+            response = _get(urls[str(language).lower()], False)
         logger.info(
             f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
         return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
-            status=200,
+            status=response['status'],
         ))
     elif str(type) == "latest":
         if str(language).lower() == 'english':
             response = get_eng(True)
         else:
-            response = _get1(urls[str(language).lower()], True)
-            if len(response.keys()) < 4:
-                response = _get2(urls[str(language).lower()], True)
+            response = _get(urls[str(language).lower()], True)
 
         logger.info(
             f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
@@ -444,7 +427,7 @@ async def news(type):
         return (flask.request.headers, flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
-            status=200,
+            status=response['status'],
         ))
 
 @app.route("/log/", defaults={"pin": None})
