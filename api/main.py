@@ -230,14 +230,14 @@ def get_eng(latest):
         summary = div.find('p[data-testid="card-description"]', first=True)
         summary_text = summary.text if summary else None
         
-        image = div.find('img', first=True)
+        images = div.find('img')
         image_src = None
-        if image:
-            if 'srcset' in image.attrs and image.attrs['srcset']:
-                image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
-            else:
-                image_src = image.attrs.get('src', None)
-        image_src = (image_src if 'grey-placeholder.png' not in image_src else None) if image_src else None
+        for image in images:
+            if image:
+                if 'srcset' in image.attrs and image.attrs['srcset']:
+                    image_src = image.attrs['srcset'].split(',')[0].split(' ')[0]
+                else:
+                    image_src = image.attrs.get('src', None)
         link = div.find('a', first=True)
         news_link = link.attrs['href'] if link else None
 
