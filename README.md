@@ -52,7 +52,7 @@ Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BB
 The `bbc-news` Python wrapper provides convenient access to the BBC News API from your Python projects. It allows you to easily fetch news content and integrate it into your applications. You can install the wrapper via pip:
 
 ```sh
-pip install -U bbc-news
+python -m pip install -U bbc-news
 ```
 Example usage in Python: [Quick start with bbc-news](https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/bbc/README.md#quick-start)
 
