@@ -137,7 +137,6 @@ def visit_register(func):
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         result = await func(*args, **kwargs)
-
         if result[0].get("isBot") != "YES" and "Shields" not in str(result[0].get("User-Agent")):
             requests.post(
                 f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
@@ -303,6 +302,107 @@ def get_eng(latest):
     return response
 
 
+def _get_topics(url):
+    start = time.time()
+    response = {}
+    try:
+        r = session.get(url)
+        response["status"] = r.status_code
+        
+        if r.status_code == 200:
+            topics = []
+            for a in r.html.find('div[data-e2e="scrollable-nav"] a'):
+                topic_url = "/" + "/".join(a.attrs.get('href').split("/")[2:])
+
+                topic_name = a.text.strip()  # Fallback in case there are no spans
+                topic_name = topic_name.split(", ")[1] if ", " in topic_name else topic_name
+
+                topics.append({
+                    "name": topic_name,
+                    "url": topic_url
+                })
+            response["topics"] = topics
+        else:
+            response['status'] = 503
+            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+    except Exception as e:
+        response["status"] = 500
+        response["error"] = str(e)
+    
+    end = time.time()
+    duration = end - start
+    response["elapsed_time"] = f"{duration:.3f}s"
+    response["timestamp"] = int(time.time())
+    return response
+
+
+def _get_section_news(url):
+    start = time.time()
+    response = {}
+
+    try:
+        r = session.get(url)
+        response["status"] = r.status_code
+
+        if r.status_code == 200:
+            news_list = []
+
+            for li in r.html.find('ul[data-testid="topic-promos"] li'):
+                # Find image
+                img_tag = li.find('img', first=True)
+                img_url = img_tag.attrs.get("src") if img_tag else None
+
+                # Find title and link
+                a_tag = li.find('h2 a', first=True)
+                news_title = a_tag.text.strip() if a_tag else None
+                news_link = a_tag.attrs.get("href") if a_tag else None
+
+                # Find publication date
+                time_tag = li.find('time', first=True)
+                published_on = time_tag.text.strip() if time_tag else None
+
+                # Append to list
+                if news_title and news_link:
+                    news_list.append({
+                        "title": news_title,
+                        "link": news_link,
+                        "image": img_url,
+                        "published_on": published_on
+                    })
+            if news_list:
+                response["news"] = news_list
+            else:
+                response['status'] = 500
+                response["error"] = f"No News found! If you think this was a mistake, feel free to report at https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues"
+
+        else:
+            response['status'] = 503
+            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+
+    except Exception as e:
+        response["status"] = 500
+        response["error"] = str(e)
+
+    end = time.time()
+    response["elapsed_time"] = f"{end - start:.3f}s"
+    response["timestamp"] = int(time.time())
+    return response 
+
+def _get_topics_for_section(url) -> tuple:
+    r = session.get(url)
+    
+    if r.status_code == 200:
+        topics = []
+        for a in r.html.find('div[data-e2e="scrollable-nav"] a'):
+            topic_url = f"{url}/" + "/".join(a.attrs.get('href').split("/")[2:])
+
+            topic_name = a.text.strip()  # Fallback in case there are no spans
+            topic_name = topic_name.split(", ")[1] if ", " in topic_name else topic_name
+
+            topics.append((topic_name, topic_url))
+        return topics
+    return None
+
 # ================ ENDPOINTS ================
 
 @app.route("/")
@@ -343,10 +443,6 @@ def favicon():
     return send_from_directory(os.path.join("/".join(app.root_path.split("/")[:3]), "Assets"),
                           'favicon.ico' ,mimetype='image/vnd.microsoft.icon')
 
-@app.route("/code")
-def temp_end():
-    return flask.send_from_directory("/tmp/", 'code.html')
-
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
 @visit_register
@@ -385,6 +481,7 @@ async def news(type):
             mimetype="application/json; charset=utf-8",
             status=400,
         ))
+    
     if str(language).lower() not in urls:
         logger.info(
             f"{ctime()}: NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
@@ -429,6 +526,70 @@ async def news(type):
             mimetype="application/json; charset=utf-8",
             status=response['status'],
         ))
+
+@app.route("/topic", defaults={"language": None})
+@app.route("/topic/<language>")
+@visit_register
+async def topic(language):
+    logger.info(f"{ctime()}: TOPIC endpoint called")
+    topic = flask.request.args.get('name')
+    if topic is None:
+        response = _get_topics(urls[str(language).lower()])
+        logger.info(
+                f"{ctime()}: TOPIC (language: {language}) endpoint called - 200"
+            )
+        return (flask.request.headers, flask.Response(
+            json.dumps(response, ensure_ascii=False).encode("utf8"),
+            mimetype="application/json; charset=utf-8",
+            status=response['status'],
+        ))
+    
+    topics_available = _get_topics_for_section(urls[str(language).lower()])
+    print(topic)
+    print(topics_available)
+    if not topics_available:
+        logger.info(
+            f"{ctime()}: TOPICS endpoint called - 400 (No Topic found!)"
+        )
+        return (flask.request.headers, flask.Response(
+            json.dumps(
+                {
+                    "status": 400,
+                    "error": "No Topic is available currently!"
+                },
+                ensure_ascii=False,
+            ).encode("utf8"),
+            mimetype="application/json; charset=utf-8",
+            status=400,
+        ))
+    for available_topic in topics_available:
+        if available_topic[0] == topic:
+            response = _get_section_news(available_topic[1])
+            logger.info(
+                    f"{ctime()}: TOPIC (language: {language}, name: {topic}) endpoint called - 200"
+                )
+            # return (flask.request.headers, response)
+            return (flask.request.headers, flask.Response(
+                json.dumps(response, ensure_ascii=False).encode("utf8"),
+                mimetype="application/json; charset=utf-8",
+                status=response['status'],
+            ))
+    logger.info(
+            f"{ctime()}: TOPICS endpoint called - 400 (Topic wasn't found)"
+        )
+    return (flask.request.headers, flask.Response(
+        json.dumps(
+            {
+                "status": 400,
+                "error": "Topic name wasn't found!",
+                "available topics": f"https://{(flask.request.url).split('/')[2]}/topic/{language}",
+            },
+            ensure_ascii=False,
+        ).encode("utf8"),
+        mimetype="application/json; charset=utf-8",
+        status=400,
+    ))
+        
 
 @app.route("/log/", defaults={"pin": None})
 @app.route("/log/<pin>")
