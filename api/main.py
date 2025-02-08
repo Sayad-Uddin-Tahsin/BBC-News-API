@@ -540,7 +540,7 @@ async def topic(language):
                 {
                     "status": 400,
                     "error": "Language Parameter Required!",
-                    "example url": f"https://{(flask.request.url).split('/')[2]}/{type}?lang=<language>",
+                    "example url": f"https://{(flask.request.url).split('/')[2]}/<language>",
                     "supported languages": f"https://{(flask.request.url).split('/')[2]}/doc#languages"
                 },
                 ensure_ascii=False,
