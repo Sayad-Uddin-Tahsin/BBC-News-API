@@ -531,7 +531,24 @@ async def news(type):
 @app.route("/topic/<language>")
 @visit_register
 async def topic(language):
-    logger.info(f"{ctime()}: TOPIC endpoint called")
+    if language is None:
+        logger.info(
+            f"{ctime()}: TOPIC endpoint called - 400 (Language Parameter Missing)"
+        )
+        return (flask.request.headers, flask.Response(
+            json.dumps(
+                {
+                    "status": 400,
+                    "error": "Language Parameter Required!",
+                    "example url": f"https://{(flask.request.url).split('/')[2]}/{type}?lang=<language>",
+                    "supported languages": f"https://{(flask.request.url).split('/')[2]}/doc#languages"
+                },
+                ensure_ascii=False,
+            ).encode("utf8"),
+            mimetype="application/json; charset=utf-8",
+            status=400,
+        ))            
+    
     topic = flask.request.args.get('name')
     if topic is None:
         response = _get_topics(urls[str(language).lower()])
@@ -545,8 +562,6 @@ async def topic(language):
         ))
     
     topics_available = _get_topics_for_section(urls[str(language).lower()])
-    print(topic)
-    print(topics_available)
     if not topics_available:
         logger.info(
             f"{ctime()}: TOPICS endpoint called - 400 (No Topic found!)"
