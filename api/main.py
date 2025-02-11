@@ -11,9 +11,9 @@ import random
 import requests
 import functools
 import os
+import html
 
 open("/tmp/api.log", "w").close()
-
 
 # ================ LOGGING INITIATION ================
 logger = logging.getLogger('BBC-API')
@@ -448,7 +448,8 @@ def favicon():
 @visit_register
 async def news(type):
     if type == "favicon.ico":
-        return (flask.request.headers, flask.Response(
+        escaped_headers = {key: html.escape(value) for key, value in flask.request.headers.items()}
+        return (escaped_headers, flask.Response(
             "None".encode("utf8"),
             status=400,
         ))
