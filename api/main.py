@@ -448,7 +448,7 @@ def favicon():
 @visit_register
 async def news(type):
     if type == "favicon.ico":
-        escaped_headers = {key: html.escape(value) for key, value in flask.request.headers.items()}
+        escaped_headers = {html.escape(key): html.escape(value) for key, value in flask.request.headers.items()}
         return (escaped_headers, flask.Response(
             "None".encode("utf8"),
             status=400,
