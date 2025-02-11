@@ -448,7 +448,10 @@ def favicon():
 @visit_register
 async def news(type):
     if type == "favicon.ico":
-        return (flask.request.headers, "None")
+        return (flask.request.headers, flask.Response(
+            "None".encode("utf8"),
+            status=400,
+        ))
     
     if type not in ['latest', 'news']:
         logger.info(
