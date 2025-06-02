@@ -52,7 +52,6 @@ body {
     backdrop-filter: var(--nav-blur);
     box-shadow: 0 4px 24px 0 rgba(30,60,114,0.10);
     border-radius: 0;
-    margin: 0 0 2.5rem 0;
     width: 100%;
     transition: none;
     max-width: 100vw;
@@ -113,12 +112,7 @@ body {
 .hamburger {
     display: none !important;
 }
-@media (max-width: 900px) {
-    .navbar {
-        max-width: 98vw;
-        width: 100vw;
-    }
-}
+
 .features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -126,6 +120,8 @@ body {
     margin: 3rem auto 0 auto;
     max-width: 1100px;
     width: 100%;
+    align-items: center;
+    justify-items: center;
     padding: 0 2vw;
 }
 @media (max-width: 1100px) {
@@ -133,118 +129,7 @@ body {
         max-width: 700px;
     }
 }
-@media (max-width: 700px) {
-    .navbar {
-        flex-wrap: wrap;
-        padding: 0 0.5rem;
-        min-height: 48px;
-        height: auto;
-    }
-    .navbar-logo {
-        width: 28px;
-        height: 28px;
-        margin-right: 8px;
-    }
-    .navbar-title {
-        font-size: 1.05rem;
-    }
-    .navbar-links {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: flex-start;
-        position: static;
-        width: 100%;
-        max-width: 100vw;
-        height: auto;
-        background: transparent;
-        box-shadow: none;
-        border-radius: 0;
-        padding: 0;
-        gap: 0.5rem;
-        z-index: 1;
-        transform: none;
-        opacity: 1;
-        pointer-events: auto;
-    }
-    .navbar-link, .github-btn {
-        width: auto;
-        text-align: right;
-        margin: 0.15rem 0;
-        font-size: 0.93rem;
-        padding: 0.3rem 0.5rem;
-    }
-    .github-btn {
-        font-size: 0.93rem;
-        padding: 0.3rem 0.7rem;
-        margin-left: 0.7rem;
-    }
-    .features {
-        grid-template-columns: 1fr;
-        gap: 1.2rem;
-        margin: 2rem auto 0 auto;
-        padding: 0 1vw;
-        justify-items: center;
-    }
-    .feature {
-        align-items: center;
-        text-align: center;
-        padding: 1.2rem 0.7rem;
-        min-width: 0;
-        max-width: 95vw;
-    }
-    .feature-title {
-        font-size: 1.05rem;
-    }
-    .feature-desc {
-        font-size: 0.93rem;
-    }
-    .header {
-        min-height: 140px;
-        height: 22vh;
-        margin-bottom: 1.2rem;
-        padding: 0.5rem 0.2rem;
-    }
-    .header-title {
-        font-size: 1.25rem;
-        margin-bottom: 0.3rem;
-    }
-    .header-motto {
-        font-size: 0.93rem;
-    }
-    .get-started-btn {
-        font-size: 0.97rem;
-        padding: 0.6rem 1.2rem;
-        margin-top: 0.3rem;
-    }
-    .footer {
-        font-size: 0.82rem;
-        padding: 1.2rem 0 1rem 0;
-        margin-top: 2rem;
-    }
-    .footer .footer-main, .footer .footer-made, .footer .footer-disclaimer {
-        font-size: 0.82rem;
-        max-width: 95vw;
-    }
-}
-@media (max-width: 400px) {
-    .header-title {
-        font-size: 1.05rem;
-    }
-    .header-motto {
-        font-size: 0.78rem;
-    }
-    .get-started-btn {
-        font-size: 0.85rem;
-        padding: 0.5rem 0.7rem;
-    }
-    .feature-title {
-        font-size: 0.93rem;
-    }
-    .feature-desc {
-        font-size: 0.85rem;
-    }
-}
+
 .header {
     background: var(--header-bg);
     color: var(--header-text);
@@ -406,4 +291,117 @@ body {
     margin-left: auto;
     margin-right: auto;
     word-break: break-word;
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        flex-wrap: wrap;
+        padding: 0 0.5rem;
+        min-height: 48px;
+        height: auto;
+    }
+    .navbar-logo {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+    }
+    .navbar-title {
+        font-size: 1.05rem;
+    }
+    .navbar-links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+        position: static;
+        width: 100%;
+        max-width: 100vw;
+        height: auto;
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+        gap: 0.5rem;
+        z-index: 1;
+        transform: none;
+        opacity: 1;
+        pointer-events: auto;
+    }
+    .navbar-link, .github-btn {
+        width: auto;
+        text-align: right;
+        margin: 0.15rem 0;
+        font-size: 0.93rem;
+        padding: 0.3rem 0.5rem;
+    }
+    .github-btn {
+        font-size: 0.93rem;
+        padding: 0.3rem 0.7rem;
+        margin-left: 0.7rem;
+    }
+    .features {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        margin: 2rem auto 0 auto;
+        padding: 0 1vw;
+        justify-items: center;
+    }
+    .feature {
+        align-items: center;
+        text-align: center;
+        padding: 1.2rem 0.7rem;
+        min-width: 0;
+        max-width: 95vw;
+    }
+    .feature-title {
+        font-size: 1.05rem;
+    }
+    .feature-desc {
+        font-size: 0.93rem;
+    }
+    .header {
+        min-height: 140px;
+        height: 22vh;
+        margin-bottom: 1.2rem;
+        padding: 0.5rem 0.2rem;
+    }
+    .header-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.3rem;
+    }
+    .header-motto {
+        font-size: 0.93rem;
+    }
+    .get-started-btn {
+        font-size: 0.97rem;
+        padding: 0.6rem 1.2rem;
+        margin-top: 0.3rem;
+    }
+    .footer {
+        font-size: 0.82rem;
+        padding: 1.2rem 0 1rem 0;
+        margin-top: 2rem;
+    }
+    .footer .footer-main, .footer .footer-made, .footer .footer-disclaimer {
+        font-size: 0.82rem;
+        max-width: 95vw;
+    }
+}
+@media (max-width: 400px) {
+    .header-title {
+        font-size: 1.05rem;
+    }
+    .header-motto {
+        font-size: 0.78rem;
+    }
+    .get-started-btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.7rem;
+    }
+    .feature-title {
+        font-size: 0.93rem;
+    }
+    .feature-desc {
+        font-size: 0.85rem;
+    }
 }

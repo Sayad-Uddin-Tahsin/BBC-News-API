@@ -11,6 +11,9 @@ import random
 import requests
 import functools
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 open("/tmp/api.log", "w").close()
 
@@ -86,7 +89,7 @@ logger.addHandler(file_handler)
 logger.addHandler(console_handler)
 
 # ================ FLASK INITIATION ================
-app = Flask(__name__)
+app = Flask(__name__, static_folder="templates", static_url_path="/static")
 session = HTMLSession()
 
 # ================ DHAKA TIME ================
@@ -134,6 +137,7 @@ urls = {
 # ================ HELPING FUNCTIONS ================
 
 def visit_register(func):
+    pass
     @functools.wraps(func)
     async def wrapper(*args, **kwargs):
         result = await func(*args, **kwargs)
@@ -153,65 +157,58 @@ def _get(lang, latest):
     start = time.time()
     response = {}
     try:
-        r = session.get(lang)
-        response["status"] = r.status_code
-        
-        if r.status_code == 200:
-            sections = r.html.find('section[aria-labelledby]:not([data-testid])')
-            checked, method_2 = False, False
-            for section in sections:
-                title = section.find("h2", first=True).text
-                news_lis = section.find('li:not(role)')
-                news_lis = [li for li in news_lis if any(cls.startswith('bbc-') for cls in li.attrs.get('class', [])) and 'role' not in li.attrs]
-                if not checked and news_lis[0].find('div[data-e2e="story-promo"]'):
-                    checked, method_2 = True, True
-                else:
-                    checked = True
-                section_news = []
-                if not method_2:
-                    for news_li in news_lis:
-                        image_link = news_li.find('div.promo-image', first=True).find('img', first=True).attrs.get('src')
-                        
-                        promo_div = news_li.find('div.promo-text', first=True)
-                        
-                        title_tag = promo_div.find('h3 a', first=True)
-                        news_title = title_tag.text
-                        news_link = list(title_tag.absolute_links)[0]
-                        
-                        summary_tag = promo_div.find('p', first=True)
-                        news_summary = summary_tag.text if summary_tag else None
-
-                        section_news.append({
-                            "title": news_title,
-                            "summary": news_summary,
-                            "news_link": news_link,
-                            "image_link": image_link
-                        })
-                elif method_2:
-                    for news_li in news_lis:
-                        news_li = news_li.find('div[data-e2e="story-promo"]', first=True)
-                        image_link = news_li.find('img', first=True).attrs.get('src')
-                        
-                        title_tag = news_li.find('h3 a', first=True)
-                        news_title = title_tag.text
-                        news_link = list(title_tag.absolute_links)[0]
-                        
-                        summary_tag = news_li.find('p', first=True)
-                        news_summary = summary_tag.text if summary_tag else None
-                        
-                        section_news.append({
-                            "title": news_title,
-                            "summary": news_summary,
-                            "news_link": news_link,
-                            "image_link": image_link
-                        })
-                if section_news:
-                    response[title] = section_news
-                if latest:
-                    break                        
-        else:
-            response['status'] = 503
-            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+        with HTMLSession() as session:
+            r = session.get(lang)
+            response["status"] = r.status_code
+            if r.status_code == 200:
+                sections = r.html.find('section[aria-labelledby]:not([data-testid])')
+                checked, method_2 = False, False
+                for section in sections:
+                    title = section.find("h2", first=True).text
+                    news_lis = section.find('li:not(role)')
+                    news_lis = [li for li in news_lis if any(cls.startswith('bbc-') for cls in li.attrs.get('class', [])) and 'role' not in li.attrs]
+                    if not checked and news_lis[0].find('div[data-e2e="story-promo"]'):
+                        checked, method_2 = True, True
+                    else:
+                        checked = True
+                    section_news = []
+                    if not method_2:
+                        for news_li in news_lis:
+                            image_link = news_li.find('div.promo-image', first=True).find('img', first=True).attrs.get('src')
+                            promo_div = news_li.find('div.promo-text', first=True)
+                            title_tag = promo_div.find('h3 a', first=True)
+                            news_title = title_tag.text
+                            news_link = list(title_tag.absolute_links)[0]
+                            summary_tag = promo_div.find('p', first=True)
+                            news_summary = summary_tag.text if summary_tag else None
+                            section_news.append({
+                                "title": news_title,
+                                "summary": news_summary,
+                                "news_link": news_link,
+                                "image_link": image_link
+                            })
+                    elif method_2:
+                        for news_li in news_lis:
+                            news_li = news_li.find('div[data-e2e="story-promo"]', first=True)
+                            image_link = news_li.find('img', first=True).attrs.get('src')
+                            title_tag = news_li.find('h3 a', first=True)
+                            news_title = title_tag.text
+                            news_link = list(title_tag.absolute_links)[0]
+                            summary_tag = news_li.find('p', first=True)
+                            news_summary = summary_tag.text if summary_tag else None
+                            section_news.append({
+                                "title": news_title,
+                                "summary": news_summary,
+                                "news_link": news_link,
+                                "image_link": image_link
+                            })
+                    if section_news:
+                        response[title] = section_news
+                    if latest:
+                        break
+            else:
+                response['status'] = 503
+                response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
     except Exception as e:
         response["status"] = 500
         response["error"] = str(e)
@@ -219,17 +216,14 @@ def _get(lang, latest):
     duration = end - start
     response["elapsed time"] = f"{duration:.3f}s"
     response["timestamp"] = int(time.time())
-
     return response
 
 def get_eng(latest):
     def extract_info_from_div(div):
         heading = div.find('h2[data-testid="card-headline"]', first=True)
         heading_text = heading.text if heading else None
-        
         summary = div.find('p[data-testid="card-description"]', first=True)
         summary_text = summary.text if summary else None
-        
         images = div.find('img')
         image_src = None
         for image in images:
@@ -240,46 +234,25 @@ def get_eng(latest):
                     image_src = image.attrs.get('src', None)
         link = div.find('a', first=True)
         news_link = link.attrs['href'] if link else None
-
         return heading_text, summary_text, image_src, news_link
 
     response = {}
     start = time.time()
-
     try:
-        r = session.get('https://www.bbc.com/')
-        if r.status_code != 200:
-            response["status"] = 503
-            response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
-            return response
-
-        divs = r.html.find('div')
-        section_divs = [div for div in divs if div.attrs.get('data-testid', '').endswith('-section')]
-
-        response["status"] = r.status_code
-
-        for section_div in section_divs:
-            title_wrapper_divs = section_div.find('div')
-            titles = [title for title in title_wrapper_divs if title.attrs.get('data-testid', '').endswith('-title-wrapper')]
-            if not titles:  # For the latest category
-                sec_news = []
-                cards = section_div.find('div[data-testid$="-card"]')
-                for card in cards:
-                    heading, summary, image, news_link = extract_info_from_div(card)
-                    sec_news.append({
-                        "title": heading,
-                        "summary": summary,
-                        "image_link": image,
-                        "news_link": f"{urls['english']}{news_link}"
-                    })
-                response["Latest"] = sec_news
-                if latest:
-                    break
-            else:
-                for title_wrapper in titles:
+        with HTMLSession() as session:
+            r = session.get('https://www.bbc.com/')
+            if r.status_code != 200:
+                response["status"] = 503
+                response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
+                return response
+            divs = r.html.find('div')
+            section_divs = [div for div in divs if div.attrs.get('data-testid', '').endswith('-section')]
+            response["status"] = r.status_code
+            for section_div in section_divs:
+                title_wrapper_divs = section_div.find('div')
+                titles = [title for title in title_wrapper_divs if title.attrs.get('data-testid', '').endswith('-title-wrapper')]
+                if not titles:  # For the latest category
                     sec_news = []
-                    title = title_wrapper.find('h2', first=True)
-                    title_text = title.text if title else "Untitled"
                     cards = section_div.find('div[data-testid$="-card"]')
                     for card in cards:
                         heading, summary, image, news_link = extract_info_from_div(card)
@@ -289,32 +262,39 @@ def get_eng(latest):
                             "image_link": image,
                             "news_link": f"{urls['english']}{news_link}"
                         })
-                    response[title_text] = sec_news
-
-        response = {k: v for k, v in response.items() if v not in [None, []]}
+                    response["Latest"] = sec_news
+                    if latest:
+                        break
+                else:
+                    for title_wrapper in titles:
+                        sec_news = []
+                        title = title_wrapper.find('h2', first=True)
+                        title_text = title.text if title else "Untitled"
+                        cards = section_div.find('div[data-testid$="-card"]')
+                        for card in cards:
+                            heading, summary, image, news_link = extract_info_from_div(card)
+                            sec_news.append({
+                                "title": heading,
+                                "summary": summary,
+                                "image_link": image,
+                                "news_link": f"{urls['english']}{news_link}"
+                            })
+                        response[title_text] = sec_news
+            response = {k: v for k, v in response.items() if v not in [None, []]}
     except Exception as e:
         response["status"] = 500
         response["error"] = str(e)
-    
     end = time.time()
     response["elapsed time"] = f"{end - start:.3f}s"
     response["timestamp"] = int(time.time())
-    session.close()
     return response
 
 
 # ================ ENDPOINTS ================
 
 @app.route("/")
-@visit_register
-async def main():
-    logger.info(f"{ctime()}: STATUS endpoint called - 200")
-
-    return (flask.request.headers, flask.Response(
-        json.dumps({"status": "OK", "url formation": f"https://{(flask.request.url).split('/')[2]}/<type>?lang=<language>", "documentation": f"https://{(flask.request.url).split('/')[2]}/documentation", "get in touch": f"https://{(flask.request.url).split('/')[2]}/documentation#get-in-touch", "repository": "https://github.com/Sayad-Uddin-Tahsin/BBC-News-API"}, ensure_ascii=False),
-        mimetype="application/json; charset=utf-8",
-        status=200,
-    ))
+def index():
+    return flask.render_template("index.html")
 
 @app.route("/ping")
 async def ping():
@@ -453,6 +433,11 @@ async def log(pin):
             mimetype="application/json; charset=utf-8",
             status=400,
         ))
+
+# Serve static files for index page
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('api/templates', filename)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
