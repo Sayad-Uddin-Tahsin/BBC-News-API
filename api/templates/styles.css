@@ -1,0 +1,488 @@
+/* index.css - Modern design */
+:root {
+    --header-bg: linear-gradient(135deg, #f0f2f5 0%, #f7fafd 100%);
+    --header-text: #000035;
+    --nav-bg: rgba(255,255,255,0.95);
+    --nav-blur: blur(12px);
+    --nav-text: #000035;
+    --nav-hover: #4a90e2;
+    --feature-bg: #ffffff;
+    --feature-title: #4a90e2;
+    --feature-desc: #334155;
+    --footer-bg: #f8f9fa;
+    --footer-text: #4a5568;
+    --github-btn-bg: #000035;
+    --github-btn-text: #fff;
+    --github-btn-hover: #4a90e2;
+    --getstarted-bg: #4a90e2;
+    --getstarted-text: #fff;
+    --getstarted-hover: #357abd;
+}
+html {
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: hidden;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+    background: #f7fafd;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--nav-bg);
+    color: var(--nav-text);
+    padding: 0 2rem;
+    min-height: 64px;
+    height: 72px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    backdrop-filter: var(--nav-blur);
+    box-shadow: 0 4px 24px 0 rgba(30,60,114,0.10);
+    width: 100%;
+}
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+.navbar-logo {
+    width: 36px;
+    height: 36px;
+    margin-right: 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px 0 rgba(30,60,114,0.08);
+}
+.navbar-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.navbar-link {
+    color: var(--nav-text);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+.navbar-link:hover {
+    color: var(--nav-hover);
+}
+.github-btn {
+    background: var(--github-btn-bg);
+    color: var(--github-btn-text);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(30,60,114,0.08);
+}
+.github-btn:hover {
+    background: var(--github-btn-hover);
+    color: #fff;
+}
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--nav-text);
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+    width: 30px;
+    height: 30px;
+    position: relative;
+}
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--nav-text);
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.3s ease;
+}
+.hamburger span:nth-child(1) {
+    top: 8px;
+}
+.hamburger span:nth-child(2) {
+    top: 14px;
+}
+.hamburger span:nth-child(3) {
+    top: 20px;
+}
+.hamburger.active span:nth-child(1) {
+    transform: translateX(-50%) translateY(6px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-50%) scale(0);
+}
+.hamburger.active span:nth-child(3) {
+    transform: translateX(-50%) translateY(-6px) rotate(-45deg);
+}
+.hamburger:hover {
+    color: var(--nav-hover);
+}
+.header {
+    background: var(--header-bg);
+    color: var(--header-text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 33vh;
+    min-height: 220px;
+    text-align: center;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.05);
+    position: relative;
+    margin-bottom: 2.5rem;
+    margin-top: 72px;
+}
+.header-content {
+    position: relative;
+    z-index: 1;
+}
+.header-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+.header-motto {
+    font-size: 1.3rem;
+    font-weight: 400;
+    opacity: 0.95;
+    margin-bottom: 2.2rem;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+.get-started-btn {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.85rem 2.2rem;
+    font-size: 1.13rem;
+    font-weight: 600;
+    border-radius: 8px;
+    background: var(--getstarted-bg);
+    color: var(--getstarted-text);
+    border: none;
+    box-shadow: 0 2px 12px 0 rgba(74, 144, 226, 0.2);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+.get-started-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+.get-started-btn:hover {
+    background: var(--getstarted-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 24px 0 rgba(74, 144, 226, 0.3);
+}
+.get-started-btn:hover::before {
+    left: 100%;
+}
+.features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin: 4rem auto;
+    max-width: 1400px;
+    width: 100%;
+    padding: 0 2rem;
+    align-items: stretch;
+}
+.feature {
+    background: var(--feature-bg);
+    border-radius: 16px;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.05);
+    padding: 2.5rem 2rem;
+    flex: 1 1 300px;
+    min-width: 280px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+.feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--feature-title);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.feature:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.08);
+}
+.feature:hover::before {
+    opacity: 1;
+}
+.feature-title {
+    color: var(--feature-title);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.feature-title i {
+    color: var(--feature-title);
+    font-size: 1.4rem;
+    transition: transform 0.3s ease;
+}
+.feature:hover .feature-title i {
+    transform: scale(1.1);
+}
+.feature-desc {
+    color: var(--feature-desc);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+.footer {
+    margin-top: 6rem;
+    background: var(--footer-bg);
+    color: var(--footer-text);
+    text-align: center;
+    padding: 3rem 2rem;
+    font-size: 0.95rem;
+    letter-spacing: 0.2px;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    line-height: 1.7;
+    font-family: 'Roboto', 'Poppins', Arial, sans-serif;
+    width: 100%;
+}
+.footer a {
+    color: var(--nav-hover);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+.footer a:hover {
+    color: var(--github-btn-hover);
+}
+.footer .footer-main {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    word-break: break-word;
+}
+.footer .footer-made {
+    font-size: 0.95rem;
+    font-weight: 400;
+    margin-bottom: 0.3em;
+    line-height: 1.5;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    word-break: break-word;
+}
+.footer .footer-disclaimer {
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.8;
+    margin-top: 1em;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+    word-break: break-word;
+}
+@media (max-width: 1400px) {
+    .features {
+        max-width: 1200px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+@media (max-width: 700px) {
+    body {
+        padding-top: 64px;
+    }
+    .navbar {
+        padding: 0 1rem;
+        height: 64px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: var(--nav-bg);
+        backdrop-filter: var(--nav-blur);
+    }
+    .navbar-logo {
+        width: 32px;
+        height: 32px;
+    }
+    .navbar-title {
+        font-size: 1.2rem;
+    }
+    .hamburger {
+        display: block;
+    }
+    .navbar-links {
+        position: fixed;
+        top: 64px;
+        right: -300px;
+        width: 280px;
+        height: calc(100vh - 64px);
+        background: rgb(255 255 255);
+        backdrop-filter: var(--nav-blur);
+        padding: 1.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: -4px 0 24px 0 rgba(30,60,114,0.10);
+        z-index: 999;
+        display: flex;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(100%);
+        overflow-y: auto;
+    }
+    .navbar-links.active {
+        right: 0;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+    .navbar-link {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+    }
+    .navbar-link:hover {
+        background-color: rgba(37, 99, 235, 0.1);
+    }
+    .github-btn {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem;
+        font-size: 1.1rem;
+        margin: 0.5rem 0 0 0;
+        border-radius: 8px;
+        justify-content: flex-start;
+    }
+    .header {
+        height: 40vh;
+        min-height: 280px;
+        padding: 0 1rem;
+        margin-top: 0;
+    }
+    .header-title {
+        font-size: 2.2rem;
+    }
+    .header-motto {
+        font-size: 1.1rem;
+        margin-bottom: 1.8rem;
+    }
+    .get-started-btn {
+        padding: 0.75rem 1.8rem;
+        font-size: 1rem;
+    }
+    .features {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 0 1.5rem;
+        margin: 3rem auto;
+    }
+    .feature {
+        max-width: 100%;
+        padding: 2rem 1.5rem;
+    }
+    .feature-title {
+        font-size: 1.2rem;
+    }
+    .feature-desc {
+        font-size: 1rem;
+    }
+    .footer {
+        padding: 2rem 1.5rem;
+        margin-top: 4rem;
+    }
+}
+@media (max-width: 400px) {
+    .header-title {
+        font-size: 1.8rem;
+    }
+    .header-motto {
+        font-size: 1rem;
+    }
+    .get-started-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    .feature-title {
+        font-size: 1rem;
+    }
+    .feature-desc {
+        font-size: 0.9rem;
+    }
+}
+/* Remove all network animation related CSS */
+.network-container,
+.network-dot,
+.network-line,
+@keyframes dotPulse,
+@keyframes lineFade {
+    display: none;
+}

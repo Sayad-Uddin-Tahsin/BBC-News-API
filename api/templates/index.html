@@ -10,7 +10,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- index.css for this page -->
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
     <nav class="navbar">
@@ -18,7 +18,12 @@
             <img src="/favicon.ico" alt="BBC News API Logo" class="navbar-logo">
             <span class="navbar-title">BBC News API</span>
         </div>
-        <div class="navbar-links">
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="navbar-links" id="navbar-links">
             <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
             <a class="navbar-link" href="/documentation"><i class="fa-solid fa-book"></i> Documentation</a>
             <button class="github-btn" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
@@ -66,6 +71,6 @@
         </div>
     </footer>
     <!-- index.js for this page -->
-    <script src="/static/index.js"></script>
+    <script src="/static/scripts.js"></script>
 </body>
 </html>

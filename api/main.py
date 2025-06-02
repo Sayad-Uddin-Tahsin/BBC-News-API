@@ -323,10 +323,6 @@ def favicon():
     return send_from_directory(os.path.join("/".join(app.root_path.split("/")[:3]), "Assets"),
                           'favicon.ico' ,mimetype='image/vnd.microsoft.icon')
 
-@app.route("/code")
-def temp_end():
-    return flask.send_from_directory("/tmp/", 'code.html')
-
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
 @visit_register
