@@ -348,12 +348,6 @@
             border-bottom: none;
         }
 
-        .parameter-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
         .parameter-name::before {
             content: '';
             width: 6px;
@@ -543,19 +537,21 @@
             background-color: var(--doc-sidebar-hover);
         }
 
-        /* Tree View Styles */
+        /* Tree View specific styles */
         .tree-view {
             font-family: 'Consolas', monospace;
             padding: 0.5rem 0;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
+            white-space: nowrap;
+            overflow-x: auto;
         }
 
         .tree-node {
             margin-left: 1.5rem;
             max-width: 100%;
-            word-break: break-word;
+            white-space: nowrap;
         }
 
         .tree-key {
@@ -598,38 +594,6 @@
             white-space: nowrap;
         }
 
-        .tree-inline {
-            display: inline-flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            max-width: 100%;
-        }
-
-        .tree-key-value {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.5rem;
-            padding: 0.25rem 0;
-            max-width: 100%;
-        }
-
-        .tree-value {
-            max-width: 100%;
-            word-break: break-word;
-            display: inline-block;
-        }
-
-        .tree-content {
-            display: none;
-            margin-left: 1.5rem;
-            max-width: 100%;
-            word-break: break-word;
-        }
-
-        .tree-content.expanded {
-            display: block;
-        }
-
         .tree-bracket {
             color: #6f42c1;
             font-weight: bold;
@@ -655,6 +619,52 @@
 
         .tree-null {
             color: #6f42c1;
+        }
+
+        .tree-inline {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        .tree-key-value {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        .tree-value {
+            max-width: 100%;
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .tree-content {
+            display: none;
+            margin-left: 1.5rem;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        .tree-content.expanded {
+            display: block;
+        }
+
+        /* Raw JSON view styles */
+        .response-area pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+
+        .response-area code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .error-codes {
@@ -789,7 +799,7 @@
                 height: auto;
                 position: fixed;
                 top: 72px;
-                right: -280px;
+                right: -800px;
                 left: auto;
                 transition: right 0.3s ease;
                 z-index: 1000;
@@ -811,6 +821,7 @@
                 padding: 0 0 1rem 1rem;
                 margin: 0;
                 border-bottom: 1px solid var(--doc-border);
+                font-size: 1.2rem;
             }
 
             .nav-links {
@@ -819,83 +830,382 @@
                 padding: 1rem;
             }
 
-            .mobile-nav-buttons {
-                display: flex;
-                flex-direction: column;
-                gap: 0rem;
-                padding: 0.75rem 0;
-                border-top: 1px solid var(--doc-border);
-                background: var(--nav-bg);
+            .nav-links a {
+                font-size: 0.95rem;
+                padding: 0.6rem 0.8rem;
             }
 
-            .mobile-nav-buttons .navbar-link {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.75rem;
-                background: var(--doc-sidebar-bg);
-                border-radius: 6px;
-                text-decoration: none;
-                color: var(--nav-text);
-                transition: all 0.2s;
+            .content-section h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
             }
 
-            .mobile-nav-buttons .navbar-link:hover {
-                background: var(--doc-sidebar-hover);
-                color: var(--nav-hover);
+            .content-section h2 {
+                font-size: 1.4rem;
+                margin: 1.2rem 0 0.8rem;
             }
 
-            .mobile-nav-buttons .github-btn {
-                width: 100%;
-                justify-content: center;
-                margin-top: .75rem;
+            .content-section p {
+                font-size: 0.95rem;
+                margin-bottom: 0.8rem;
             }
 
-            .endpoint-tester {
-                grid-template-columns: 1fr;
+            .endpoint-docs h2 {
+                font-size: 1.4rem;
             }
 
-            .endpoint-test {
-                max-width: 100%;
-                width: 100%;
-                box-sizing: border-box;
+            .endpoint-docs p {
+                font-size: 0.95rem;
+            }
+
+            .parameter-item {
+                padding: 0.8rem;
+            }
+
+            .parameter-name code {
+                font-size: 0.85rem;
+            }
+
+            .parameter-details p {
+                font-size: 0.9rem;
+            }
+
+            .endpoint-url {
+                font-size: 0.85rem;
+                padding: 0.6rem;
+            }
+
+            .form-group label {
+                font-size: 0.95rem;
+            }
+
+            .form-group input, .form-group select {
+                font-size: 0.9rem;
+                padding: 0.6rem;
+            }
+
+            .test-button {
+                font-size: 0.95rem;
+                padding: 0.6rem 1.2rem;
             }
 
             .response-area {
-                height: auto;
-                max-height: 300px;
-                overflow: auto;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
+                font-size: 0.85rem;
+                padding: 0.8rem;
+            }
+
+            .view-toggle {
+                font-size: 0.85rem;
+                padding: 0.4rem 0.8rem;
             }
 
             .tree-view {
-                position: static;
-                padding: 0.5rem;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
+                font-size: 0.85rem;
             }
 
-            .tree-node,
-            .tree-inline,
-            .tree-key,
             .tree-key-name {
-                max-width: 100%;
-                word-break: break-word;
+                font-size: 0.85rem;
             }
 
             .tree-value {
-                word-break: break-word;
+                font-size: 0.85rem;
+            }
+
+            .error-item code {
+                font-size: 0.85rem;
+            }
+
+            .error-item p {
+                font-size: 0.9rem;
+            }
+
+            .feature-item h3 {
+                font-size: 1.1rem;
+            }
+
+            .feature-item p {
+                font-size: 0.9rem;
+            }
+
+            .feature-item code {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .content-section h1 { font-size: 1.6rem; }
+            .content-section h2 { font-size: 1.2rem; }
+            .content-section p { font-size: 0.9rem; }
+            .endpoint-docs h2 { font-size: 1.2rem; }
+            .endpoint-docs p { font-size: 0.9rem; }
+            .parameter-item { padding: 0.6rem; }
+            .parameter-name code { font-size: 0.8rem; }
+            .parameter-details p { font-size: 0.85rem; }
+            .endpoint-url { font-size: 0.8rem; }
+            .form-group label { font-size: 0.9rem; }
+            .form-group input, .form-group select { font-size: 0.85rem; }
+            .test-button { font-size: 0.9rem; }
+            .response-area { font-size: 0.8rem; }
+            .view-toggle { font-size: 0.8rem; }
+            .tree-view { font-size: 0.8rem; }
+            .tree-key-name { font-size: 0.8rem; }
+            .tree-value { font-size: 0.8rem; }
+            .error-item code { font-size: 0.8rem; }
+            .error-item p { font-size: 0.85rem; }
+            .feature-item h3 { font-size: 1rem; }
+            .feature-item p { font-size: 0.85rem; }
+            .feature-item code { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 320px) {
+            .content-section h1 { font-size: 1.3rem; }
+            .content-section h2 { font-size: 1rem; }
+            .content-section p { font-size: 0.8rem; }
+            .endpoint-docs h2 { font-size: 1rem; }
+            .endpoint-docs p { font-size: 0.8rem; }
+            .parameter-item { 
+                padding: 0.5rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .parameter-name code { font-size: 0.7rem; }
+            .parameter-details p { font-size: 0.75rem; }
+            .endpoint-url { 
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .form-group label { font-size: 0.8rem; }
+            .form-group input, .form-group select { 
+                font-size: 0.75rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .test-button { 
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .response-area { 
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .view-toggle { 
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+                min-width: 0;
+            }
+            .tree-view { 
+                font-size: 0.7rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .tree-key-name { font-size: 0.7rem; }
+            .tree-value { font-size: 0.7rem; }
+            .error-item code { font-size: 0.7rem; }
+            .error-item p { font-size: 0.75rem; }
+            .feature-item h3 { font-size: 0.9rem; }
+            .feature-item p { font-size: 0.75rem; }
+            .feature-item code { font-size: 0.7rem; }
+
+            /* Fix container and layout issues */
+            .container {
+                min-width: 0;
+                width: 100%;
+            padding: 0;
+                margin: 0;
+            }
+
+            .main-content {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+                margin: 0;
+            }
+
+            .endpoint-tester {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .endpoint-docs {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .endpoint-test {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .code-block {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+                overflow-x: auto;
+            }
+
+            .code-block pre {
+                min-width: 0;
+                width: 100%;
+                font-size: 0.7rem;
             }
 
             .feature-grid {
-                grid-template-columns: 1fr;
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0.5rem 0;
+            }
+
+            .feature-item {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
             }
 
             .error-codes {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0.5rem 0;
+            }
+
+            .error-item {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            /* Fix sidebar for mobile */
+            .sidebar {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .nav-links {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.4rem;
+            }
+
+            /* Fix navbar for mobile */
+            .navbar {
+                padding: 0 0.5rem;
+            }
+
+            .navbar-title {
+                font-size: 1rem;
+            }
+
+            .navbar-logo {
+                width: 24px;
+                height: 24px;
+            }
+
+            /* Fix dropdowns and inputs */
+            .dropdown-input {
+                padding: 0.4rem;
+            }
+
+            .dropdown-input input {
+                font-size: 0.75rem;
+            }
+
+            .dropdown-option {
+                padding: 0.4rem;
+                font-size: 0.75rem;
+            }
+
+            /* Fix code examples */
+            .code-example-container {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+            }
+
+            .code-header {
+                padding: 0.4rem;
+            }
+
+            .code-content {
+                padding: 0.4rem;
+            }
+
+            .code-content code {
+                font-size: 0.7rem;
+            }
+
+            /* Fix tree view */
+            .tree-node {
+                margin-left: 0.5rem;
+            }
+
+            .tree-content {
+                margin-left: 0.5rem;
+            }
+
+            .tree-toggle {
+                width: 14px;
+                height: 14px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Fix for parameter content overlap */
+        .parameter-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--doc-border);
+            align-items: start;
+            word-break: break-word;
+        }
+
+        .parameter-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .parameter-details {
+            color: var(--doc-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .parameter-details p {
+            margin: 0;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .parameter-item {
                 grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .parameter-name {
+                margin-bottom: 0.5rem;
             }
         }
 
@@ -1082,7 +1392,7 @@
         .hamburger:hover {
             color: var(--nav-hover);
         }
-        @media (max-width: 700px) {
+        @media (max-width: 768px) {
             .hamburger {
                 display: block;
             }
@@ -1478,6 +1788,396 @@
             width: 200%;
             height: 200%;
         }
+
+        /* Progressive size reduction media queries */
+        @media (max-width: 1400px) {
+            .content-section h1 { font-size: 2.2rem; }
+            .content-section h2 { font-size: 1.6rem; }
+            .content-section p { font-size: 1.05rem; }
+            .endpoint-docs h2 { font-size: 1.6rem; }
+            .endpoint-docs p { font-size: 1.05rem; }
+            .parameter-item { padding: 1.2rem; }
+            .parameter-name code { font-size: 0.95rem; }
+            .parameter-details p { font-size: 1rem; }
+            .endpoint-url { font-size: 0.95rem; }
+            .form-group label { font-size: 1.05rem; }
+            .form-group input, .form-group select { font-size: 1rem; }
+            .test-button { font-size: 1.05rem; }
+            .response-area { font-size: 0.95rem; }
+            .view-toggle { font-size: 0.95rem; }
+            .tree-view { font-size: 0.95rem; }
+            .tree-key-name { font-size: 0.95rem; }
+            .tree-value { font-size: 0.95rem; }
+            .error-item code { font-size: 0.95rem; }
+            .error-item p { font-size: 1rem; }
+            .feature-item h3 { font-size: 1.3rem; }
+            .feature-item p { font-size: 1rem; }
+            .feature-item code { font-size: 0.95rem; }
+        }
+
+        @media (max-width: 1200px) {
+            .content-section h1 { font-size: 2rem; }
+            .content-section h2 { font-size: 1.5rem; }
+            .content-section p { font-size: 1rem; }
+            .endpoint-docs h2 { font-size: 1.5rem; }
+            .endpoint-docs p { font-size: 1rem; }
+            .parameter-item { padding: 1.1rem; }
+            .parameter-name code { font-size: 0.9rem; }
+            .parameter-details p { font-size: 0.95rem; }
+            .endpoint-url { font-size: 0.9rem; }
+            .form-group label { font-size: 1rem; }
+            .form-group input, .form-group select { font-size: 0.95rem; }
+            .test-button { font-size: 1rem; }
+            .response-area { font-size: 0.9rem; }
+            .view-toggle { font-size: 0.9rem; }
+            .tree-view { font-size: 0.9rem; }
+            .tree-key-name { font-size: 0.9rem; }
+            .tree-value { font-size: 0.9rem; }
+            .error-item code { font-size: 0.9rem; }
+            .error-item p { font-size: 0.95rem; }
+            .feature-item h3 { font-size: 1.2rem; }
+            .feature-item p { font-size: 0.95rem; }
+            .feature-item code { font-size: 0.9rem; }
+        }
+
+        @media (max-width: 992px) {
+            .content-section h1 { font-size: 1.9rem; }
+            .content-section h2 { font-size: 1.4rem; }
+            .content-section p { font-size: 0.98rem; }
+            .endpoint-docs h2 { font-size: 1.4rem; }
+            .endpoint-docs p { font-size: 0.98rem; }
+            .parameter-item { padding: 1rem; }
+            .parameter-name code { font-size: 0.88rem; }
+            .parameter-details p { font-size: 0.93rem; }
+            .endpoint-url { font-size: 0.88rem; }
+            .form-group label { font-size: 0.98rem; }
+            .form-group input, .form-group select { font-size: 0.93rem; }
+            .test-button { font-size: 0.98rem; }
+            .response-area { font-size: 0.88rem; }
+            .view-toggle { font-size: 0.88rem; }
+            .tree-view { font-size: 0.88rem; }
+            .tree-key-name { font-size: 0.88rem; }
+            .tree-value { font-size: 0.88rem; }
+            .error-item code { font-size: 0.88rem; }
+            .error-item p { font-size: 0.93rem; }
+            .feature-item h3 { font-size: 1.15rem; }
+            .feature-item p { font-size: 0.93rem; }
+            .feature-item code { font-size: 0.88rem; }
+        }
+
+        @media (max-width: 768px) {
+            .content-section h1 { font-size: 1.8rem; }
+            .content-section h2 { font-size: 1.3rem; }
+            .content-section p { font-size: 0.95rem; }
+            .endpoint-docs h2 { font-size: 1.3rem; }
+            .endpoint-docs p { font-size: 0.95rem; }
+            .parameter-item { padding: 0.9rem; }
+            .parameter-name code { font-size: 0.85rem; }
+            .parameter-details p { font-size: 0.9rem; }
+            .endpoint-url { font-size: 0.85rem; }
+            .form-group label { font-size: 0.95rem; }
+            .form-group input, .form-group select { font-size: 0.9rem; }
+            .test-button { font-size: 0.95rem; }
+            .response-area { font-size: 0.85rem; }
+            .view-toggle { font-size: 0.85rem; }
+            .tree-view { font-size: 0.85rem; }
+            .tree-key-name { font-size: 0.85rem; }
+            .tree-value { font-size: 0.85rem; }
+            .error-item code { font-size: 0.85rem; }
+            .error-item p { font-size: 0.9rem; }
+            .feature-item h3 { font-size: 1.1rem; }
+            .feature-item p { font-size: 0.9rem; }
+            .feature-item code { font-size: 0.85rem; }
+        }
+
+        @media (max-width: 576px) {
+            .content-section h1 { font-size: 1.7rem; }
+            .content-section h2 { font-size: 1.2rem; }
+            .content-section p { font-size: 0.92rem; }
+            .endpoint-docs h2 { font-size: 1.2rem; }
+            .endpoint-docs p { font-size: 0.92rem; }
+            .parameter-item { padding: 0.8rem; }
+            .parameter-name code { font-size: 0.82rem; }
+            .parameter-details p { font-size: 0.87rem; }
+            .endpoint-url { font-size: 0.82rem; }
+            .form-group label { font-size: 0.92rem; }
+            .form-group input, .form-group select { font-size: 0.87rem; }
+            .test-button { font-size: 0.92rem; }
+            .response-area { font-size: 0.82rem; }
+            .view-toggle { font-size: 0.82rem; }
+            .tree-view { font-size: 0.82rem; }
+            .tree-key-name { font-size: 0.82rem; }
+            .tree-value { font-size: 0.82rem; }
+            .error-item code { font-size: 0.82rem; }
+            .error-item p { font-size: 0.87rem; }
+            .feature-item h3 { font-size: 1.05rem; }
+            .feature-item p { font-size: 0.87rem; }
+            .feature-item code { font-size: 0.82rem; }
+        }
+
+        @media (max-width: 400px) {
+            .content-section h1 { font-size: 1.6rem; }
+            .content-section h2 { font-size: 1.1rem; }
+            .content-section p { font-size: 0.9rem; }
+            .endpoint-docs h2 { font-size: 1.1rem; }
+            .endpoint-docs p { font-size: 0.9rem; }
+            .parameter-item { padding: 0.7rem; }
+            .parameter-name code { font-size: 0.8rem; }
+            .parameter-details p { font-size: 0.85rem; }
+            .endpoint-url { font-size: 0.8rem; }
+            .form-group label { font-size: 0.9rem; }
+            .form-group input, .form-group select { font-size: 0.85rem; }
+            .test-button { font-size: 0.9rem; }
+            .response-area { font-size: 0.8rem; }
+            .view-toggle { font-size: 0.8rem; }
+            .tree-view { font-size: 0.8rem; }
+            .tree-key-name { font-size: 0.8rem; }
+            .tree-value { font-size: 0.8rem; }
+            .error-item code { font-size: 0.8rem; }
+            .error-item p { font-size: 0.85rem; }
+            .feature-item h3 { font-size: 1rem; }
+            .feature-item p { font-size: 0.85rem; }
+            .feature-item code { font-size: 0.8rem; }
+        }
+
+        @media (max-width: 320px) {
+            .content-section h1 { font-size: 1.3rem; }
+            .content-section h2 { font-size: 1rem; }
+            .content-section p { font-size: 0.8rem; }
+            .endpoint-docs h2 { font-size: 1rem; }
+            .endpoint-docs p { font-size: 0.8rem; }
+            .parameter-item { 
+                padding: 0.5rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .parameter-name code { font-size: 0.7rem; }
+            .parameter-details p { font-size: 0.75rem; }
+            .endpoint-url { 
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .form-group label { font-size: 0.8rem; }
+            .form-group input, .form-group select { 
+                font-size: 0.75rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .test-button { 
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .response-area { 
+                font-size: 0.7rem;
+                padding: 0.4rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .view-toggle { 
+                font-size: 0.7rem;
+                padding: 0.3rem 0.6rem;
+                min-width: 0;
+            }
+            .tree-view { 
+                font-size: 0.7rem;
+                min-width: 0;
+                width: 100%;
+            }
+            .tree-key-name { font-size: 0.7rem; }
+            .tree-value { font-size: 0.7rem; }
+            .error-item code { font-size: 0.7rem; }
+            .error-item p { font-size: 0.75rem; }
+            .feature-item h3 { font-size: 0.9rem; }
+            .feature-item p { font-size: 0.75rem; }
+            .feature-item code { font-size: 0.7rem; }
+
+            /* Fix container and layout issues */
+            .container {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .main-content {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+                margin: 0;
+            }
+
+            .endpoint-tester {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0;
+            }
+
+            .endpoint-docs {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .endpoint-test {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .code-block {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+                overflow-x: auto;
+            }
+
+            .code-block pre {
+                min-width: 0;
+                width: 100%;
+                font-size: 0.7rem;
+            }
+
+            .feature-grid {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0.5rem 0;
+            }
+
+            .feature-item {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .error-codes {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+                margin: 0.5rem 0;
+            }
+
+            .error-item {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            /* Fix sidebar for mobile */
+            .sidebar {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .nav-links {
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 0.4rem;
+            }
+
+            /* Fix navbar for mobile */
+            .navbar {
+                padding: 0 0.5rem;
+            }
+
+            .navbar-title {
+                font-size: 1rem;
+            }
+
+            .navbar-logo {
+                width: 24px;
+                height: 24px;
+            }
+
+            /* Fix dropdowns and inputs */
+            .dropdown-input {
+                padding: 0.4rem;
+            }
+
+            .dropdown-input input {
+                font-size: 0.75rem;
+            }
+
+            .dropdown-option {
+                padding: 0.4rem;
+                font-size: 0.75rem;
+            }
+
+            /* Fix code examples */
+            .code-example-container {
+                min-width: 0;
+                width: 100%;
+                padding: 0;
+            }
+
+            .code-header {
+                padding: 0.4rem;
+            }
+
+            .code-content {
+                padding: 0.4rem;
+            }
+
+            .code-content code {
+                font-size: 0.7rem;
+            }
+
+            /* Fix tree view */
+            .tree-node {
+                margin-left: 0.5rem;
+            }
+
+            .tree-content {
+                margin-left: 0.5rem;
+            }
+
+            .tree-toggle {
+                width: 14px;
+                height: 14px;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Add these general fixes for all mobile sizes */
+        @media (max-width: 768px) {
+            * {
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .container, 
+            .main-content, 
+            .endpoint-tester, 
+            .endpoint-docs, 
+            .endpoint-test,
+            .code-block,
+            .feature-grid,
+            .feature-item,
+            .error-codes,
+            .error-item,
+            .sidebar,
+            .nav-links {
+                min-width: 0;
+            }
+
+            .code-block pre,
+            .code-content pre {
+                white-space: pre-wrap;
+                word-wrap: break-word;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1534,7 +2234,7 @@
         <main class="main-content">
             <!-- Overview Section -->
             <section id="overview" class="content-section active">
-                <h1>BBC News API Documentation</h1>
+        <h1>BBC News API Documentation</h1>
                 <p>Welcome to the BBC News API documentation. This API provides access to news content from various BBC language services, allowing developers to integrate BBC's trusted news content into their applications.</p>
                 
                 <h2><i class="fa-solid fa-star"></i> Key Features</h2>
@@ -1542,7 +2242,7 @@
                     <div class="feature-item">
                         <i class="fa-solid fa-globe"></i>
                         <h3>Multi-language Support</h3>
-                        <p>Access news content from multiple BBC language services including , Bengali, Hindi, and more.</p>
+                        <p>Access news content from multiple BBC language services including English, Bengali, Hindi, and more.</p>
                     </div>
                     <div class="feature-item">
                         <i class="fa-solid fa-bolt"></i>
@@ -1579,14 +2279,14 @@
                     <li>Implement proper error handling for all API requests</li>
                     <li>Cache responses when appropriate to reduce API calls</li>
                     <li>Use appropriate language codes for your target audience</li>
-                </ul>
+            </ul>
 
                 <!-- <h2><i class="fa-solid fa-code-branch"></i> Versioning</h2>
                 <p>The current version of the API is v1. We maintain backward compatibility while introducing new features. Check our changelog for updates.</p> -->
 
                 <h2><i class="fa-solid fa-life-ring"></i> Support</h2>
                 <p>For support, please visit our GitHub repository or join our community discussions. We're here to help you integrate and use the API effectively.</p>
-            </section>
+        </section>
 
             <!-- How to use Section -->
             <section id="how-to-use" class="content-section">
@@ -1656,10 +2356,10 @@
                             <li><strong>/news</strong> - Get news content</li>
                             <li><strong>/latest</strong> - Get latest news</li>
                             <li><strong>/languages</strong> - Get languages endpoint</li>
-                        </ul>
+            </ul>
                     </div>
                 </div>
-            </section>
+        </section>
 
             <!-- News Endpoint Section -->
             <section id="news" class="content-section">
@@ -1683,10 +2383,10 @@
                                     <div class="parameter-details">
                                         <p class="type">String</p>
                                         <p>The language code for the news content you want to retrieve. This parameter determines which BBC language service to fetch news from.</p>
-                                        <p class="example">Example: <code></code>, <code>bengali</code>, <code>hindi</code></p>
+                                        <p class="example">Example: <code>english</code>, <code>bengali</code>, <code>hindi</code></p>
                                     </div>
                                 </li>
-                            </ul>
+            </ul>
                         </div>
 
                         <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
@@ -1753,7 +2453,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+        </section>
 
             <!-- Latest Endpoint Section -->
             <section id="latest" class="content-section">
@@ -1777,10 +2477,10 @@
                                     <div class="parameter-details">
                                         <p class="type">String</p>
                                         <p>The language code for the latest news content. This parameter determines which BBC language service to fetch the most recent news from.</p>
-                                        <p class="example">Example: <code></code>, <code>bengali</code>, <code>hindi</code></p>
+                                        <p class="example">Example: <code>english</code>, <code>bengali</code>, <code>hindi</code></p>
                                     </div>
                                 </li>
-                            </ul>
+            </ul>
                         </div>
 
                         <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
@@ -1847,8 +2547,8 @@
                         </div>
                     </div>
                 </div>
-            </section>
-
+        </section>
+	
             <!-- Languages Endpoint Section -->
             <section id="languages-endpoint" class="content-section">
                 <h1>Languages Endpoint</h1>
@@ -1863,7 +2563,7 @@
                         <div class="parameters-section">
                             <h3><i class="fa-solid fa-list"></i> Parameters</h3>
                             <p>This endpoint does not require any parameters.</p>
-                        </div>
+    </div>
 
                         <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
                         <div class="code-block">
@@ -2280,14 +2980,14 @@
                     switch(formId) {
                         case 'newsTestForm':
                             url = '/news';
-                            const newsLang = document.getElementById('newsLangSearch').value;
+                            const newsLang = document.getElementById('newsLangSearch').value.toLowerCase();
                             if (newsLang) {
                                 params.lang = newsLang;
                             }
                             break;
                         case 'latestTestForm':
                             url = '/latest';
-                            const latestLang = document.getElementById('latestLangSearch').value;
+                            const latestLang = document.getElementById('latestLangSearch').value.toLowerCase();
                             if (latestLang) {
                                 params.lang = latestLang;
                             }

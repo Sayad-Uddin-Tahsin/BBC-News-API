@@ -327,13 +327,13 @@ def favicon():
 @visit_register
 async def news(type):
     if type == "favicon.ico":
-        return (flask.request.headers, "None")
+        return (safe_headers(), "None")
     
     if type not in ['latest', 'news']:
         logger.info(
             f"{ctime()}: NEWS endpoint called - 400 (Invalid Type)"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(
                 {"status": 400, "error": "Invalid Type!", "types": ["news", "latest"]},
                 ensure_ascii=False,
@@ -347,7 +347,7 @@ async def news(type):
         logger.info(
             f"{ctime()}: NEWS (Type: {type}) endpoint called - 400 (Language Parameter Missing)"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(
                 {
                     "status": 400,
@@ -364,7 +364,7 @@ async def news(type):
         logger.info(
             f"{ctime()}: NEWS (Type: {type}) endpoint called - 400 (Invalid Language)"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(
                 {
                     "status": 400,
@@ -385,7 +385,7 @@ async def news(type):
         logger.info(
             f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=response['status'],
@@ -399,7 +399,7 @@ async def news(type):
         logger.info(
             f"{ctime()}: NEWS (language: {language}, type: {type}) endpoint called - 200"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(response, ensure_ascii=False).encode("utf8"),
             mimetype="application/json; charset=utf-8",
             status=response['status'],
@@ -416,12 +416,12 @@ async def log(pin):
             logs = f.read()
         logs = logs.replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
-        return (flask.request.headers, flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
+        return (safe_headers(), flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
     else:
         logger.info(
             f"{ctime()}: LOG endpoint called - 400 (Authorization Failed)"
         )
-        return (flask.request.headers, flask.Response(
+        return (safe_headers(), flask.Response(
             json.dumps(
                 {"status": 400, "error": "Authorization Failed"}, ensure_ascii=False
             ),
@@ -449,11 +449,24 @@ async def languages():
             for code, url in urls.items()
         ]
     }
-    return (flask.request.headers, flask.Response(
+    return (safe_headers(), flask.Response(
         json.dumps(response, ensure_ascii=False).encode("utf8"),
         mimetype="application/json; charset=utf-8",
         status=200,
     ))
+
+# Add this function after the visit_register decorator
+def safe_headers():
+    """Return a sanitized version of request headers with only safe headers."""
+    safe_header_keys = {
+        'User-Agent',
+        'Accept',
+        'Accept-Language',
+        'Accept-Encoding',
+        'Connection',
+        'Host'
+    }
+    return {k: v for k, v in flask.request.headers.items() if k in safe_header_keys}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
