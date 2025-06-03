@@ -1,138 +1,2545 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
-    <meta property="og:title" content="BBC News API Documentation">
-    <meta property="og:description" content="BBC News API provides access to news articles and headlines from various categories and sources.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Documentation%20Banner.png">
-    <meta property="og:url" content="https://bbc-api.vercel.app/documentation">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="BBC News API Documentation">
-
-    <meta name="twitter:title" content="BBC News API Documentation">
-    <meta name="twitter:description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Documentation%20Banner.png">
-    <link href="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png" rel="icon"  type="image/x-icon" media="(prefers-color-scheme: dark)"/>
-    <link href="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" rel="icon"  type="image/x-icon" media="(prefers-color-scheme: light)"/>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBC News API Documentation</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <!-- Google Fonts: Poppins & Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+        :root {
+            --header-bg: linear-gradient(135deg, #f0f2f5 0%, #f7fafd 100%);
+            --header-text: #000035;
+            --nav-bg: rgba(255,255,255,0.95);
+            --nav-blur: blur(12px);
+            --nav-text: #000035;
+            --nav-hover: #4a90e2;
+            --feature-bg: #ffffff;
+            --feature-title: #4a90e2;
+            --feature-desc: #334155;
+            --footer-bg: #f8f9fa;
+            --footer-text: #4a5568;
+            --github-btn-bg: #000035;
+            --github-btn-text: #fff;
+            --github-btn-hover: #4a90e2;
+            --getstarted-bg: #4a90e2;
+            --getstarted-text: #fff;
+            --getstarted-hover: #357abd;
+            --doc-bg: #f7fafd;
+            --doc-text: #334155;
+            --doc-sidebar-bg: #ffffff;
+            --doc-sidebar-hover: #f0f2f5;
+            --doc-sidebar-active: #4a90e2;
+            --doc-code-bg: #f8f9fa;
+            --doc-border: #e2e8f0;
+            --error-color: #e11d48;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            color: #333; /* Default text color */
-            background-color: #fff; /* Default background color */
+            box-sizing: border-box;
         }
         
-        /* Dark mode */
-        @media (prefers-color-scheme: dark) {
             body {
-                color: #ddd; /* Dark mode text color */
-                background-color: #222; /* Dark mode background color */
-            }
-            code {
-                background-color: #111; /* Code block background color in dark mode */
-                color: #ddd; /* Code text color in dark mode */
-            }
-        }
-        
-        /* Light mode */
-        @media (prefers-color-scheme: light) {
-            code {
-                background-color: #F0F0F0; /* Code block background color in light mode */
-                color: #333; /* Code text color in light mode */
-            }
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        code {
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 5px;
+            font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+            background: var(--doc-bg);
+            color: var(--doc-text);
+            line-height: 1.6;
         }
 
+        /* Navbar */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--nav-bg);
+            color: var(--nav-text);
+            padding: 0 2rem;
+            min-height: 64px;
+            height: 72px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: var(--nav-blur);
+            box-shadow: 0 4px 24px 0 rgba(30,60,114,0.10);
+            width: 100%;
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            width: 36px;
+            height: 36px;
+            margin-right: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px 0 rgba(30,60,114,0.08);
+        }
+
+        .navbar-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .navbar-links {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .navbar-link {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+
+        .navbar-link:hover {
+            color: var(--nav-hover);
+        }
+
+        .github-btn {
+            background: var(--github-btn-bg);
+            color: var(--github-btn-text);
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1.1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px 0 rgba(30,60,114,0.08);
+        }
+
+        .github-btn:hover {
+            background: var(--github-btn-hover);
+            color: #fff;
+        }
+
+        /* Documentation Container */
+        .container {
+            display: flex;
+            min-height: 100vh;
+            margin-top: 72px;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 280px;
+            background-color: var(--doc-sidebar-bg);
+            padding: 1rem 1rem 2rem 1rem;
+            border-right: 1px solid var(--doc-border);
+            position: fixed;
+            height: calc(100vh - 72px);
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+        }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--doc-border);
+            color: var(--doc-text);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-links a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--doc-text);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .nav-links a.active {
+            background-color: var(--doc-sidebar-active);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 2rem;
+        }
+
+        .content-section {
+            display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .content-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--doc-text);
+        }
+
+        .content-section h2 {
+            font-size: 1.8rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--doc-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content-section h2 i {
+            color: var(--feature-title);
+            font-size: 1.4rem;
+        }
+
+        .content-section p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 1rem 0;
+        }
+
+        .content-section ul li {
+            margin-bottom: 0.75rem;
+            color: var(--doc-text);
+        }
+
+        .content-section ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--feature-title);
+        }
+
+        .code-block {
+            background-color: var(--doc-code-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border: 1px solid var(--doc-border);
+        }
+
+        .code-block pre {
+            margin: 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        /* Endpoint Testing Section */
+        .endpoint-tester {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .endpoint-docs {
+            background-color: var(--doc-sidebar-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--doc-border);
+        }
+
+        .endpoint-docs h2 {
+            font-size: 1.8rem;
+            margin: 0 0 1rem;
+            color: var(--doc-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .endpoint-docs h2 i {
+            color: var(--feature-title);
+        }
+
+        .endpoint-docs p {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--doc-text);
+        }
+
+        .endpoint-docs p strong {
+            color: var(--feature-title);
+            font-weight: 600;
+        }
+
+        .parameters-section {
+            background-color: var(--doc-code-bg);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border: 1px solid var(--doc-border);
+        }
+
+        .parameters-section h3 {
+            font-size: 1.2rem;
+            color: var(--doc-text);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .parameters-section h3 i {
+            color: var(--feature-title);
+        }
+
+        .parameter-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .parameter-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--doc-border);
+            align-items: start;
+        }
+
+        .parameter-item:last-child {
+            border-bottom: none;
+        }
+
+        .parameter-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .parameter-name::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--feature-title);
+            margin-right: 0.5rem;
+        }
+
+        .parameter-name code {
+            background-color: var(--doc-sidebar-bg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: var(--feature-title);
+            border: 1px solid var(--doc-border);
+        }
+
+        .parameter-name .required {
+            background-color: #e11d48;
+            color: white;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .parameter-details {
+            color: var(--doc-text);
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .parameter-details p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .parameter-details .type {
+            color: var(--feature-title);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .endpoint-test {
+            background-color: var(--doc-sidebar-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--doc-border);
+            width: 100%;
+            height: fit-content;
+            max-width: 400px;
+        }
+
+        .endpoint-test h3 {
+            display: none;
+        }
+
+        .endpoint-url {
+            background-color: var(--doc-code-bg);
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            border: 1px solid var(--doc-border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .endpoint-url .method {
+            background-color: var(--getstarted-bg);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .endpoint-url .url {
+            color: var(--doc-text);
+            word-break: break-all;
+        }
+
+        .test-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            color: var(--doc-text);
+        }
+
+        .form-group input, .form-group select {
+            padding: 0.75rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            background-color: var(--doc-bg);
+            color: var(--doc-text);
+        }
+
+        .test-button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--getstarted-bg);
+            color: var(--getstarted-text);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .test-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .test-button:hover:not(:disabled) {
+            background-color: var(--getstarted-hover);
+            transform: translateY(-2px);
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff;
+            border-bottom-color: transparent;
+            border-radius: 50%;
+            display: none;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .response-area {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .response-controls {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .view-toggle {
+            padding: 0.5rem 1rem;
+            background-color: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            color: var(--doc-text);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .view-toggle:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        /* Tree View Styles */
+        .tree-view {
+            font-family: 'Consolas', monospace;
+            padding: 0.5rem 0;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .tree-node {
+            margin-left: 1.5rem;
+            max-width: 100%;
+            word-break: break-word;
+        }
+
+        .tree-key {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.25rem 0;
+            max-width: 100%;
+            white-space: nowrap;
+        }
+
+        .tree-key:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .tree-toggle {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 2px;
+            background-color: var(--feature-title);
+            border: 1px solid var(--feature-title);
+            color: white;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .tree-toggle:hover {
+            background-color: var(--getstarted-hover);
+            border-color: var(--getstarted-hover);
+        }
+
+        .tree-key-name {
+            color: #9d5025;
+            white-space: nowrap;
+        }
+
+        .tree-inline {
+            display: inline-flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            max-width: 100%;
+        }
+
+        .tree-key-value {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 0.25rem 0;
+            max-width: 100%;
+        }
+
+        .tree-value {
+            max-width: 100%;
+            word-break: break-word;
+            display: inline-block;
+        }
+
+        .tree-content {
+            display: none;
+            margin-left: 1.5rem;
+            max-width: 100%;
+            word-break: break-word;
+        }
+
+        .tree-content.expanded {
+            display: block;
+        }
+
+        .tree-bracket {
+            color: #6f42c1;
+            font-weight: bold;
+            margin: 0 0.25rem;
+        }
+
+        .tree-colon {
+            color: #6f42c1;
+            margin: 0 0.25rem;
+        }
+
+        .tree-string {
+            color: #22863a;
+        }
+
+        .tree-number {
+            color: #005cc5;
+        }
+
+        .tree-boolean {
+            color: #e36209;
+        }
+
+        .tree-null {
+            color: #6f42c1;
+        }
+
+        .error-codes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .error-item {
+            background-color: var(--doc-code-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .error-item code {
+            background-color: var(--error-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        .error-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--doc-text);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            background-color: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-item i {
+            font-size: 1.5rem;
+            color: var(--feature-title);
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--doc-text);
+        }
+
+        .feature-item p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--doc-text);
+            line-height: 1.5;
+        }
+
+        .mobile-nav-buttons {
+            display: none;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .endpoint-tester {
+                grid-template-columns: 1fr;
+            }
+
+            .endpoint-test {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 1000;
+            }
+
+            .navbar-left {
+                display: flex;
+                align-items: center;
+            }
+
+            .navbar-right {
+                display: flex;
+                align-items: center;
+            }
+
+            .hamburger {
+                display: block;
+                margin-left: 1rem;
+            }
+
+            .container {
+                flex-direction: column;
+                margin-top: 72px;
+                min-height: calc(100vh - 72px);
+                overflow-x: hidden;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            .sidebar {
+                width: 280px;
+                height: auto;
+                position: fixed;
+                top: 72px;
+                right: -280px;
+                left: auto;
+                transition: right 0.3s ease;
+                z-index: 1000;
+                background: var(--nav-bg);
+                backdrop-filter: var(--nav-blur);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                display: flex;
+                flex-direction: column;
+                height: calc(100vh - 72px);
+                overflow-y: auto;
+            }
+
+            .sidebar.active {
+                right: 0;
+                left: auto;
+            }
+
+            .sidebar h2 {
+                padding: 0 0 1rem 1rem;
+                margin: 0;
+                border-bottom: 1px solid var(--doc-border);
+            }
+
+            .nav-links {
+                flex: 1;
+                overflow-y: auto;
+                padding: 1rem;
+            }
+
+            .mobile-nav-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 0rem;
+                padding: 0.75rem 0;
+                border-top: 1px solid var(--doc-border);
+                background: var(--nav-bg);
+            }
+
+            .mobile-nav-buttons .navbar-link {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem;
+                background: var(--doc-sidebar-bg);
+                border-radius: 6px;
+                text-decoration: none;
+                color: var(--nav-text);
+                transition: all 0.2s;
+            }
+
+            .mobile-nav-buttons .navbar-link:hover {
+                background: var(--doc-sidebar-hover);
+                color: var(--nav-hover);
+            }
+
+            .mobile-nav-buttons .github-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: .75rem;
+            }
+
+            .endpoint-tester {
+                grid-template-columns: 1fr;
+            }
+
+            .endpoint-test {
+                max-width: 100%;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .response-area {
+                height: auto;
+                max-height: 300px;
+                overflow: auto;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .tree-view {
+                position: static;
+                padding: 0.5rem;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+            }
+
+            .tree-node,
+            .tree-inline,
+            .tree-key,
+            .tree-key-name {
+                max-width: 100%;
+                word-break: break-word;
+            }
+
+            .tree-value {
+                word-break: break-word;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .error-codes {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Dropdown Styles */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .dropdown-input {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            background-color: var(--doc-bg);
+            transition: all 0.2s;
+        }
+
+        .dropdown-input:focus-within {
+            border-color: var(--feature-title);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        .dropdown-input input {
+            flex: 1;
+            border: none;
+            background: none;
+            padding: 0;
+            color: var(--doc-text);
+            font-size: 1rem;
+            outline: none;
+            -webkit-autofill: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .dropdown-input input::-webkit-autofill,
+        .dropdown-input input::-webkit-autofill:hover,
+        .dropdown-input input::-webkit-autofill:focus,
+        .dropdown-input input::-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px var(--doc-bg) inset !important;
+            -webkit-text-fill-color: var(--doc-text) !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+
+        .dropdown-input i {
+            color: var(--feature-title);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .dropdown-input.active i {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-list.active {
+            display: block;
+        }
+
+        .dropdown-options {
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-option {
+            padding: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-option:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .dropdown-option.selected {
+            background-color: var(--doc-sidebar-active);
+            color: white;
+        }
+
+        .dropdown-option i {
+            color: var(--feature-title);
+            font-size: 0.9rem;
+        }
+
+        .dropdown-option.selected i {
+            color: white;
+        }
+
+        .no-results {
+            padding: 1rem;
+            text-align: center;
+            color: var(--doc-text);
+            opacity: 0.7;
+        }
+
+        /* Languages Section Loader */
+        .languages-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 200px;
+        }
+
+        .languages-loader .loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--doc-border);
+            border-bottom-color: var(--feature-title);
+            border-radius: 50%;
+            display: inline-block;
+            animation: rotation 1s linear infinite;
+        }
+
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--nav-text);
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+            width: 30px;
+            height: 30px;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background-color: var(--nav-text);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span:nth-child(1) {
+            top: 8px;
+        }
+
+        .hamburger span:nth-child(2) {
+            top: 14px;
+        }
+
+        .hamburger span:nth-child(3) {
+            top: 20px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateX(-50%) translateY(6px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: translateX(-50%) scale(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateX(-50%) translateY(-6px) rotate(-45deg);
+        }
+
+        .hamburger:hover {
+            color: var(--nav-hover);
+        }
+        @media (max-width: 700px) {
+            .hamburger {
+                display: block;
+            }
+            .navbar-links {
+                display: none;
+            }
+            .navbar-title {
+                font-size: 1.2rem;
+            }
+
+        }
+
+        /* Code Examples Styles */
+        .code-examples {
+            margin-top: 1.5rem;
+        }
+
+        .code-example {
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .code-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #495057;
+        }
+
+        .copy-btn {
+            padding: 0.25rem 0.75rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+
+        .copy-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .code-content {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+        }
+
+        .code-content code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #212529;
+        }
+
+        @media (max-width: 768px) {
+            .code-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
+            }
+
+            .copy-btn {
+                align-self: flex-end;
+            }
+        }
+
+        /* Sidebar Section Styles */
+        .sidebar-section {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            color: var(--doc-text);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-section-header:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .sidebar-section-header i {
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-section-header.active i {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-subsection {
+            list-style: none;
+            padding-left: 0;
+            display: none;
+        }
+
+        .sidebar-subsection.active {
+            display: block;
+        }
+
+        .sidebar-subsection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem 0.5rem 2rem;
+            color: var(--doc-text);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-subsection-header:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .sidebar-subsection-header i {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .sidebar-subsection-header.active i {
+            transform: rotate(90deg);
+        }
+
+        .sidebar-subsection-content {
+            display: none;
+            padding-left: 1rem;
+        }
+
+        .sidebar-subsection-content.active {
+            display: block;
+        }
+
+        .sidebar-subsection-content a {
+            display: block;
+            padding: 0.5rem 1rem 0.5rem 3rem;
+            color: var(--doc-text);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-subsection-content a:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        /* Code Example Container Styles */
+        .code-example-container {
+            margin: 2rem 0;
+            border: 1px solid var(--doc-border);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: var(--doc-code-bg);
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--doc-code-bg);
+            border-bottom: 1px solid var(--doc-border);
+        }
+
+        .language-selector select {
+            padding: 0.5rem 2rem 0.5rem 1rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            background-color: var(--doc-sidebar-bg);
+            color: var(--doc-text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23495057' d='M6 8.825L1.175 4 2.05 3.125 6 7.075 9.95 3.125 10.825 4z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 12px;
+            font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: var(--feature-title);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.25);
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--feature-title);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+        }
+
+        .copy-btn:hover {
+            background-color: var(--getstarted-hover);
+        }
+
+        .copy-btn i {
+            font-size: 0.8rem;
+        }
+
+        .code-content {
+            padding: 1.5rem;
+            overflow-x: auto;
+            background-color: var(--doc-code-bg);
+        }
+
+        .code-content pre {
+            margin: 0;
+            padding: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .code-content code {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: var(--doc-text);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .code-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .language-selector select {
+                width: 100%;
+            }
+
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Custom Language Selector Styles */
+        .language-selector {
+            position: relative;
+            width: 200px;
+        }
+
+        .language-selector-button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            background-color: var(--doc-sidebar-bg);
+            color: var(--doc-text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-family: 'Poppins', 'Roboto', Arial, sans-serif;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+
+        .language-selector-button:hover {
+            border-color: var(--feature-title);
+        }
+
+        .language-selector-button i {
+            transition: transform 0.2s ease;
+        }
+
+        .language-selector-button.active i {
+            transform: rotate(180deg);
+        }
+
+        .language-selector-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 0.5rem;
+            background-color: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .language-selector-dropdown.active {
+            display: block;
+        }
+
+        .language-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .language-option:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .language-option.selected {
+            background-color: var(--doc-sidebar-active);
+            color: white;
+        }
+
+        .language-option i {
+            color: var(--feature-title);
+            font-size: 0.9rem;
+        }
+
+        .language-option.selected i {
+            color: white;
+        }
+
+        /* Copy Button Animation */
+        .copy-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn.copied {
+            background-color: var(--success-color);
+            transform: scale(0.95);
+        }
+
+        .copy-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .copy-btn.copied i {
+            animation: checkmark 0.3s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .copy-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .copy-btn:active::after {
+            width: 200%;
+            height: 200%;
+        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left" onclick="window.location.href='/'">
+            <img src="/favicon.ico" alt="BBC News API Logo" class="navbar-logo">
+            <span class="navbar-title">BBC News API</span>
+        </div>
+        <div class="navbar-right">
+            <div class="navbar-links">
+                <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
+                <a class="navbar-link" href="/"><i class="fa-solid fa-home"></i> Home</a>
+                <button class="github-btn" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
+            </div>
+            <button class="hamburger mobile-menu-btn" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>BBC News API Documentation</h1>
-        
-        <section>
-            <h2><a id="url-formation" href="#url-formation" style="color: inherit; text-decoration: none;">URL Formation</a></h2>
-            <p>URL Formation: <code>/{{ type }}?lang={{ language }}</code></p>
-        </section>
-
-        <section>
-            <h2><a id="example-url" href="#example-url" style="color: inherit; text-decoration: none;">Example URL - {{ lang }}</a></h2>
-            <ul>
-                <li>News: <code><a href="{{ urlForNews }}" style="color: #0070f3; text-decoration: none;">{{ urlForNews }}</a></code></li>
-                <li>Latest: <code><a href="{{ urlForLatest }}" style="color: #0070f3; text-decoration: none;">{{ urlForLatest }}</a></code></li>
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <h2>Documentation</h2>
+            <ul class="nav-links">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#languages">Supported Languages</a></li>
+                <li><a href="#endpoints">Endpoints</a></li>
+                <li><a href="#news">News Endpoint</a></li>
+                <li><a href="#latest">Latest Endpoint</a></li>
+                <li><a href="#languages-endpoint">Languages Endpoint</a></li>
+                <li><a href="#how-to-use">How to use?</a></li>
+                
+                <div class="mobile-nav-buttons">
+                    <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank">
+                        <i class="fa-regular fa-comments"></i> Discussions
+                    </a>
+                    <a class="navbar-link" href="/">
+                        <i class="fa-solid fa-home"></i> Home
+                    </a>
+                    <button class="github-btn" style="margin-left: 0;" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
+                        <i class="fab fa-github"></i> GitHub
+                    </button>
+                </div>
             </ul>
-        </section>
+        </nav>
 
-        <section>
-            <h2><a id="types" href="#types" style="color: inherit; text-decoration: none;">Types</a></h2>
-            <ul>
-                <li>All News: <code>news</code></li>
-                <li>Latest News: <code>latest</code></li>
-            </ul>
-        </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview" class="content-section active">
+                <h1>BBC News API Documentation</h1>
+                <p>Welcome to the BBC News API documentation. This API provides access to news content from various BBC language services, allowing developers to integrate BBC's trusted news content into their applications.</p>
+                
+                <h2><i class="fa-solid fa-star"></i> Key Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-globe"></i>
+                        <h3>Multi-language Support</h3>
+                        <p>Access news content from multiple BBC language services including , Bengali, Hindi, and more.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h3>Real-time Updates</h3>
+                        <p>Get the latest news updates as they happen with our real-time content delivery.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-shield"></i>
+                        <h3>Reliable Source</h3>
+                        <p>Access content from BBC, one of the world's most trusted news sources.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-code"></i>
+                        <h3>Easy Integration</h3>
+                        <p>Simple RESTful API with clear documentation and example implementations.</p>
+                    </div>
+                </div>
 
-        <section>
-            <h2><a id="languages" href="#languages" style="color: inherit; text-decoration: none;">Supported Languages</a></h2>
-            <ul>
-                {{ listOfLangs|safe }}
-            </ul>
-        </section>
+                <h2><i class="fa-solid fa-rocket"></i> Getting Started</h2>
+                <p>To start using the API, you'll need to make HTTP requests to our endpoints. The API supports both news and latest content retrieval.</p>
 
-        <hr>
+                <div class="code-block">
+                    <pre>Base URL: https://bbc-news-api.vercel.app</pre>
+                </div>
 
-        <section>
-            <h2><a id="get-in-touch" href="#get-in-touch" style="color: inherit; text-decoration: none;">Get in Touch</a></h2>
-            <p>If you have any questions, feedback, or encounter any issues with our API, feel free to reach out to us via the following channels:</p>
-            <ul>
-                <li>Email: <a href="mailto:tahsin.ict@outlook.com?body=%0A%0ARedirected%20from%20BBC%20News%20API" target="_blank" style="color: #0070f3;">tahsin.ict@outlook.com</a></li>
-                <li>Issue Tracker: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues" target="_blank" style="color: #0070f3;">BBC-News-API/Issues</a></li>
-                <li>Repository: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API" target="_blank" style="color: #0070f3;">Sayad-Uddin-Tahsin/BBC-News-API</a></li>
-            </ul>
-        </section>
-	
-	<hr>
-	
-	<footer>
-            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. <br>© Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank" style="color: #0070f3;">MIT License</a></p></center>
-        </footer>
+                <h2><i class="fa-solid fa-key"></i> Authentication</h2>
+                <p>Currently, the API is open and doesn't require authentication for most endpoints. However, some endpoints may require specific parameters for access control.</p>
+
+                <!-- <h2><i class="fa-solid fa-gauge-high"></i> Rate Limiting</h2>
+                <p>The API implements rate limiting to ensure fair usage. Please be mindful of your request frequency to avoid hitting rate limits.</p> -->
+
+                <h2><i class="fa-solid fa-circle-info"></i> Best Practices</h2>
+                <ul class="best-practices">
+                    <li>Implement proper error handling for all API requests</li>
+                    <li>Cache responses when appropriate to reduce API calls</li>
+                    <li>Use appropriate language codes for your target audience</li>
+                </ul>
+
+                <!-- <h2><i class="fa-solid fa-code-branch"></i> Versioning</h2>
+                <p>The current version of the API is v1. We maintain backward compatibility while introducing new features. Check our changelog for updates.</p> -->
+
+                <h2><i class="fa-solid fa-life-ring"></i> Support</h2>
+                <p>For support, please visit our GitHub repository or join our community discussions. We're here to help you integrate and use the API effectively.</p>
+            </section>
+
+            <!-- How to use Section -->
+            <section id="how-to-use" class="content-section">
+                <h1>How to use?</h1>
+                <p>The BBC News API can be used with any programming language that supports HTTP requests. Here are some examples:</p>
+                
+                <div class="code-example-container">
+                    <div class="code-header">
+                        <div class="language-selector">
+                            <button class="language-selector-button" onclick="toggleLanguageDropdown()">
+                                <span id="selectedLanguage">Python</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="language-selector-dropdown" id="languageDropdown">
+                                <div class="language-option selected" onclick="selectLanguage('python')">
+                                    <i class="fab fa-python"></i>
+                                    <span>Python</span>
+                                </div>
+                                <div class="language-option" onclick="selectLanguage('javascript')">
+                                    <i class="fab fa-js"></i>
+                                    <span>JavaScript</span>
+                                </div>
+                                <div class="language-option" onclick="selectLanguage('php')">
+                                    <i class="fab fa-php"></i>
+                                    <span>PHP</span>
+                                </div>
+                                <div class="language-option" onclick="selectLanguage('ruby')">
+                                    <i class="fas fa-gem"></i>
+                                    <span>Ruby</span>
+                                </div>
+                                <div class="language-option" onclick="selectLanguage('java')">
+                                    <i class="fab fa-java"></i>
+                                    <span>Java</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="copy-btn" class="copy-btn" onclick="copyCode()">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <div class="code-content">
+                        <pre><code id="code-content"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages Section -->
+            <section id="languages" class="content-section">
+                <h1>Supported Languages</h1>
+                <p>The BBC News API supports multiple languages, allowing you to access news content from various BBC language services. Below is a list of all supported languages:</p>
+                <div class="endpoint-docs">
+                    <h2><i class="fa-solid fa-language"></i> Available Languages</h2>
+                    <div id="languagesList" class="feature-grid">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Endpoints Section -->
+            <section id="endpoints" class="content-section">
+                <h1>API Endpoints</h1>
+                <p>Below is a list of all available endpoints in the API:</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2>Available Endpoints</h2>
+                        <ul>
+                            <li><strong>/news</strong> - Get news content</li>
+                            <li><strong>/latest</strong> - Get latest news</li>
+                            <li><strong>/languages</strong> - Get languages endpoint</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- News Endpoint Section -->
+            <section id="news" class="content-section">
+                <h1>News Endpoint</h1>
+                <p>Retrieve news content from BBC's various language services. This endpoint provides access to the latest news articles with their titles, summaries, and links.</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /news</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <ul class="parameter-list">
+                                <li class="parameter-item">
+                                    <div class="parameter-name">
+                                        <code>lang</code>
+                                        <span class="required">Required</span>
+                                    </div>
+                                    <div class="parameter-details">
+                                        <p class="type">String</p>
+                                        <p>The language code for the news content you want to retrieve. This parameter determines which BBC language service to fetch news from.</p>
+                                        <p class="example">Example: <code></code>, <code>bengali</code>, <code>hindi</code></p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "latest": [
+        {
+            "title": "News Title",
+            "summary": "News Summary",
+            "image_link": "https://...",
+            "news_link": "https://..."
+        }
+    ],
+    "elapsed time": "0.123s",
+    "timestamp": 1234567890
+}</pre>
+                        </div>
+
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>400</code>
+                                <p>Bad Request - Language parameter is missing or invalid</p>
+                            </div>
+                            <div class="error-item">
+                                <code>503</code>
+                                <p>Service Unavailable - Failed to retrieve content from BBC website</p>
+                            </div>
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url">
+                            <span class="method">GET</span>
+                            <span class="url">/news?lang=<span id="newsUrlLang"></span></span>
+                        </div>
+                        <form class="test-form" id="newsTestForm">
+                            <div class="form-group">
+                                <label for="newsLang">Language:</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-input" id="newsLangInput">
+                                        <input type="text" placeholder="Search or select language..." id="newsLangSearch" spellcheck="false" autocomplete="off" aria-autocomplete="none">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-list" id="newsLangList">
+                                        <div class="dropdown-options" id="newsLangOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="test-button" id="newsTestButton">
+                                <span class="loader" id="newsTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="newsTestResponse"></div>
+                        <div class="response-controls" id="newsTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="newsTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Latest Endpoint Section -->
+            <section id="latest" class="content-section">
+                <h1>Latest Endpoint</h1>
+                <p>Get the most recent news updates from BBC's various language services.</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /latest</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <ul class="parameter-list">
+                                <li class="parameter-item">
+                                    <div class="parameter-name">
+                                        <code>lang</code>
+                                        <span class="required">Required</span>
+                                    </div>
+                                    <div class="parameter-details">
+                                        <p class="type">String</p>
+                                        <p>The language code for the latest news content. This parameter determines which BBC language service to fetch the most recent news from.</p>
+                                        <p class="example">Example: <code></code>, <code>bengali</code>, <code>hindi</code></p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "Section Title": [
+        {
+            "title": "News Title",
+            "summary": "News Summary",
+            "image_link": "https://...",
+            "news_link": "https://..."
+        }
+    ],
+    "elapsed time": "0.123s",
+    "timestamp": 1234567890
+}</pre>
+                        </div>
+
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>400</code>
+                                <p>Bad Request - Language parameter is missing or invalid</p>
+                            </div>
+                            <div class="error-item">
+                                <code>503</code>
+                                <p>Service Unavailable - Failed to retrieve content from BBC website</p>
+                            </div>
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url">
+                            <span class="method">GET</span>
+                            <span class="url">/latest?lang=<span id="latestUrlLang"></span></span>
+                        </div>
+                        <form class="test-form" id="latestTestForm">
+                            <div class="form-group">
+                                <label for="latestLang">Language:</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-input" id="latestLangInput">
+                                        <input type="text" placeholder="Search or select language..." id="latestLangSearch">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-list" id="latestLangList">
+                                        <div class="dropdown-options" id="latestLangOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="test-button" id="latestTestButton">
+                                <span class="loader" id="latestTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="latestTestResponse"></div>
+                        <div class="response-controls" id="latestTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="latestTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages Endpoint Section -->
+            <section id="languages-endpoint" class="content-section">
+                <h1>Languages Endpoint</h1>
+                <p>Get a list of all supported languages and their corresponding BBC News URLs.</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /languages</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <p>This endpoint does not require any parameters.</p>
+                        </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "languages": [
+        {
+            "code": "english",
+            "name": "English",
+            "url": "https://bbc.com",
+            "description": "BBC News in English"
+        },
+        {
+            "code": "bengali",
+            "name": "Bengali",
+            "url": "https://bbc.com/bengali",
+            "description": "BBC News in Bengali"
+        }
+    ]
+}</pre>
+                        </div>
+
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url">
+                            <span class="method">GET</span>
+                            <span class="url">/languages</span>
+                        </div>
+                        <form class="test-form" id="languagesTestForm">
+                            <button type="submit" class="test-button" id="languagesTestButton">
+                                <span class="loader" id="languagesTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="languagesTestResponse"></div>
+                        <div class="response-controls" id="languagesTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="languagesTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
     </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.querySelector('.sidebar');
+
+        // Function to toggle menu
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Add click event listener
+        hamburger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !hamburger.contains(e.target) && 
+                !sidebar.contains(e.target)) {
+                toggleMenu();
+            }
+        });
+
+        // Close mobile menu when clicking a nav link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (sidebar.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        // Navigation
+        function navigateToSection(targetId) {
+            // Update active states
+            document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+            document.querySelector(`.nav-links a[href="#${targetId}"]`).classList.add('active');
+            
+            // Show target section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(targetId).classList.add('active');
+
+            // Clear all response areas and controls
+            document.querySelectorAll('.response-area').forEach(area => {
+                area.textContent = '';
+                area.style.display = 'none';
+            });
+            document.querySelectorAll('.response-controls').forEach(controls => {
+                controls.style.display = 'none';
+            });
+
+            // Update URL hash without scrolling
+            history.pushState(null, null, `#${targetId}`);
+        }
+
+        // Handle navigation clicks
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                navigateToSection(targetId);
+            });
+        });
+
+        // Handle initial load and hash changes
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1) || 'overview';
+            navigateToSection(hash);
+        }
+
+        // Listen for hash changes
+        window.addEventListener('hashchange', handleHashChange);
+
+        // Handle initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleHashChange();
+            
+            // Set initial code example
+            updateCodeExample('python');
+            
+            // Add click handlers for all subsection headers
+            document.querySelectorAll('.sidebar-subsection-header').forEach(header => {
+                header.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            });
+        });
+
+        // Helper function to show/hide loader
+        function toggleLoader(buttonId, loaderId, show) {
+            const button = document.getElementById(buttonId);
+            const loader = document.getElementById(loaderId);
+            if (show) {
+                loader.style.display = 'block';
+                button.disabled = true;
+            } else {
+                loader.style.display = 'none';
+                button.disabled = false;
+            }
+        }
+
+        // Helper function to update URL display
+        function updateUrlDisplay(elementId, value) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.textContent = value;
+            }
+        }
+
+        // Custom Dropdown Functionality
+        function initializeDropdown(inputId, listId, searchId, optionsId, onChange) {
+            const input = document.getElementById(inputId);
+            const searchInput = document.getElementById(searchId);
+            const list = document.getElementById(listId);
+            const options = document.getElementById(optionsId);
+            let selectedValue = '';
+
+            function toggleDropdown() {
+                list.classList.toggle('active');
+                input.classList.toggle('active');
+                if (list.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            }
+
+            input.addEventListener('click', (e) => {
+                if (e.target === input || e.target === searchInput) {
+                    toggleDropdown();
+                }
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const optionElements = options.getElementsByClassName('dropdown-option');
+                let hasVisibleOptions = false;
+                
+                Array.from(optionElements).forEach(option => {
+                    const text = option.textContent.toLowerCase();
+                    const isVisible = text.includes(searchTerm);
+                    option.style.display = isVisible ? 'flex' : 'none';
+                    if (isVisible) hasVisibleOptions = true;
+                });
+
+                // Show/hide no results message
+                let noResults = options.querySelector('.no-results');
+                if (!hasVisibleOptions) {
+                    if (!noResults) {
+                        noResults = document.createElement('div');
+                        noResults.className = 'no-results';
+                        noResults.textContent = 'No languages found';
+                        options.appendChild(noResults);
+                    }
+                } else if (noResults) {
+                    noResults.remove();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !list.contains(e.target)) {
+                    list.classList.remove('active');
+                    input.classList.remove('active');
+                }
+            });
+
+            return {
+                setOptions: (languages) => {
+                    options.innerHTML = languages.map(lang => `
+                        <div class="dropdown-option" data-value="${lang.code}">
+                            <i class="fas fa-language"></i>
+                            <span>${lang.name}</span>
+                        </div>
+                    `).join('');
+
+                    options.querySelectorAll('.dropdown-option').forEach(option => {
+                        option.addEventListener('click', () => {
+                            selectedValue = option.dataset.value;
+                            searchInput.value = option.querySelector('span').textContent;
+                            options.querySelectorAll('.dropdown-option').forEach(opt => 
+                                opt.classList.remove('selected')
+                            );
+                            option.classList.add('selected');
+                            list.classList.remove('active');
+                            input.classList.remove('active');
+                            if (onChange) onChange(selectedValue);
+                        });
+                    });
+                },
+                getValue: () => selectedValue
+            };
+        }
+
+        // Initialize dropdowns
+        const newsDropdown = initializeDropdown('newsLangInput', 'newsLangList', 'newsLangSearch', 'newsLangOptions', (value) => {
+            updateUrlDisplay('newsUrlLang', value);
+        });
+
+        const latestDropdown = initializeDropdown('latestLangInput', 'latestLangList', 'latestLangSearch', 'latestLangOptions', (value) => {
+            updateUrlDisplay('latestUrlLang', value);
+        });
+
+        // Load languages on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/languages');
+                const data = await response.json();
+                
+                if (data.languages) {
+                    // Update dropdowns
+                    newsDropdown.setOptions(data.languages);
+                    latestDropdown.setOptions(data.languages);
+                    
+                    // Update Supported Languages section
+                    const languagesList = document.getElementById('languagesList');
+                    languagesList.innerHTML = data.languages.map(lang => `
+                        <div class="feature-item">
+                            <i class="fa-solid fa-language"></i>
+                            <h3>${lang.name}</h3>
+                            <p>${lang.description}</p>
+                            <code>${lang.code}</code>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading languages:', error);
+            }
+        });
+
+        // Tree View Functionality
+        function createTreeView(data, parentElement) {
+            if (typeof data !== 'object' || data === null) {
+                const valueClass = typeof data === 'string' ? 'tree-string' :
+                                typeof data === 'number' ? 'tree-number' :
+                                typeof data === 'boolean' ? 'tree-boolean' : 'tree-null';
+                parentElement.innerHTML = `<span class="tree-value ${valueClass}">${JSON.stringify(data)}</span>`;
+                return;
+            }
+
+            const isArray = Array.isArray(data);
+            const entries = isArray ? data.entries() : Object.entries(data);
+            const bracketOpen = isArray ? '[' : '{';
+            const bracketClose = isArray ? ']' : '}';
+
+            // Add opening bracket
+            const openBracket = document.createElement('span');
+            openBracket.className = 'tree-bracket';
+            openBracket.textContent = bracketOpen;
+            parentElement.appendChild(openBracket);
+
+            // Add entries
+            for (const [key, value] of entries) {
+                const node = document.createElement('div');
+                node.className = 'tree-node';
+
+                if (typeof value !== 'object' || value === null) {
+                    // For non-object values, show them inline
+                    const valueClass = typeof value === 'string' ? 'tree-string' :
+                                    typeof value === 'number' ? 'tree-number' :
+                                    typeof value === 'boolean' ? 'tree-boolean' : 'tree-null';
+                    
+                    const inlineContainer = document.createElement('div');
+                    inlineContainer.className = 'tree-inline';
+                    
+                    const keyName = document.createElement('span');
+                    keyName.className = 'tree-key-name';
+                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
+                    
+                    const colon = document.createElement('span');
+                    colon.className = 'tree-colon';
+                    colon.textContent = ':';
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = `tree-value ${valueClass}`;
+                    valueSpan.textContent = JSON.stringify(value);
+                    
+                    inlineContainer.appendChild(keyName);
+                    inlineContainer.appendChild(colon);
+                    inlineContainer.appendChild(valueSpan);
+                    node.appendChild(inlineContainer);
+                } else {
+                    const keyElement = document.createElement('div');
+                    keyElement.className = 'tree-key';
+
+                    const toggle = document.createElement('button');
+                    toggle.className = 'tree-toggle';
+                    toggle.textContent = '+';
+                    toggle.onclick = (e) => {
+                        e.stopPropagation();
+                        const content = keyElement.nextElementSibling;
+                        const isExpanded = content.classList.contains('expanded');
+                        content.classList.toggle('expanded');
+                        toggle.textContent = isExpanded ? '+' : '-';
+                    };
+
+                    const keyName = document.createElement('span');
+                    keyName.className = 'tree-key-name';
+                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
+
+                    const colon = document.createElement('span');
+                    colon.className = 'tree-colon';
+                    colon.textContent = ':';
+
+                    keyElement.appendChild(toggle);
+                    keyElement.appendChild(keyName);
+                    keyElement.appendChild(colon);
+                    node.appendChild(keyElement);
+
+                    const content = document.createElement('div');
+                    content.className = 'tree-content';
+                    createTreeView(value, content);
+                    node.appendChild(content);
+                }
+
+                parentElement.appendChild(node);
+            }
+
+            // Add closing bracket
+            const closeBracket = document.createElement('span');
+            closeBracket.className = 'tree-bracket';
+            closeBracket.textContent = bracketClose;
+            parentElement.appendChild(closeBracket);
+        }
+
+        // Initialize form submissions
+        document.querySelectorAll('.test-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formId = form.id;
+                const buttonId = formId.replace('Form', 'Button');
+                const responseId = formId.replace('Form', 'Response');
+                const controlsId = formId.replace('Form', 'ResponseControls');
+                const viewToggleId = formId.replace('Form', 'ViewToggle');
+                
+                const button = document.getElementById(buttonId);
+                const loader = document.getElementById(buttonId + 'Loader');
+                const responseArea = document.getElementById(responseId);
+                const controls = document.getElementById(controlsId);
+                const viewToggle = document.getElementById(viewToggleId);
+                
+                if (!button || !loader || !responseArea || !controls || !viewToggle) {
+                    console.error('Required elements not found:', {
+                        button: buttonId,
+                        loader: buttonId + 'Loader',
+                        response: responseId,
+                        controls: controlsId,
+                        toggle: viewToggleId
+                    });
+                    return;
+                }
+                
+                loader.style.display = 'block';
+                button.disabled = true;
+                
+                try {
+                    let url = '';
+                    let params = {};
+                    
+                    switch(formId) {
+                        case 'newsTestForm':
+                            url = '/news';
+                            const newsLang = document.getElementById('newsLangSearch').value;
+                            if (newsLang) {
+                                params.lang = newsLang;
+                            }
+                            break;
+                        case 'latestTestForm':
+                            url = '/latest';
+                            const latestLang = document.getElementById('latestLangSearch').value;
+                            if (latestLang) {
+                                params.lang = latestLang;
+                            }
+                            break;
+                        case 'languagesTestForm':
+                            url = '/languages';
+                            break;
+                    }
+
+                    const response = await fetch(url + (Object.keys(params).length ? '?' + new URLSearchParams(params) : ''));
+                    const data = await response.json();
+                    
+                    responseArea.innerHTML = JSON.stringify(data, null, 2);
+                    responseArea.style.display = 'block';
+                    controls.style.display = 'flex';
+                    
+                    // Reset view toggle
+                    viewToggle.textContent = 'Switch to Tree View';
+                    viewToggle.onclick = (e) => {
+                        e.preventDefault();
+                        if (viewToggle.textContent === 'Switch to Tree View') {
+                            responseArea.innerHTML = '';
+                            const treeContainer = document.createElement('div');
+                            treeContainer.className = 'tree-view';
+                            createTreeView(data, treeContainer);
+                            responseArea.appendChild(treeContainer);
+                            viewToggle.textContent = 'Switch to Raw View';
+                        } else {
+                            responseArea.innerHTML = JSON.stringify(data, null, 2);
+                            viewToggle.textContent = 'Switch to Tree View';
+                        }
+                    };
+                } catch (error) {
+                    console.error('Error:', error);
+                    if (responseArea) {
+                        responseArea.textContent = 'Error: ' + error.message;
+                        responseArea.style.display = 'block';
+                        controls.style.display = 'flex';
+                    }
+                } finally {
+                    if (button && loader) {
+                        loader.style.display = 'none';
+                        button.disabled = false;
+                    }
+                }
+            });
+        });
+
+        function toggleTreeView() {
+            const treeView = document.getElementById('tree-view');
+            treeView.style.display = treeView.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show feedback
+            const button = codeElement.parentElement.parentElement.querySelector('.copy-btn');
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.backgroundColor = '#28a745';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.backgroundColor = '#007bff';
+            }, 2000);
+        }
+
+        // Sidebar section toggle functions
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const header = section.previousElementSibling;
+            
+            section.classList.toggle('active');
+            header.classList.toggle('active');
+        }
+
+        function toggleSubsection(subsectionId) {
+            const subsection = document.getElementById(subsectionId);
+            const header = subsection.previousElementSibling;
+            
+            subsection.classList.toggle('active');
+            header.classList.toggle('active');
+        }
+
+        // Language-specific code examples
+        const codeExamples = {
+            python: `import requests
+
+# Get news for Bengali
+response = requests.get('https://bbc-news-api.vercel.app/news?lang=bengali')
+news = response.json()
+
+# Get latest news for Chinese
+response = requests.get('https://bbc-news-api.vercel.app/latest?lang=chinese')
+latest_news = response.json()
+
+# Get list of supported languages
+response = requests.get('https://bbc-news-api.vercel.app/languages')
+languages = response.json()`,
+            javascript: `// Get news for Turkish
+fetch('https://bbc-news-api.vercel.app/news?lang=turkish')
+  .then(response => response.json())
+  .then(news => console.log(news));
+
+// Get latest news for Spanish
+fetch('https://bbc-news-api.vercel.app/latest?lang=spanish')
+  .then(response => response.json())
+  .then(latest_news => console.log(latest_news));
+
+// Get list of supported languages
+fetch('https://bbc-news-api.vercel.app/languages')
+  .then(response => response.json())
+  .then(languages => console.log(languages));`,
+            php: `<?php
+// Get news for Portuguese
+$news = file_get_contents('https://bbc-news-api.vercel.app/news?lang=portuguese');
+$news_data = json_decode($news, true);
+
+// Get latest news for Russian
+$latest = file_get_contents('https://bbc-news-api.vercel.app/latest?lang=russian');
+$latest_news = json_decode($latest, true);
+
+// Get list of supported languages
+$languages = file_get_contents('https://bbc-news-api.vercel.app/languages');
+$supported_languages = json_decode($languages, true);`,
+            ruby: `require 'net/http'
+require 'json'
+
+# Get news for Japanese
+uri = URI('https://bbc-news-api.vercel.app/news?lang=japanese')
+response = Net::HTTP.get_response(uri)
+news = JSON.parse(response.body)
+
+# Get latest news for Korean
+uri = URI('https://bbc-news-api.vercel.app/latest?lang=korean')
+response = Net::HTTP.get_response(uri)
+latest_news = JSON.parse(response.body)
+
+# Get list of supported languages
+uri = URI('https://bbc-news-api.vercel.app/languages')
+response = Net::HTTP.get_response(uri)
+languages = JSON.parse(response.body)`,
+            java: `import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.URI;
+import org.json.JSONObject;
+
+// Get news for Hindi
+HttpClient client = HttpClient.newHttpClient();
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create("https://bbc-news-api.vercel.app/news?lang=hindi"))
+    .build();
+
+HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+JSONObject news = new JSONObject(response.body());`
+        };
+
+        // Function to update code example based on selected language
+        function updateCodeExample(language) {
+            const codeContent = document.getElementById('code-content');
+            const selectedLanguage = language.toLowerCase();
+            if (codeExamples[selectedLanguage]) {
+                codeContent.textContent = codeExamples[selectedLanguage];
+            }
+        }
+
+        // Language selector functionality
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('languageDropdown');
+            const button = document.querySelector('.language-selector-button');
+            dropdown.classList.toggle('active');
+            button.classList.toggle('active');
+        }
+
+        function selectLanguage(language) {
+            const dropdown = document.getElementById('languageDropdown');
+            const button = document.querySelector('.language-selector-button');
+            const selectedLanguage = document.getElementById('selectedLanguage');
+            
+            // Update selected language
+            selectedLanguage.textContent = language.charAt(0).toUpperCase() + language.slice(1);
+            
+            // Update selected state in dropdown
+            document.querySelectorAll('.language-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.querySelector('span').textContent.toLowerCase() === language) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Close dropdown
+            dropdown.classList.remove('active');
+            button.classList.remove('active');
+            
+            // Update code example
+            updateCodeExample(language);
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('languageDropdown');
+            const button = document.querySelector('.language-selector-button');
+            
+            if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+                dropdown.classList.remove('active');
+                button.classList.remove('active');
+            }
+        });
+
+        // Function to copy code to clipboard with animation
+        function copyCode() {
+            const codeContent = document.getElementById('code-content').textContent;
+            const copyBtn = document.getElementById('copy-btn');
+            
+            // Create a temporary textarea element
+            const textarea = document.createElement('textarea');
+            textarea.value = codeContent;
+            document.body.appendChild(textarea);
+            textarea.select();
+            
+            try {
+                // Execute copy command
+                document.execCommand('copy');
+                
+                // Update button appearance
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyBtn.classList.add('copied');
+                
+                // Revert back after 1.5 seconds
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    copyBtn.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                copyBtn.innerHTML = '<i class="fas fa-times"></i> Failed!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 1500);
+            } finally {
+                // Clean up
+                document.body.removeChild(textarea);
+            }
+        }
+    </script>
 </body>
 </html>

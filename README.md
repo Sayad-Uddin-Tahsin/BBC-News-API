@@ -1,14 +1,14 @@
 <p align="center">
-    <a href="https://bbc-api.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png"><img alt="Logo" src="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" height=100 width=100></picture></a>
+    <a href="https://bbc-news-api.vercel.app"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png"><img alt="Logo" src="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" width=100%></picture></a>
 </p>
 
 # BBC News API
 Discover the world of news through the lens of the BBC News API. With access to a rich array of news content spanning over 31 languages, this API serves as a gateway to the latest updates from the British Broadcasting Corporation (BBC). Seamlessly integrate trusted news sources into your applications, offering users a diverse and comprehensive view of current events. Empower your audience with timely and reliable information, curated by one of the most respected news organizations worldwide.
 
-<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/website?url=https%3A%2F%2Fbbc-api.vercel.app%2Fping&up_message=Online&down_message=Offline&label=API" height=22></a>
-<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbbc-api.vercel.app%2Fnews%3Flang%3Dbengali&query=%24%5B'elapsed%20time'%5D&label=Latency" height=22></a>
-<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/github/license/Sayad-Uddin-Tahsin/BBC-News-API" height=22></a>
-<a href="https://bbc-api.vercel.app"><img src="https://img.shields.io/badge/Supported%20Language-31-deepgreen" height=22></a>
+<a href="https://bbc-news-api.vercel.app"><img src="https://img.shields.io/website?url=https%3A%2F%2Fbbc-news-api.vercel.app%2Fping&up_message=Online&down_message=Offline&label=API" height=22></a>
+<a href="https://bbc-news-api.vercel.app"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fbbc-news-api.vercel.app%2Fnews%3Flang%3Dbengali&query=%24%5B'elapsed%20time'%5D&label=Latency" height=22></a>
+<a href="https://bbc-news-api.vercel.app"><img src="https://img.shields.io/github/license/Sayad-Uddin-Tahsin/BBC-News-API" height=22></a>
+<a href="https://bbc-news-api.vercel.app"><img src="https://img.shields.io/badge/Supported%20Language-31-deepgreen" height=22></a>
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/visit-badge?theme=dark"><img alt="Requests Badge" src="https://web-badge-psi.vercel.app/visit-badge?theme=light"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="https://web-badge-psi.vercel.app/latency-badge?theme=dark"><img alt="Latency Badge" src="https://web-badge-psi.vercel.app/latency-badge?theme=light"></picture>
@@ -35,10 +35,10 @@ graph TD;
 ```
 
 ## Documentation
-The official BBC News API documentation can be found [here](http://bbc-api.vercel.app/documentation)
+The official BBC News API documentation can be found [here](http://bbc-news-api.vercel.app/documentation)
 
 ## Endpoints
-URL Formation: `https://bbc-api.vercel.app/<type>?lang=<language>`
+URL Formation: `https://bbc-news-api.vercel.app/<type>?lang=<language>`
 
 Types & Languages are in [Endpoints.md](https://github.com/Sayad-Uddin-Tahsin/BBC-Bangla-API/blob/main/Endpoints.md)
 
@@ -113,7 +113,7 @@ for category in categories:
 # pip install requests
 import requests
 
-response = requests.get("https://bbc-api.vercel.app/news?lang=bengali").json()
+response = requests.get("https://bbc-news-api.vercel.app/news?lang=bengali").json()
 print(response)
 ```
 
@@ -128,7 +128,7 @@ print(response)
 ```js
 const axios = require('axios');
 
-axios.get('https://bbc-api.vercel.app/news?lang=chinese')
+axios.get('https://bbc-news-api.vercel.app/news?lang=chinese')
   .then(response => {
     console.log(response.data);
   })
@@ -145,7 +145,7 @@ axios.get('https://bbc-api.vercel.app/news?lang=chinese')
 <summary>JavaScript (Browser)</summary>
 
 ```py
-fetch('https://bbc-api.vercel.app/news?lang=turkish')
+fetch('https://bbc-news-api.vercel.app/news?lang=turkish')
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.log(error));
@@ -159,7 +159,7 @@ fetch('https://bbc-api.vercel.app/news?lang=turkish')
 <summary>PHP</summary>
 
 ```php
-$response = file_get_contents('https://bbc-api.vercel.app/news?lang=spanish');
+$response = file_get_contents('https://bbc-news-api.vercel.app/news?lang=spanish');
 $data = json_decode($response);
 print_r($data);
 ```
@@ -175,7 +175,7 @@ print_r($data);
 require 'net/http'
 require 'json'
 
-uri = URI('https://bbc-api.vercel.app/news?lang=portuguese')
+uri = URI('https://bbc-news-api.vercel.app/news?lang=portuguese')
 response = Net::HTTP.get(uri)
 data = JSON.parse(response)
 puts data
@@ -196,7 +196,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try {
-            URL url = new URL("https://bbc-api.vercel.app/news?lang=russian");
+            URL url = new URL("https://bbc-news-api.vercel.app/news?lang=russian");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
@@ -235,7 +235,7 @@ The response is received in `json` format. So, it might look a bit messy but don
    },
    "Top story - Zhongwen":[
       {
-         "title":"台积电赴德国设厂：为何引发台湾与欧盟“晶片外交”争议",
+         "title":"台积电赴德国设厂：为何引发台湾与欧盟"晶片外交"争议",
          "news_link":"https://www.bbc.com/zhongwen/simp/business-65010920",
          "image_link":"https://ichef.bbci.co.uk/news/640/cpsprodpb/111C9/production/_113598007_whatsubject.jpg"
       },
@@ -260,7 +260,7 @@ The response is received in `json` format. So, it might look a bit messy but don
          "image_link":"https://ichef.bbci.co.uk/images/ic/512xn/p0f9cl9n.jpg"
       },
       {
-         "title":"“大而不倒”的瑞信股价暴跌 比硅谷银行倒闭更像“雷曼时刻”",
+         "title":""大而不倒"的瑞信股价暴跌 比硅谷银行倒闭更像"雷曼时刻"",
          "news_link":"https://www.bbc.com/zhongwen/simp/business-64976475",
          "image_link":"https://ichef.bbci.co.uk/news/640/cpsprodpb/1269B/production/_128991457_creditsuisse_reuters.jpg"
       },

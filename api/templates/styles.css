@@ -478,11 +478,3 @@ body {
         font-size: 0.9rem;
     }
 }
-/* Remove all network animation related CSS */
-.network-container,
-.network-dot,
-.network-line,
-@keyframes dotPulse,
-@keyframes lineFade {
-    display: none;
-}

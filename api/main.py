@@ -312,11 +312,10 @@ async def ping():
 @app.route("/docs/")
 @app.route("/documentation")
 @app.route("/documentation/")
-@visit_register
 async def doc():
     lang = random.choice(list(urls.keys()))
     logger.info(f"{ctime()}: DOC endpoint called - 200")
-    return (flask.request.headers, flask.render_template("documentation.html", listOfLangs="\n".join([f"<li>{key.capitalize()}: <code>{key}</code></li>" for key in sorted(urls.keys())]), type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year)))
+    return flask.render_template("documentation.html", listOfLangs="\n".join([f"<li>{key.capitalize()}: <code>{key}</code></li>" for key in sorted(urls.keys())]), type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year))
 
 @app.route('/favicon.ico')
 def favicon():
@@ -433,7 +432,28 @@ async def log(pin):
 # Serve static files for index page
 @app.route('/static/<path:filename>')
 def static_files(filename):
-    return send_from_directory('api/templates', filename)
+    return send_from_directory(app.static_folder, filename)
+
+@app.route("/languages")
+@visit_register
+async def languages():
+    response = {
+        "status": 200,
+        "languages": [
+            {
+                "code": code,
+                "name": code.capitalize(),
+                "url": url,
+                "description": f"BBC News in {code.capitalize()}"
+            }
+            for code, url in urls.items()
+        ]
+    }
+    return (flask.request.headers, flask.Response(
+        json.dumps(response, ensure_ascii=False).encode("utf8"),
+        mimetype="application/json; charset=utf-8",
+        status=200,
+    ))
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
