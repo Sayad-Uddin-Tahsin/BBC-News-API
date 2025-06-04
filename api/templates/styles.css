@@ -152,7 +152,8 @@ body {
     color: var(--nav-hover);
 }
 .header {
-    background: var(--header-bg);
+    background: linear-gradient(135deg, rgba(74, 144, 226, 0.15) 0%, rgba(74, 144, 226, 0.05) 25%, rgba(74, 144, 226, 0) 33%),
+                linear-gradient(315deg, rgba(74, 144, 226, 0.15) 0%, rgba(74, 144, 226, 0.05) 25%, rgba(74, 144, 226, 0) 33%);
     color: var(--header-text);
     display: flex;
     flex-direction: column;
