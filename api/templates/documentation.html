@@ -24,7 +24,7 @@
             --footer-text: #4a5568;
             --github-btn-bg: #000035;
             --github-btn-text: #fff;
-            --github-btn-hover: #4a90e2;
+            --github-btn-hover: #000035;
             --getstarted-bg: #4a90e2;
             --getstarted-text: #fff;
             --getstarted-hover: #357abd;
@@ -559,15 +559,118 @@
         }
 
         .response-area {
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
+            background-color: var(--doc-code-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 8px;
             padding: 1rem;
             margin-top: 1rem;
-            max-height: 400px;
+            display: none;
+            max-height: 500px;
             overflow-y: auto;
-            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        .response-controls {
+            display: none;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .response-area.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .response-area pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             max-width: 100%;
+        }
+
+        .response-area code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            max-width: 100%;
+        }
+
+        .endpoint-test {
+            position: relative;
+            transition: height 0.3s ease;
+            scroll-margin-top: 20px;
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-option:hover {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .dropdown-option.selected {
+            background-color: var(--doc-sidebar-hover);
+        }
+
+        .dropdown-option.selected i {
+            color: var(--feature-title);
+        }
+
+        .loading-spinner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            color: var(--feature-title);
+            pointer-events: none;
+        }
+
+        .loading-spinner .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--feature-title);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .endpoint-test {
+            position: relative;
+            transition: height 0.3s ease;
         }
 
         .response-controls {
@@ -594,19 +697,20 @@
 
         /* Tree View specific styles */
         .tree-view {
-            font-family: 'Consolas', monospace;
-            padding: 0.5rem 0;
             width: 100%;
             max-width: 100%;
             box-sizing: border-box;
             white-space: nowrap;
             overflow-x: auto;
+            position: relative;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
         }
 
         .tree-node {
             margin-left: 1.5rem;
             max-width: 100%;
             white-space: nowrap;
+            position: relative;
         }
 
         .tree-key {
@@ -710,18 +814,6 @@
             display: block;
         }
 
-        /* Raw JSON view styles */
-        .response-area pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            margin: 0;
-        }
-
-        .response-area code {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
         .error-codes {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -797,6 +889,9 @@
 
         .mobile-nav-buttons {
             display: none;
+            border-top: 1px solid var(--doc-border);
+            margin-top: 1rem;
+            padding-top: 0.1rem;
         }
         
         /* Responsive Design */
@@ -983,6 +1078,13 @@
 
             .feature-item code {
                 font-size: 0.85rem;
+            }
+            .mobile-nav-buttons {
+                display: block;
+            }
+            .github-btn {
+                width: -webkit-fill-available;
+                justify-content: center;
             }
         }
 
@@ -1331,6 +1433,7 @@
             z-index: 1000;
             display: none;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
         }
 
         .dropdown-list.active {
@@ -1342,12 +1445,12 @@
         }
 
         .dropdown-option {
-            padding: 0.75rem;
+            padding: 0.5rem 1rem;
             cursor: pointer;
-            transition: background-color 0.2s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            transition: background-color 0.2s;
         }
 
         .dropdown-option:hover {
@@ -1355,8 +1458,7 @@
         }
 
         .dropdown-option.selected {
-            background-color: var(--doc-sidebar-active);
-            color: white;
+            background-color: var(--doc-sidebar-hover);
         }
 
         .dropdown-option i {
@@ -1365,7 +1467,7 @@
         }
 
         .dropdown-option.selected i {
-            color: white;
+            color: var(--feature-title);
         }
 
         .no-results {
@@ -1766,6 +1868,7 @@
             border-radius: 50%;
             background-color: var(--feature-title);
         }
+
     </style>
 </head>
 <body>
@@ -1777,8 +1880,8 @@
         </div>
         <div class="navbar-right">
             <div class="navbar-links">
-                <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
                 <a class="navbar-link" href="/"><i class="fa-solid fa-home"></i> Home</a>
+                <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
                 <button class="github-btn" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
                     <i class="fab fa-github"></i> GitHub
                 </button>
@@ -1805,11 +1908,11 @@
                 <li><a href="#how-to-use">How to use?</a></li>
                 
                 <div class="mobile-nav-buttons">
-                    <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank">
-                        <i class="fa-regular fa-comments"></i> Discussions
-                    </a>
                     <a class="navbar-link" href="/">
                         <i class="fa-solid fa-home"></i> Home
+                    </a>
+                    <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank">
+                        <i class="fa-regular fa-comments"></i> Discussions
                     </a>
                     <button class="github-btn" style="margin-left: 0;" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
                         <i class="fab fa-github"></i> GitHub
@@ -2175,7 +2278,7 @@
                         </div>
                     </div>
                     <div class="endpoint-test">
-                        <div class="endpoint-url">
+                        <div class="endpoint-url" data-copyable="true">
                             <span class="method">GET</span>
                             <span class="url">/languages</span>
                         </div>
@@ -2276,9 +2379,13 @@
                 if (urlLang) urlLang.textContent = '';
             });
 
-            // Reset dropdowns
+            // Reset dropdowns and their parent heights
             document.querySelectorAll('.dropdown-list').forEach(list => {
                 list.classList.remove('active');
+                const parent = list.closest('.endpoint-test');
+                if (parent) {
+                    parent.style.height = '';
+                }
             });
             document.querySelectorAll('.dropdown-input').forEach(input => {
                 input.classList.remove('active');
@@ -2396,13 +2503,51 @@
             const searchInput = document.getElementById(searchId);
             const list = document.getElementById(listId);
             const options = document.getElementById(optionsId);
+            const parent = list.closest('.endpoint-test');
             let selectedValue = '';
+            let originalHeight = '';
 
             function toggleDropdown() {
+                const isActive = list.classList.contains('active');
                 list.classList.toggle('active');
                 input.classList.toggle('active');
-                if (list.classList.contains('active')) {
+                
+                if (!isActive) {
+                    // Opening dropdown
                     searchInput.focus();
+                    if (!originalHeight) {
+                        originalHeight = parent.style.height;
+                    }
+                    const optionsHeight = Math.min(options.scrollHeight, 300) - 44; // Max height of 300px minus 44px
+                    const currentHeight = parent.offsetHeight;
+                    const newHeight = currentHeight + optionsHeight;
+                    
+                    // Only adjust height if new height is greater than current height
+                    if (newHeight > currentHeight) {
+                        parent.style.height = `${newHeight}px`;
+                        // Smooth scroll to the dropdown if it's below viewport (only for <= 1024px)
+                        if (window.innerWidth <= 1024) {
+                            const dropdownBottom = parent.getBoundingClientRect().bottom;
+                            const viewportHeight = window.innerHeight;
+                            if (dropdownBottom > viewportHeight) {
+                                window.scrollTo({
+                                    top: window.scrollY + (dropdownBottom - viewportHeight) + 20,
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    }
+                } else {
+                    // Closing dropdown
+                    parent.style.height = originalHeight || '';
+                    // Smooth scroll to the element without height extension (only for <= 1024px)
+                    if (window.innerWidth <= 1024) {
+                        const elementTop = parent.getBoundingClientRect().top + window.scrollY;
+                        window.scrollTo({
+                            top: elementTop - 20,
+                            behavior: 'smooth'
+                        });
+                    }
                 }
             }
 
@@ -2440,13 +2585,18 @@
 
             document.addEventListener('click', (e) => {
                 if (!input.contains(e.target) && !list.contains(e.target)) {
-                    list.classList.remove('active');
-                    input.classList.remove('active');
+                    if (list.classList.contains('active')) {
+                        toggleDropdown();
+                    }
                 }
             });
 
             return {
                 setOptions: (languages) => {
+                    if (!Array.isArray(languages)) {
+                        console.error('Languages data is not an array:', languages);
+                        return;
+                    }
                     options.innerHTML = languages.map(lang => `
                         <div class="dropdown-option" data-value="${lang.code}">
                             <i class="fas fa-language"></i>
@@ -2462,145 +2612,22 @@
                                 opt.classList.remove('selected')
                             );
                             option.classList.add('selected');
-                            list.classList.remove('active');
-                            input.classList.remove('active');
+                            
+                            // Update the endpoint URL with the selected language
+                            const endpointUrl = input.closest('.endpoint-test').querySelector('.endpoint-url .url');
+                            if (endpointUrl) {
+                                const baseUrl = endpointUrl.textContent.split('?')[0];
+                                endpointUrl.textContent = `${baseUrl}?lang=${selectedValue}`;
+                                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'true');
+                            }
+                            
                             if (onChange) onChange(selectedValue);
+                            toggleDropdown();
                         });
                     });
                 },
                 getValue: () => selectedValue
             };
-        }
-
-        // Initialize dropdowns
-        const newsDropdown = initializeDropdown('newsLangInput', 'newsLangList', 'newsLangSearch', 'newsLangOptions', (value) => {
-            updateUrlDisplay('newsUrlLang', value);
-        });
-
-        const latestDropdown = initializeDropdown('latestLangInput', 'latestLangList', 'latestLangSearch', 'latestLangOptions', (value) => {
-            updateUrlDisplay('latestUrlLang', value);
-        });
-
-        // Load languages on page load
-        window.addEventListener('load', async () => {
-            try {
-                const response = await fetch('/languages');
-                const data = await response.json();
-                
-                if (data.languages) {
-                    // Update dropdowns
-                    newsDropdown.setOptions(data.languages);
-                    latestDropdown.setOptions(data.languages);
-                    
-                    // Update Supported Languages section
-                    const languagesList = document.getElementById('languagesList');
-                    languagesList.innerHTML = data.languages.map(lang => `
-                        <div class="feature-item">
-                            <i class="fa-solid fa-language"></i>
-                            <h3>${lang.name}</h3>
-                            <p>${lang.description}</p>
-                            <code>${lang.code}</code>
-                        </div>
-                    `).join('');
-                }
-            } catch (error) {
-                console.error('Error loading languages:', error);
-            }
-        });
-
-        // Tree View Functionality
-        function createTreeView(data, parentElement) {
-            if (typeof data !== 'object' || data === null) {
-                const valueClass = typeof data === 'string' ? 'tree-string' :
-                                typeof data === 'number' ? 'tree-number' :
-                                typeof data === 'boolean' ? 'tree-boolean' : 'tree-null';
-                parentElement.innerHTML = `<span class="tree-value ${valueClass}">${JSON.stringify(data)}</span>`;
-                return;
-            }
-
-            const isArray = Array.isArray(data);
-            const entries = isArray ? data.entries() : Object.entries(data);
-            const bracketOpen = isArray ? '[' : '{';
-            const bracketClose = isArray ? ']' : '}';
-
-            // Add opening bracket
-            const openBracket = document.createElement('span');
-            openBracket.className = 'tree-bracket';
-            openBracket.textContent = bracketOpen;
-            parentElement.appendChild(openBracket);
-
-            // Add entries
-            for (const [key, value] of entries) {
-                const node = document.createElement('div');
-                node.className = 'tree-node';
-
-                if (typeof value !== 'object' || value === null) {
-                    // For non-object values, show them inline
-                    const valueClass = typeof value === 'string' ? 'tree-string' :
-                                    typeof value === 'number' ? 'tree-number' :
-                                    typeof value === 'boolean' ? 'tree-boolean' : 'tree-null';
-                    
-                    const inlineContainer = document.createElement('div');
-                    inlineContainer.className = 'tree-inline';
-                    
-                    const keyName = document.createElement('span');
-                    keyName.className = 'tree-key-name';
-                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
-                    
-                    const colon = document.createElement('span');
-                    colon.className = 'tree-colon';
-                    colon.textContent = ':';
-                    
-                    const valueSpan = document.createElement('span');
-                    valueSpan.className = `tree-value ${valueClass}`;
-                    valueSpan.textContent = JSON.stringify(value);
-                    
-                    inlineContainer.appendChild(keyName);
-                    inlineContainer.appendChild(colon);
-                    inlineContainer.appendChild(valueSpan);
-                    node.appendChild(inlineContainer);
-                } else {
-                    const keyElement = document.createElement('div');
-                    keyElement.className = 'tree-key';
-
-                    const toggle = document.createElement('button');
-                    toggle.className = 'tree-toggle';
-                    toggle.textContent = '+';
-                    toggle.onclick = (e) => {
-                        e.stopPropagation();
-                        const content = keyElement.nextElementSibling;
-                        const isExpanded = content.classList.contains('expanded');
-                        content.classList.toggle('expanded');
-                        toggle.textContent = isExpanded ? '+' : '-';
-                    };
-
-                    const keyName = document.createElement('span');
-                    keyName.className = 'tree-key-name';
-                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
-
-                    const colon = document.createElement('span');
-                    colon.className = 'tree-colon';
-                    colon.textContent = ':';
-
-                    keyElement.appendChild(toggle);
-                    keyElement.appendChild(keyName);
-                    keyElement.appendChild(colon);
-                    node.appendChild(keyElement);
-
-                    const content = document.createElement('div');
-                    content.className = 'tree-content';
-                    createTreeView(value, content);
-                    node.appendChild(content);
-                }
-
-                parentElement.appendChild(node);
-            }
-
-            // Add closing bracket
-            const closeBracket = document.createElement('span');
-            closeBracket.className = 'tree-bracket';
-            closeBracket.textContent = bracketClose;
-            parentElement.appendChild(closeBracket);
         }
 
         // Initialize form submissions
@@ -2660,9 +2687,15 @@
                     const response = await fetch(url + (Object.keys(params).length ? '?' + new URLSearchParams(params) : ''));
                     const data = await response.json();
                     
-                    responseArea.innerHTML = JSON.stringify(data, null, 2);
+                    responseArea.innerHTML = JSON.stringify(data);
                     responseArea.style.display = 'block';
                     controls.style.display = 'flex';
+                    
+                    // Force a reflow to ensure the element is visible
+                    responseArea.offsetHeight;
+                    
+                    // Smooth scroll to response area
+                    responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     
                     // Reset view toggle
                     viewToggle.textContent = 'Switch to Tree View';
@@ -2670,15 +2703,14 @@
                         e.preventDefault();
                         if (viewToggle.textContent === 'Switch to Tree View') {
                             responseArea.innerHTML = '';
-                            const treeContainer = document.createElement('div');
-                            treeContainer.className = 'tree-view';
-                            createTreeView(data, treeContainer);
-                            responseArea.appendChild(treeContainer);
+                            createTreeView(data, responseArea);
                             viewToggle.textContent = 'Switch to Raw View';
                         } else {
-                            responseArea.innerHTML = JSON.stringify(data, null, 2);
+                            responseArea.innerHTML = JSON.stringify(data);
                             viewToggle.textContent = 'Switch to Tree View';
                         }
+                        // Smooth scroll to response area after view change
+                        responseArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     };
                 } catch (error) {
                     console.error('Error:', error);
@@ -2841,6 +2873,208 @@
         // Initialize code example on page load
         document.addEventListener('DOMContentLoaded', () => {
             updateCodeExample('python');
+        });
+
+        // Tree View Functionality
+        function createTreeView(data, parentElement) {
+            if (typeof data !== 'object' || data === null) {
+                const valueClass = typeof data === 'string' ? 'tree-string' :
+                                typeof data === 'number' ? 'tree-number' :
+                                typeof data === 'boolean' ? 'tree-boolean' : 'tree-null';
+                parentElement.innerHTML = `<span class="tree-value ${valueClass}">${JSON.stringify(data)}</span>`;
+                return;
+            }
+
+            const isArray = Array.isArray(data);
+            const entries = isArray ? data.entries() : Object.entries(data);
+            const bracketOpen = isArray ? '[' : '{';
+            const bracketClose = isArray ? ']' : '}';
+
+            // Add opening bracket
+            const openBracket = document.createElement('span');
+            openBracket.className = 'tree-bracket';
+            openBracket.textContent = bracketOpen;
+            parentElement.appendChild(openBracket);
+
+            // Add entries
+            for (const [key, value] of entries) {
+                const node = document.createElement('div');
+                node.className = 'tree-node';
+
+                if (typeof value !== 'object' || value === null) {
+                    // For non-object values, show them inline
+                    const valueClass = typeof value === 'string' ? 'tree-string' :
+                                    typeof value === 'number' ? 'tree-number' :
+                                    typeof value === 'boolean' ? 'tree-boolean' : 'tree-null';
+                    
+                    const inlineContainer = document.createElement('div');
+                    inlineContainer.className = 'tree-inline';
+                    
+                    const keyName = document.createElement('span');
+                    keyName.className = 'tree-key-name';
+                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
+                    
+                    const colon = document.createElement('span');
+                    colon.className = 'tree-colon';
+                    colon.textContent = ':';
+                    
+                    const valueSpan = document.createElement('span');
+                    valueSpan.className = `tree-value ${valueClass}`;
+                    valueSpan.textContent = JSON.stringify(value);
+                    
+                    inlineContainer.appendChild(keyName);
+                    inlineContainer.appendChild(colon);
+                    inlineContainer.appendChild(valueSpan);
+                    node.appendChild(inlineContainer);
+                } else {
+                    const keyElement = document.createElement('div');
+                    keyElement.className = 'tree-key';
+
+                    const toggle = document.createElement('button');
+                    toggle.className = 'tree-toggle';
+                    toggle.textContent = '+';
+                    toggle.onclick = (e) => {
+                        e.stopPropagation();
+                        const content = keyElement.nextElementSibling;
+                        const isExpanded = content.classList.contains('expanded');
+                        content.classList.toggle('expanded');
+                        toggle.textContent = isExpanded ? '+' : '-';
+                    };
+
+                    const keyName = document.createElement('span');
+                    keyName.className = 'tree-key-name';
+                    keyName.textContent = isArray ? `[${key}]` : `"${key}"`;
+
+                    const colon = document.createElement('span');
+                    colon.className = 'tree-colon';
+                    colon.textContent = ':';
+
+                    keyElement.appendChild(toggle);
+                    keyElement.appendChild(keyName);
+                    keyElement.appendChild(colon);
+                    node.appendChild(keyElement);
+
+                    const content = document.createElement('div');
+                    content.className = 'tree-content';
+                    createTreeView(value, content);
+                    node.appendChild(content);
+                }
+
+                parentElement.appendChild(node);
+            }
+
+            // Add closing bracket
+            const closeBracket = document.createElement('span');
+            closeBracket.className = 'tree-bracket';
+            closeBracket.textContent = bracketClose;
+            parentElement.appendChild(closeBracket);
+        }
+
+        // Initialize dropdowns
+        const newsDropdown = initializeDropdown('newsLangInput', 'newsLangList', 'newsLangSearch', 'newsLangOptions', (value) => {
+            document.getElementById('newsLangInput').value = value;
+            // Update the endpoint URL
+            const endpointUrl = document.querySelector('#newsEndpoint .endpoint-url .url');
+            if (endpointUrl) {
+                const baseUrl = endpointUrl.textContent.split('?')[0];
+                endpointUrl.textContent = `${baseUrl}?lang=${value}`;
+                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'true');
+            }
+        });
+
+        const latestDropdown = initializeDropdown('latestLangInput', 'latestLangList', 'latestLangSearch', 'latestLangOptions', (value) => {
+            document.getElementById('latestLangInput').value = value;
+            // Update the endpoint URL
+            const endpointUrl = document.querySelector('#latestEndpoint .endpoint-url .url');
+            if (endpointUrl) {
+                const baseUrl = endpointUrl.textContent.split('?')[0];
+                endpointUrl.textContent = `${baseUrl}?lang=${value}`;
+                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'true');
+            }
+        });
+
+        // Add loading spinner to dropdowns
+        const newsLangOptions = document.getElementById('newsLangOptions');
+        const latestLangOptions = document.getElementById('latestLangOptions');
+        const loadingSpinner = document.createElement('div');
+        loadingSpinner.className = 'loading-spinner';
+        loadingSpinner.innerHTML = '<div class="spinner"></div>';
+        newsLangOptions.appendChild(loadingSpinner.cloneNode(true));
+        latestLangOptions.appendChild(loadingSpinner.cloneNode(true));
+
+        // Function to adjust dropdown height
+        function adjustDropdownHeight(dropdownList) {
+            const list = document.getElementById(dropdownList);
+            const parent = list.closest('.endpoint-test');
+            const options = list.querySelector('.dropdown-options');
+            if (!list || !parent || !options) return;
+
+            const optionsHeight = Math.min(options.scrollHeight, 300) - 44;
+            const currentHeight = parent.offsetHeight;
+            const newHeight = currentHeight + optionsHeight;
+            
+            if (newHeight > currentHeight) {
+                parent.style.height = `${newHeight}px`;
+                const dropdownBottom = parent.getBoundingClientRect().bottom;
+                const viewportHeight = window.innerHeight;
+                if (dropdownBottom > viewportHeight) {
+                    window.scrollTo({
+                        top: window.scrollY + (dropdownBottom - viewportHeight) + 20,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        }
+
+        // Fetch languages on page load
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/languages');
+                const data = await response.json();
+                
+                // Extract languages array from response
+                const languages = data.languages || [];
+                
+                // Update dropdown options
+                newsDropdown.setOptions(languages);
+                latestDropdown.setOptions(languages);
+                
+                // Update Supported Languages section
+                const languagesList = document.getElementById('languagesList');
+                if (languagesList) {
+                    languagesList.innerHTML = languages.map(lang => `
+                        <div class="feature-item">
+                            <i class="fa-solid fa-language"></i>
+                            <h3>${lang.name}</h3>
+                            <p>${lang.description}</p>
+                            <code>${lang.code}</code>
+                        </div>
+                    `).join('');
+                }
+
+                // Remove loading spinners
+                document.querySelectorAll('.loading-spinner').forEach(spinner => spinner.remove());
+
+                // Re-trigger height adjustment for dropdowns by simulating a click
+                const newsLangInput = document.getElementById('newsLangInput');
+                const latestLangInput = document.getElementById('latestLangInput');
+                if (newsLangInput) {
+                    newsLangInput.click();
+                    newsLangInput.click();
+                }
+                if (latestLangInput) {
+                    latestLangInput.click();
+                    latestLangInput.click();
+                }
+            } catch (error) {
+                console.error('Error fetching languages:', error);
+                // Show error in dropdowns
+                const errorMessage = 'Error loading languages';
+                newsDropdown.setOptions([{ code: '', name: errorMessage }]);
+                latestDropdown.setOptions([{ code: '', name: errorMessage }]);
+                // Remove loading spinners
+                document.querySelectorAll('.loading-spinner').forEach(spinner => spinner.remove());
+            }
         });
     </script>
 

@@ -12,6 +12,7 @@ import requests
 import functools
 import os
 import dotenv
+import html
 
 dotenv.load_dotenv()
 
@@ -466,7 +467,7 @@ def safe_headers():
         'Connection',
         'Host'
     }
-    return {k: v for k, v in flask.request.headers.items() if k in safe_header_keys}
+    return {k: html.escape(v) for k, v in flask.request.headers.items() if k in safe_header_keys}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
