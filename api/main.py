@@ -13,17 +13,15 @@ import functools
 import os
 import dotenv
 import html
+from logging.handlers import RotatingFileHandler  # Added for log rotation
 
 dotenv.load_dotenv()
-
-open("/tmp/api.log", "w").close()
-
 
 # ================ LOGGING INITIATION ================
 logger = logging.getLogger('BBC-API')
 logger.setLevel(logging.DEBUG)
 
-file_handler = logging.FileHandler('/tmp/api.log')
+file_handler = RotatingFileHandler('/tmp/api.log', maxBytes=10 * 1024, backupCount=0)
 file_handler.setLevel(logging.DEBUG)  # Log all levels to the file
 
 console_handler = logging.StreamHandler()
@@ -82,12 +80,12 @@ class NoFlaskFilter(logging.Filter):
         message = record.getMessage()
         return True and (not ("HTTP/1.1" in message and ("GET" in message or "OPTIONS *")))
 
-
 console_handler.addFilter(NoFlaskFilter("ENDPOINT"))
 file_handler.addFilter(NoFlaskFilter("ENDPOINT"))
 
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
+
 
 # ================ FLASK INITIATION ================
 app = Flask(__name__, static_folder="templates", static_url_path="/static")
@@ -415,7 +413,7 @@ async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
         with open("/tmp/api.log", "r", encoding="utf-8") as f:
             logs = f.read()
-        logs = logs.replace("\n", "<br>")
+        logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
         return (safe_headers(), flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
     else:
@@ -467,7 +465,7 @@ def safe_headers():
         'Connection',
         'Host'
     }
-    return {k: html.escape(v) for k, v in flask.request.headers.items() if k in safe_header_keys}
+    return {html.escape(k): html.escape(v) for k, v in flask.request.headers.items() if k in safe_header_keys}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)

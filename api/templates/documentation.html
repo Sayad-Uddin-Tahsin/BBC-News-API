@@ -952,7 +952,7 @@
                 right: -800px;
                 left: auto;
                 transition: right 0.3s ease;
-                z-index: 1000;
+                z-index: 2000;
                 background: var(--nav-bg);
                 backdrop-filter: var(--nav-blur);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1869,6 +1869,235 @@
             background-color: var(--feature-title);
         }
 
+        /* Modern Code Example Styles */
+        .modern-code-example {
+            margin: 2rem 0;
+            border: 1px solid var(--doc-border);
+            border-radius: 8px;
+            background: var(--doc-code-bg);
+            box-shadow: 0 2px 8px rgba(30,60,114,0.04);
+            overflow: hidden;
+            max-width: 700px;
+        }
+        .modern-code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem 1rem 1rem;
+            background: var(--doc-sidebar-bg);
+            border-bottom: 1px solid var(--doc-border);
+        }
+        .modern-language-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .modern-lang-btn {
+            background: none;
+            border: none;
+            color: var(--doc-text);
+            font-weight: 600;
+            font-size: 1rem;
+            padding: 0.4rem 1rem;
+            border-radius: 4px 4px 0 0;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+        .modern-lang-btn.active {
+            background: var(--feature-title);
+            color: #fff;
+        }
+        .modern-copy-btn {
+            background: var(--feature-title);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.4rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modern-copy-btn.copied {
+            background: var(--success-color);
+        }
+        .modern-code-content {
+            padding: 1.5rem;
+            background: var(--doc-code-bg);
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 1rem;
+            overflow-x: auto;
+        }
+        .modern-code-content pre {
+            margin: 0;
+            background: none;
+        }
+        @media (max-width: 768px) {
+            .modern-code-example { max-width: 100%; }
+            .modern-code-header { gap: 0.5rem; align-items: flex-start; }
+            .modern-code-content { font-size: 0.95rem; padding: 1rem; }
+        }
+        @media (max-width: 400px) {
+            .modern-code-content { font-size: 0.85rem; padding: 0.5rem; }
+        }
+        .language-dropdown {
+            min-width: 180px;
+            margin-right: 1rem;
+        }
+        .language-dropdown .dropdown-input {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            background: var(--doc-bg);
+            cursor: pointer;
+            font-size: 1rem;
+            min-width: 140px;
+        }
+        .language-dropdown .dropdown-input input {
+            border: none;
+            background: none;
+            outline: none;
+            width: 100%;
+            font-size: 1rem;
+            color: var(--doc-text);
+            cursor: pointer;
+        }
+        .language-dropdown .dropdown-input i {
+            margin-left: 0.5rem;
+            color: var(--feature-title);
+        }
+        .language-dropdown .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--doc-sidebar-bg);
+            border: 1px solid var(--doc-border);
+            border-radius: 4px;
+            margin-top: 0.5rem;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        .language-dropdown .dropdown-list.active {
+            display: block;
+        }
+        .language-dropdown .dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        .language-dropdown .dropdown-option:hover,
+        .language-dropdown .dropdown-option.selected {
+            background: var(--doc-sidebar-hover);
+        }
+        .language-dropdown .dropdown-option i {
+            font-size: 1.1rem;
+            color: var(--feature-title);
+        }
+        .content-section {
+            opacity: 1;
+            transition: opacity 0.4s cubic-bezier(.4,0,.2,1);
+        }
+        .content-section.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .content-section.fade-in {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .sidebar-collapsible {
+            margin-bottom: 0.5rem;
+        }
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            color: var(--doc-text);
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .collapsible-header:hover {
+            background: var(--doc-sidebar-hover);
+        }
+        .collapsible-arrow {
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+            display: inline-block;
+        }
+        .sidebar-collapsible .collapsible-arrow {
+            transform: rotate(0deg);
+        }
+        .sidebar-collapsible.expanded .collapsible-arrow {
+            transform: rotate(180deg);
+        }
+        .collapsible-list {
+            list-style: none;
+            padding-left: 0.5rem;
+            margin: 0;
+            border-left: 2px solid var(--doc-border);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s cubic-bezier(.4,0,.2,1);
+        }
+        .sidebar-collapsible.expanded .collapsible-list {
+            max-height: 300px;
+            opacity: 1;
+        }
+        .collapsible-list li {
+            margin-bottom: 0.25rem;
+        }
+        .collapsible-list a {
+            display: block;
+            padding: 0.6rem 1.2rem;
+            color: var(--doc-text);
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.97rem;
+            transition: background 0.2s, color 0.2s;
+        }
+        .collapsible-list a:hover, .collapsible-list a.active {
+            background: var(--doc-sidebar-active);
+            color: #fff;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transition: right 0.4s cubic-bezier(.4,0,.2,1);
+                right: -800px;
+            }
+            .sidebar.active {
+                right: 0;
+            }
+            .sidebar.closing {
+                right: -800px;
+            }
+        }
+
+        .endpoint-tester, .endpoint-test {
+            max-width: 100%;
+            width: 100%;
+            box-sizing: border-box;
+            overflow: visible !important;
+        }
+
+        .endpoint-test.has-response {
+            overflow-x: hidden !important;
+        }
+
     </style>
 </head>
 <body>
@@ -1901,12 +2130,18 @@
             <ul class="nav-links">
                 <li><a href="#overview" class="active">Overview</a></li>
                 <li><a href="#languages">Supported Languages</a></li>
-                <li><a href="#endpoints">Endpoints</a></li>
+                <li class="sidebar-collapsible" id="sidebarEndpoints">
+                    <div class="collapsible-header" id="endpointsCollapsibleHeader">
+                        <span>Endpoints</span>
+                        <i class="fa-solid fa-chevron-up collapsible-arrow" id="endpointsArrow"></i>
+                    </div>
+                    <ul class="collapsible-list" id="endpointsCollapsibleList">
                 <li><a href="#news">News Endpoint</a></li>
                 <li><a href="#latest">Latest Endpoint</a></li>
                 <li><a href="#languages-endpoint">Languages Endpoint</a></li>
+                    </ul>
+                </li>
                 <li><a href="#how-to-use">How to use?</a></li>
-                
                 <div class="mobile-nav-buttons">
                     <a class="navbar-link" href="/">
                         <i class="fa-solid fa-home"></i> Home
@@ -1971,44 +2206,24 @@
             <!-- How to use Section -->
             <section id="how-to-use" class="content-section">
                 <h1>How to use?</h1>
-                <p>The BBC News API can be used with any programming language that supports HTTP requests. Here are some examples:</p>
-                
-                <div class="code-example-container">
-                    <div class="code-header">
-                        <div class="language-selector">
-                            <button class="language-selector-button" onclick="toggleLanguageDropdown()">
-                                <span id="selectedLanguage">Python</span>
+                <p>The BBC News API can be used with any programming language that supports HTTP requests. Here are some quick examples in the most popular languages:</p>
+                <div class="modern-code-example">
+                    <div class="modern-code-header">
+                        <div class="custom-dropdown language-dropdown" id="codeLangDropdown">
+                            <div class="dropdown-input" id="codeLangInput">
+                                <input type="text" placeholder="Select language..." id="codeLangSearch" readonly>
                                 <i class="fas fa-chevron-down"></i>
-                            </button>
-                            <div class="language-selector-dropdown" id="languageDropdown">
-                                <div class="language-option selected" onclick="selectLanguage('python')">
-                                    <i class="fab fa-python"></i>
-                                    <span>Python</span>
                                 </div>
-                                <div class="language-option" onclick="selectLanguage('javascript')">
-                                    <i class="fab fa-js"></i>
-                                    <span>JavaScript</span>
+                            <div class="dropdown-list" id="codeLangList">
+                                <div class="dropdown-options" id="codeLangOptions">
+                                    <!-- Options will be populated by JS -->
                                 </div>
-                                <div class="language-option" onclick="selectLanguage('php')">
-                                    <i class="fab fa-php"></i>
-                                    <span>PHP</span>
                                 </div>
-                                <div class="language-option" onclick="selectLanguage('ruby')">
-                                    <i class="fas fa-gem"></i>
-                                    <span>Ruby</span>
                                 </div>
-                                <div class="language-option" onclick="selectLanguage('java')">
-                                    <i class="fab fa-java"></i>
-                                    <span>Java</span>
+                        <button class="modern-copy-btn" id="modernCopyBtn" onclick="copyModernCode()"><i class="fas fa-copy"></i> Copy</button>
                                 </div>
-                            </div>
-                        </div>
-                        <button id="copy-btn" class="copy-btn" onclick="copyCode()">
-                            <i class="fas fa-copy"></i> Copy
-                        </button>
-                    </div>
-                    <div class="code-content">
-                        <pre><code id="code-content"></code></pre>
+                    <div class="modern-code-content">
+                        <pre><code id="modernCodeBlock" class="language-python"></code></pre>
                     </div>
                 </div>
             </section>
@@ -2023,23 +2238,6 @@
                         <div class="languages-loader">
                             <div class="loader"></div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Endpoints Section -->
-            <section id="endpoints" class="content-section">
-                <h1>API Endpoints</h1>
-                <p>Below is a list of all available endpoints in the API:</p>
-
-                <div class="endpoint-tester">
-                    <div class="endpoint-docs">
-                        <h2>Available Endpoints</h2>
-                        <ul>
-                            <li><strong>/news</strong> - Get news content</li>
-                            <li><strong>/latest</strong> - Get latest news</li>
-                            <li><strong>/languages</strong> - Get languages endpoint</li>
-            </ul>
                     </div>
                 </div>
         </section>
@@ -2340,24 +2538,35 @@
             document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
             document.querySelector(`.nav-links a[href="#${targetId}"]`).classList.add('active');
             
-            // Show target section
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
+            // Fade out all sections
+            const allSections = document.querySelectorAll('.content-section');
+            allSections.forEach(section => {
+                if (section.classList.contains('active')) {
+                    section.classList.remove('fade-in');
+                    section.classList.add('fade-out');
+                }
             });
-            document.getElementById(targetId).classList.add('active');
 
+            // After fade out, switch section and fade in
+            setTimeout(() => {
+                allSections.forEach(section => {
+                    section.classList.remove('active', 'fade-in', 'fade-out');
+                });
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.add('active', 'fade-in');
+                }
             // Reset all tester widgets
             resetTesterWidgets();
-
             // Scroll to top of the page
             window.scrollTo(0, 0);
-
             // Only update URL hash if not overview
             if (targetId !== 'overview') {
                 history.pushState(null, null, `#${targetId}`);
             } else {
                 history.pushState(null, null, '/documentation');
             }
+            }, 400); // match transition duration
         }
 
         // Function to reset tester widgets
@@ -2366,6 +2575,9 @@
             document.querySelectorAll('.response-area').forEach(area => {
                 area.textContent = '';
                 area.style.display = 'none';
+                // Remove has-response class from parent
+                const parent = area.closest('.endpoint-test');
+                if (parent) parent.classList.remove('has-response');
             });
             document.querySelectorAll('.response-controls').forEach(controls => {
                 controls.style.display = 'none';
@@ -2396,24 +2608,17 @@
         document.querySelectorAll('.endpoint-url').forEach(urlElement => {
             urlElement.addEventListener('click', function(e) {
                 const url = this.querySelector('.url').textContent;
-                // Only copy if a language is selected (not the template)
-                if (url.includes('=') && !url.endsWith('=')) {
+                // Allow copy for /languages endpoint as well as those with =
+                if ((this.getAttribute('data-copyable') === 'true' && url) && (url.includes('=') ? !url.endsWith('=') : true)) {
                     const fullUrl = 'https://bbc-news-api.vercel.app' + url;
-                    
                     // Create temporary textarea
                     const textarea = document.createElement('textarea');
                     textarea.value = fullUrl;
                     document.body.appendChild(textarea);
                     textarea.select();
-                    
                     try {
-                        // Execute copy command
                         document.execCommand('copy');
-                        
-                        // Add success state
                         this.classList.add('copied');
-                        
-                        // Create or update success message
                         let successMsg = this.querySelector('.copy-success');
                         if (!successMsg) {
                             successMsg = document.createElement('div');
@@ -2421,8 +2626,6 @@
                             successMsg.innerHTML = '<i class="fas fa-check"></i> Copied!';
                             this.appendChild(successMsg);
                         }
-                        
-                        // Revert back after 1.5 seconds
                         setTimeout(() => {
                             this.classList.remove('copied');
                             if (successMsg) {
@@ -2459,9 +2662,6 @@
         // Handle initial load
         document.addEventListener('DOMContentLoaded', () => {
             handleHashChange();
-            
-            // Set initial code example
-            updateCodeExample('python');
             
             // Add click handlers for all subsection headers
             document.querySelectorAll('.sidebar-subsection-header').forEach(header => {
@@ -2503,51 +2703,28 @@
             const searchInput = document.getElementById(searchId);
             const list = document.getElementById(listId);
             const options = document.getElementById(optionsId);
-            const parent = list.closest('.endpoint-test');
             let selectedValue = '';
-            let originalHeight = '';
 
             function toggleDropdown() {
                 const isActive = list.classList.contains('active');
+                if (!isActive) {
+                    searchInput.focus();
+                }
                 list.classList.toggle('active');
                 input.classList.toggle('active');
-                
-                if (!isActive) {
-                    // Opening dropdown
-                    searchInput.focus();
-                    if (!originalHeight) {
-                        originalHeight = parent.style.height;
-                    }
-                    const optionsHeight = Math.min(options.scrollHeight, 300) - 44; // Max height of 300px minus 44px
-                    const currentHeight = parent.offsetHeight;
-                    const newHeight = currentHeight + optionsHeight;
-                    
-                    // Only adjust height if new height is greater than current height
-                    if (newHeight > currentHeight) {
-                        parent.style.height = `${newHeight}px`;
-                        // Smooth scroll to the dropdown if it's below viewport (only for <= 1024px)
-                        if (window.innerWidth <= 1024) {
-                            const dropdownBottom = parent.getBoundingClientRect().bottom;
-                            const viewportHeight = window.innerHeight;
-                            if (dropdownBottom > viewportHeight) {
-                                window.scrollTo({
-                                    top: window.scrollY + (dropdownBottom - viewportHeight) + 20,
-                                    behavior: 'smooth'
-                                });
-                            }
+
+                // After opening, scroll if needed
+                if (list.classList.contains('active')) {
+                    setTimeout(() => {
+                        const rect = list.getBoundingClientRect();
+                        if (rect.bottom > window.innerHeight) {
+                            list.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'end',
+                                inline: 'nearest'
+                            });
                         }
-                    }
-                } else {
-                    // Closing dropdown
-                    parent.style.height = originalHeight || '';
-                    // Smooth scroll to the element without height extension (only for <= 1024px)
-                    if (window.innerWidth <= 1024) {
-                        const elementTop = parent.getBoundingClientRect().top + window.scrollY;
-                        window.scrollTo({
-                            top: elementTop - 20,
-                            behavior: 'smooth'
-                        });
-                    }
+                    }, 10);
                 }
             }
 
@@ -2612,7 +2789,6 @@
                                 opt.classList.remove('selected')
                             );
                             option.classList.add('selected');
-                            
                             // Update the endpoint URL with the selected language
                             const endpointUrl = input.closest('.endpoint-test').querySelector('.endpoint-url .url');
                             if (endpointUrl) {
@@ -2620,7 +2796,6 @@
                                 endpointUrl.textContent = `${baseUrl}?lang=${selectedValue}`;
                                 endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'true');
                             }
-                            
                             if (onChange) onChange(selectedValue);
                             toggleDropdown();
                         });
@@ -2690,6 +2865,9 @@
                     responseArea.innerHTML = JSON.stringify(data);
                     responseArea.style.display = 'block';
                     controls.style.display = 'flex';
+                    // Add has-response class to parent
+                    const endpointTest = responseArea.closest('.endpoint-test');
+                    if (endpointTest) endpointTest.classList.add('has-response');
                     
                     // Force a reflow to ensure the element is visible
                     responseArea.offsetHeight;
@@ -2718,6 +2896,9 @@
                         responseArea.textContent = 'Error: ' + error.message;
                         responseArea.style.display = 'block';
                         controls.style.display = 'flex';
+                        // Add has-response class to parent
+                        const endpointTest = responseArea.closest('.endpoint-test');
+                        if (endpointTest) endpointTest.classList.add('has-response');
                     }
                 } finally {
                     if (button && loader) {
@@ -2780,17 +2961,6 @@
             java: `import java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.net.URI;\nimport org.json.JSONObject;\n\n// Get news for Hindi\nHttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create("https://bbc-news-api.vercel.app/news?lang=hindi"))\n    .build();\n\nHttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());\nJSONObject news = new JSONObject(response.body());`
         };
 
-        // Function to update code example based on selected language
-        function updateCodeExample(language) {
-            const codeContent = document.getElementById('code-content');
-            const selectedLanguage = language.toLowerCase();
-            if (codeExamples[selectedLanguage]) {
-                const code = codeExamples[selectedLanguage];
-                codeContent.className = '';
-                codeContent.textContent = code;
-            }
-        }
-
         // Language selector functionality
         function toggleLanguageDropdown() {
             const dropdown = document.getElementById('languageDropdown');
@@ -2818,21 +2988,7 @@
             // Close dropdown
             dropdown.classList.remove('active');
             button.classList.remove('active');
-            
-            // Update code example
-            updateCodeExample(language);
         }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            const dropdown = document.getElementById('languageDropdown');
-            const button = document.querySelector('.language-selector-button');
-            
-            if (!dropdown.contains(e.target) && !button.contains(e.target)) {
-                dropdown.classList.remove('active');
-                button.classList.remove('active');
-            }
-        });
 
         // Function to copy code to clipboard with animation
         function copyCode() {
@@ -2869,12 +3025,6 @@
                 document.body.removeChild(textarea);
             }
         }
-
-        // Initialize code example on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCodeExample('python');
-        });
-
         // Tree View Functionality
         function createTreeView(data, parentElement) {
             if (typeof data !== 'object' || data === null) {
@@ -3076,99 +3226,134 @@
                 document.querySelectorAll('.loading-spinner').forEach(spinner => spinner.remove());
             }
         });
+
+        // Top languages and their code examples
+        const modernCodeExamples = {
+            python: {
+                label: 'Python',
+                icon: '<i class="fab fa-python"></i>',
+                code: `import requests\n\n# Get news for Bengali\nresponse = requests.get('https://bbc-news-api.vercel.app/news?lang=bengali')\nprint(response.json())\n\n# Get latest news for Hindi\nresponse = requests.get('https://bbc-news-api.vercel.app/latest?lang=hindi')\nprint(response.json())\n\n# Get list of supported languages\nresponse = requests.get('https://bbc-news-api.vercel.app/languages')\nprint(response.json())`
+            },
+            javascript: {
+                label: 'JavaScript',
+                icon: '<i class="fab fa-js"></i>',
+                code: `// Get news for Bengali\nfetch('https://bbc-news-api.vercel.app/news?lang=bengali')\n  .then(res => res.json())\n  .then(data => console.log(data));\n\n// Get latest news for Hindi\nfetch('https://bbc-news-api.vercel.app/latest?lang=hindi')\n  .then(res => res.json())\n  .then(data => console.log(data));\n\n// Get list of supported languages\nfetch('https://bbc-news-api.vercel.app/languages')\n  .then(res => res.json())\n  .then(data => console.log(data));`
+            },
+            java: {
+                label: 'Java',
+                icon: '<i class="fab fa-java"></i>',
+                code: `import java.net.http.HttpClient;\nimport java.net.http.HttpRequest;\nimport java.net.http.HttpResponse;\nimport java.net.URI;\n\n// Get news for Bengali\nHttpClient client = HttpClient.newHttpClient();\nHttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create("https://bbc-news-api.vercel.app/news?lang=bengali"))\n    .build();\nHttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());\nSystem.out.println(response.body());\n\n// Get latest news for Hindi\nrequest = HttpRequest.newBuilder()\n    .uri(URI.create("https://bbc-news-api.vercel.app/latest?lang=hindi"))\n    .build();\nresponse = client.send(request, HttpResponse.BodyHandlers.ofString());\nSystem.out.println(response.body());\n\n// Get list of supported languages\nrequest = HttpRequest.newBuilder()\n    .uri(URI.create("https://bbc-news-api.vercel.app/languages"))\n    .build();\nresponse = client.send(request, HttpResponse.BodyHandlers.ofString());\nSystem.out.println(response.body());`
+            },
+            csharp: {
+                label: 'C#',
+                icon: '<i class="fab fa-microsoft"></i>',
+                code: `using System;\nusing System.Net.Http;\nusing System.Threading.Tasks;\n\nclass Program {\n    static async Task Main() {\n        var client = new HttpClient();\n        // Get news for Bengali\n        var news = await client.GetStringAsync("https://bbc-news-api.vercel.app/news?lang=bengali");\n        Console.WriteLine(news);\n        // Get latest news for Hindi\n        var latest = await client.GetStringAsync("https://bbc-news-api.vercel.app/latest?lang=hindi");\n        Console.WriteLine(latest);\n        // Get list of supported languages\n        var langs = await client.GetStringAsync("https://bbc-news-api.vercel.app/languages");\n        Console.WriteLine(langs);\n    }\n}`
+            },
+            php: {
+                label: 'PHP',
+                icon: '<i class="fab fa-php"></i>',
+                code: `<?php\n// Get news for Bengali\n$news = file_get_contents('https://bbc-news-api.vercel.app/news?lang=bengali');\necho $news;\n\n// Get latest news for Hindi\n$latest = file_get_contents('https://bbc-news-api.vercel.app/latest?lang=hindi');\necho $latest;\n\n// Get list of supported languages\n$langs = file_get_contents('https://bbc-news-api.vercel.app/languages');\necho $langs;`
+            }
+        };
+        // Populate dropdown
+        function populateCodeLangDropdown() {
+            const options = document.getElementById('codeLangOptions');
+            options.innerHTML = '';
+            Object.entries(modernCodeExamples).forEach(([key, val]) => {
+                const div = document.createElement('div');
+                div.className = 'dropdown-option';
+                div.dataset.value = key;
+                div.innerHTML = `${val.icon} <span>${val.label}</span>`;
+                div.onclick = () => selectCodeLang(key);
+                options.appendChild(div);
+            });
+        }
+        // Dropdown logic
+        function setupCodeLangDropdown() {
+            const input = document.getElementById('codeLangInput');
+            const list = document.getElementById('codeLangList');
+            const search = document.getElementById('codeLangSearch');
+            input.addEventListener('click', () => {
+                list.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !list.contains(e.target)) {
+                    list.classList.remove('active');
+                }
+            });
+        }
+        // Select language
+        function selectCodeLang(lang) {
+            const search = document.getElementById('codeLangSearch');
+            const codeBlock = document.getElementById('modernCodeBlock');
+            const options = document.getElementById('codeLangOptions');
+            // Set selected
+            options.querySelectorAll('.dropdown-option').forEach(opt => opt.classList.remove('selected'));
+            const selected = options.querySelector(`.dropdown-option[data-value="${lang}"]`);
+            if (selected) selected.classList.add('selected');
+            // Set input
+            search.value = modernCodeExamples[lang].label;
+            // Set code
+            codeBlock.textContent = modernCodeExamples[lang].code;
+            codeBlock.className = 'language-' + lang;
+            // Close dropdown
+            document.getElementById('codeLangList').classList.remove('active');
+        }
+        // Copy code
+        function copyModernCode() {
+            const codeBlock = document.getElementById('modernCodeBlock');
+            const copyBtn = document.getElementById('modernCopyBtn');
+            const text = codeBlock.textContent;
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                    copyBtn.classList.remove('copied');
+                }, 1500);
+            } catch (err) {
+                copyBtn.innerHTML = '<i class="fas fa-times"></i> Failed!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+                }, 1500);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+        // Init on load
+        document.addEventListener('DOMContentLoaded', () => {
+            populateCodeLangDropdown();
+            setupCodeLangDropdown();
+            selectCodeLang('python');
+        });
+        // Collapsible Endpoints logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const endpointsHeader = document.getElementById('endpointsCollapsibleHeader');
+            const endpointsList = document.getElementById('endpointsCollapsibleList');
+            const sidebarEndpoints = document.getElementById('sidebarEndpoints');
+            let expanded = false;
+            endpointsHeader.addEventListener('click', function() {
+                expanded = !expanded;
+                if (expanded) {
+                    sidebarEndpoints.classList.add('expanded');
+                } else {
+                    sidebarEndpoints.classList.remove('expanded');
+                }
+            });
+            // Optionally, expand if a sub-endpoint is active on load
+            const hash = window.location.hash.substring(1);
+            if (["news","latest","languages-endpoint"].includes(hash)) {
+                sidebarEndpoints.classList.add('expanded');
+                expanded = true;
+            }
+        });
+
+        document.querySelectorAll('.endpoint-test').forEach(test => test.classList.remove('has-response'));
     </script>
-
-    <style>
-        /* Code Example Container Styles */
-        .code-example-container {
-            margin: 2rem 0;
-            border: 1px solid var(--doc-border);
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: var(--doc-code-bg);
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-            background-color: var(--doc-code-bg);
-            border-bottom: 1px solid var(--doc-border);
-            gap: 1rem;
-        }
-
-        .language-selector {
-            flex: 1;
-            min-width: 200px;
-        }
-
-        .copy-btn {
-            flex-shrink: 0;
-            min-width: 100px;
-        }
-
-        .code-content {
-            padding: 1.5rem;
-            overflow-x: auto;
-            background-color: var(--doc-code-bg);
-        }
-
-        .code-content pre {
-            margin: 0;
-            padding: 0;
-            background: transparent !important;
-        }
-
-        .code-content code {
-            font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #212529;
-        }
-
-        @media (max-width: 768px) {
-            .code-header {
-                flex-direction: row;
-                gap: 1rem;
-            }
-
-            .language-selector {
-                width: 100%;
-            }
-
-            .copy-btn {
-                width: auto;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .code-header {
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                gap: 0.5rem;
-            }
-
-            .language-selector {
-                width: auto !important;
-                min-width: 0 !important;
-                flex: 1;
-            }
-
-            .copy-btn {
-                width: auto !important;
-                min-width: 80px;
-            }
-
-            .code-content {
-                padding: 1rem;
-            }
-
-            .code-content code {
-                font-size: 0.8rem;
-            }
-        }
-    </style>
 </body>
 </html>
