@@ -1,4 +1,3 @@
-/* index.css - Modern design */
 :root {
     --header-bg: linear-gradient(135deg, #f0f2f5 0%, #f7fafd 100%);
     --header-text: #000035;
@@ -18,6 +17,7 @@
     --getstarted-text: #fff;
     --getstarted-hover: #357abd;
 }
+
 html {
     box-sizing: border-box;
     width: 100%;
