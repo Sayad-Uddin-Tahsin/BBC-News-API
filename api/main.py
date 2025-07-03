@@ -88,7 +88,7 @@ logger.addHandler(console_handler)
 
 
 # ================ FLASK INITIATION ================
-app = Flask(__name__, static_folder="templates", static_url_path="/static")
+app = Flask(__name__, static_folder="templates", static_url_path="static")
 session = HTMLSession()
 
 # ================ DHAKA TIME ================
@@ -318,8 +318,12 @@ async def doc():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(os.path.join("/".join(app.root_path.split("/")[:3]), "Assets"),
-                          'favicon.ico' ,mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(app.static_url_path, "favicon.ico", mimetype='image/vnd.microsoft.icon')
+
+@app.route('/sitemap.xml')
+def favicon():
+    return send_from_directory(app.static_url_path, "sitemap.xml", mimetype='application/xml')
+
 
 @app.route("/", defaults={"type": None})
 @app.route("/<type>")
