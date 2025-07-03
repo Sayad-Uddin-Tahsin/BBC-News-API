@@ -21,7 +21,7 @@ dotenv.load_dotenv()
 logger = logging.getLogger('BBC-API')
 logger.setLevel(logging.DEBUG)
 
-file_handler = RotatingFileHandler('./tmp/api.log', maxBytes=10 * 1024, backupCount=0)
+file_handler = RotatingFileHandler('/tmp/api.log', maxBytes=10 * 1024, backupCount=0)
 file_handler.setLevel(logging.DEBUG)  # Log all levels to the file
 
 console_handler = logging.StreamHandler()
@@ -415,7 +415,7 @@ async def news(type):
 @visit_register
 async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
-        with open("./tmp/api.log", "r", encoding="utf-8") as f:
+        with open("/tmp/api.log", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
