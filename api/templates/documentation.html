@@ -1,138 +1,429 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
-    <meta property="og:title" content="BBC News API Documentation">
-    <meta property="og:description" content="BBC News API provides access to news articles and headlines from various categories and sources.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC News API Documentation</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="description" content="Comprehensive documentation for the BBC News API — a lightweight and developer-friendly solution for accessing BBC news headlines and articles.">
+    <meta property="og:title" content="BBC News API – Official Documentation">
+    <meta property="og:description" content="Access BBC news articles, headlines, and categories easily with our lightweight and intuitive BBC News API.">
     <meta property="og:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Documentation%20Banner.png">
     <meta property="og:url" content="https://bbc-api.vercel.app/documentation">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="BBC News API Documentation">
+    <meta property="og:site_name" content="BBC News API Docs">
 
-    <meta name="twitter:title" content="BBC News API Documentation">
-    <meta name="twitter:description" content="Explore the documentation for the BBC News API, a simple and yet easy-to-use API for BBC News.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BBC News API – Official Documentation">
+    <meta name="twitter:description" content="Easily retrieve headlines and articles from BBC News using our developer-friendly API. Learn how to get started in minutes.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Documentation%20Banner.png">
-    <link href="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Dark%20Logo.png" rel="icon"  type="image/x-icon" media="(prefers-color-scheme: dark)"/>
-    <link href="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/Light%20Logo.png" rel="icon"  type="image/x-icon" media="(prefers-color-scheme: light)"/>
-    
-    <title>BBC News API Documentation</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-            color: #333; /* Default text color */
-            background-color: #fff; /* Default background color */
-        }
-        
-        /* Dark mode */
-        @media (prefers-color-scheme: dark) {
-            body {
-                color: #ddd; /* Dark mode text color */
-                background-color: #222; /* Dark mode background color */
-            }
-            code {
-                background-color: #111; /* Code block background color in dark mode */
-                color: #ddd; /* Code text color in dark mode */
-            }
-        }
-        
-        /* Light mode */
-        @media (prefers-color-scheme: light) {
-            code {
-                background-color: #F0F0F0; /* Code block background color in light mode */
-                color: #333; /* Code text color in light mode */
-            }
-        }
-        
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        code {
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 14px;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #ccc;
-            margin: 20px 0;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 5px;
-        }
 
-    </style>
+    <!-- Google Fonts: Poppins & Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/docs_styles.css">
 </head>
 <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left" onclick="window.location.href='/'">
+            <img src="/favicon.ico" alt="BBC News API Logo" class="navbar-logo">
+            <span class="navbar-title">BBC News API</span>
+        </div>
+        <div class="navbar-right">
+            <div class="navbar-links">
+                <a class="navbar-link" href="/"><i class="fa-solid fa-home"></i> Home</a>
+                <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
+                <button class="github-btn" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
+            </div>
+            <button class="hamburger mobile-menu-btn" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
     <div class="container">
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <h2>Documentation</h2>
+            <ul class="nav-links">
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#languages">Supported Languages</a></li>
+                <li class="sidebar-collapsible" id="sidebarEndpoints">
+                    <div class="collapsible-header" id="endpointsCollapsibleHeader">
+                        <span>Endpoints</span>
+                        <i class="fa-solid fa-chevron-up collapsible-arrow" id="endpointsArrow"></i>
+                    </div>
+                    <ul class="collapsible-list" id="endpointsCollapsibleList">
+                <li><a href="#news">News Endpoint</a></li>
+                <li><a href="#latest">Latest Endpoint</a></li>
+                <li><a href="#languages-endpoint">Languages Endpoint</a></li>
+                    </ul>
+                </li>
+                <li><a href="#how-to-use">How to use?</a></li>
+                <div class="mobile-nav-buttons">
+                    <a class="navbar-link" href="/">
+                        <i class="fa-solid fa-home"></i> Home
+                    </a>
+                    <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank">
+                        <i class="fa-regular fa-comments"></i> Discussions
+                    </a>
+                    <button class="github-btn" style="margin-left: 0;" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
+                        <i class="fab fa-github"></i> GitHub
+                    </button>
+                </div>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Overview Section -->
+            <section id="overview" class="content-section active">
         <h1>BBC News API Documentation</h1>
-        
-        <section>
-            <h2><a id="url-formation" href="#url-formation" style="color: inherit; text-decoration: none;">URL Formation</a></h2>
-            <p>URL Formation: <code>/{{ type }}?lang={{ language }}</code></p>
+                <p>Welcome to the BBC News API documentation. This API provides access to news content from various BBC language services, allowing developers to integrate BBC's trusted news content into their applications.</p>
+                
+                <h2><i class="fa-solid fa-star"></i> Key Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-globe"></i>
+                        <h3>Multi-language Support</h3>
+                        <p>Access news content from multiple BBC language services including English, Bengali, Hindi, and more.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-bolt"></i>
+                        <h3>Real-time Updates</h3>
+                        <p>Get the latest news articles as soon as they are published.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-code"></i>
+                        <h3>Easy Integration</h3>
+                        <p>Simple REST API with clear documentation and code examples in multiple languages.</p>
+                    </div>
+                </div>
+
+                <h2><i class="fa-solid fa-rocket"></i> Getting Started</h2>
+                <p>To start using the API, you'll need to make HTTP requests to our endpoints. The API supports both news and latest content retrieval.</p>
+
+                <div class="code-block">
+                    <pre>Base URL: https://bbc-news-api.vercel.app</pre>
+                </div>
+
+                <h2><i class="fa-solid fa-key"></i> Authentication</h2>
+                <p>Currently, the API is open and doesn't require authentication for most endpoints. However, some endpoints may require specific parameters for access control.</p>
+
+                <h2><i class="fa-solid fa-circle-info"></i> Best Practices</h2>
+                <ul class="best-practices">
+                    <li>Always handle API errors gracefully in your application</li>
+                    <li>Cache responses when appropriate to reduce API calls</li>
+                    <li>Use appropriate language codes for your target audience</li>
+                </ul>
+
+                <h2><i class="fa-solid fa-life-ring"></i> Support</h2>
+                <p>For support, please visit our GitHub repository or join our community discussions. We're here to help you integrate and use the API effectively.</p>
+            </section>
+
+            <!-- How to use Section -->
+            <section id="how-to-use" class="content-section">
+                <h1>How to use?</h1>
+                <p>The BBC News API can be used with any programming language that supports HTTP requests. Here are some quick examples in the most popular languages:</p>
+                <div class="modern-code-example">
+                    <div class="modern-code-header">
+                        <div class="custom-dropdown language-dropdown" id="codeLangDropdown">
+                            <div class="dropdown-input" id="codeLangInput">
+                                <input type="text" placeholder="Select language..." id="codeLangSearch" readonly>
+                                <i class="fas fa-chevron-down"></i>
+                                </div>
+                            <div class="dropdown-list" id="codeLangList">
+                                <div class="dropdown-options" id="codeLangOptions">
+                                    <!-- Options will be populated by JS -->
+                                </div>
+                                </div>
+                                </div>
+                        <button class="modern-copy-btn" id="modernCopyBtn" onclick="copyModernCode()"><i class="fas fa-copy"></i> Copy</button>
+                                </div>
+                    <div class="modern-code-content">
+                        <pre><code id="modernCodeBlock" class="language-python"></code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Languages Section -->
+            <section id="languages" class="content-section">
+                <h1>Supported Languages</h1>
+                <p>The BBC News API supports multiple languages, allowing you to access news content from various BBC language services. Below is a list of all supported languages:</p>
+                <div class="endpoint-docs">
+                    <h2><i class="fa-solid fa-language"></i> Available Languages</h2>
+                    <div id="languagesList" class="feature-grid">
+                        <div class="languages-loader">
+                            <div class="loader"></div>
+                        </div>
+                    </div>
+                </div>
         </section>
 
-        <section>
-            <h2><a id="example-url" href="#example-url" style="color: inherit; text-decoration: none;">Example URL - {{ lang }}</a></h2>
-            <ul>
-                <li>News: <code><a href="{{ urlForNews }}" style="color: #0070f3; text-decoration: none;">{{ urlForNews }}</a></code></li>
-                <li>Latest: <code><a href="{{ urlForLatest }}" style="color: #0070f3; text-decoration: none;">{{ urlForLatest }}</a></code></li>
+            <!-- News Endpoint Section -->
+            <section id="news" class="content-section">
+                <h1>News Endpoint</h1>
+                <p>Retrieve news content from BBC's various language services. This endpoint provides access to the latest news articles with their titles, summaries, and links.</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /news</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <ul class="parameter-list">
+                                <li class="parameter-item">
+                                    <div class="parameter-name">
+                                        <code>lang</code>
+                                        <span class="required">Required</span>
+                                    </div>
+                                    <div class="parameter-details">
+                                        <p class="type">String</p>
+                                        <p>The language code for the news content you want to retrieve. This parameter determines which BBC language service to fetch news from.</p>
+                                        <p class="example">Example: <code>english</code>, <code>bengali</code>, <code>hindi</code></p>
+                                    </div>
+                                </li>
             </ul>
+                        </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "latest": [
+        {
+            "title": "News Title",
+            "summary": "News Summary",
+            "image_link": "https://...",
+            "news_link": "https://..."
+        }
+    ],
+    "elapsed time": "0.123s",
+    "timestamp": 1234567890
+}</pre>
+                        </div>
+
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>400</code>
+                                <p>Bad Request - Language parameter is missing or invalid</p>
+                            </div>
+                            <div class="error-item">
+                                <code>503</code>
+                                <p>Service Unavailable - Failed to retrieve content from BBC website</p>
+                            </div>
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url">
+                            <span class="method">GET</span>
+                            <span class="url">/news?lang=<span id="newsUrlLang"></span></span>
+                        </div>
+                        <form class="test-form" id="newsTestForm">
+                            <div class="form-group">
+                                <label for="newsLang">Language:</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-input" id="newsLangInput">
+                                        <input type="text" placeholder="Search or select language..." id="newsLangSearch" spellcheck="false" autocomplete="off" aria-autocomplete="none">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-list" id="newsLangList">
+                                        <div class="dropdown-options" id="newsLangOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="test-button" id="newsTestButton">
+                                <span class="loader" id="newsTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="newsTestResponse"></div>
+                        <div class="response-controls" id="newsTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="newsTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
         </section>
 
-        <section>
-            <h2><a id="types" href="#types" style="color: inherit; text-decoration: none;">Types</a></h2>
-            <ul>
-                <li>All News: <code>news</code></li>
-                <li>Latest News: <code>latest</code></li>
-            </ul>
-        </section>
+            <!-- Latest Endpoint Section -->
+            <section id="latest" class="content-section">
+                <h1>Latest Endpoint</h1>
+                <p>Get the most recent news updates from BBC's various language services.</p>
 
-        <section>
-            <h2><a id="languages" href="#languages" style="color: inherit; text-decoration: none;">Supported Languages</a></h2>
-            <ul>
-                {{ listOfLangs|safe }}
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /latest</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <ul class="parameter-list">
+                                <li class="parameter-item">
+                                    <div class="parameter-name">
+                                        <code>lang</code>
+                                        <span class="required">Required</span>
+                                    </div>
+                                    <div class="parameter-details">
+                                        <p class="type">String</p>
+                                        <p>The language code for the latest news content. This parameter determines which BBC language service to fetch the most recent news from.</p>
+                                        <p class="example">Example: <code>english</code>, <code>bengali</code>, <code>hindi</code></p>
+                                    </div>
+                                </li>
             </ul>
-        </section>
+                        </div>
 
-        <hr>
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "Section Title": [
+        {
+            "title": "News Title",
+            "summary": "News Summary",
+            "image_link": "https://...",
+            "news_link": "https://..."
+        }
+    ],
+    "elapsed time": "0.123s",
+    "timestamp": 1234567890
+}</pre>
+                        </div>
 
-        <section>
-            <h2><a id="get-in-touch" href="#get-in-touch" style="color: inherit; text-decoration: none;">Get in Touch</a></h2>
-            <p>If you have any questions, feedback, or encounter any issues with our API, feel free to reach out to us via the following channels:</p>
-            <ul>
-                <li>Email: <a href="mailto:tahsin.ict@outlook.com?body=%0A%0ARedirected%20from%20BBC%20News%20API" target="_blank" style="color: #0070f3;">tahsin.ict@outlook.com</a></li>
-                <li>Issue Tracker: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/issues" target="_blank" style="color: #0070f3;">BBC-News-API/Issues</a></li>
-                <li>Repository: <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API" target="_blank" style="color: #0070f3;">Sayad-Uddin-Tahsin/BBC-News-API</a></li>
-            </ul>
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>400</code>
+                                <p>Bad Request - Language parameter is missing or invalid</p>
+                            </div>
+                            <div class="error-item">
+                                <code>503</code>
+                                <p>Service Unavailable - Failed to retrieve content from BBC website</p>
+                            </div>
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url">
+                            <span class="method">GET</span>
+                            <span class="url">/latest?lang=<span id="latestUrlLang"></span></span>
+                        </div>
+                        <form class="test-form" id="latestTestForm">
+                            <div class="form-group">
+                                <label for="latestLang">Language:</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-input" id="latestLangInput">
+                                        <input type="text" placeholder="Search or select language..." id="latestLangSearch">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-list" id="latestLangList">
+                                        <div class="dropdown-options" id="latestLangOptions">
+                                            <!-- Options will be populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="test-button" id="latestTestButton">
+                                <span class="loader" id="latestTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="latestTestResponse"></div>
+                        <div class="response-controls" id="latestTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="latestTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
         </section>
 	
-	<hr>
-	
-	<footer>
-            <center><p style="font-size: 13px;">BBC News API 2022 - {{ currentYear }}. All rights reserved. <br>© Sayad Uddin Tahsin | <a href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/blob/main/LICENSE" target="_blank" style="color: #0070f3;">MIT License</a></p></center>
-        </footer>
+            <!-- Languages Endpoint Section -->
+            <section id="languages-endpoint" class="content-section">
+                <h1>Languages Endpoint</h1>
+                <p>Get a list of all supported languages and their corresponding BBC News URLs.</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> /languages</p>
+                        <p><strong>Method:</strong> GET</p>
+                        
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <p>This endpoint does not require any parameters.</p>
     </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Response Format</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "languages": [
+        {
+            "code": "english",
+            "name": "English",
+            "url": "https://bbc.com",
+            "description": "BBC News in English"
+        },
+        {
+            "code": "bengali",
+            "name": "Bengali",
+            "url": "https://bbc.com/bengali",
+            "description": "BBC News in Bengali"
+        }
+    ]
+}</pre>
+                        </div>
+
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url" data-copyable="true">
+                            <span class="method">GET</span>
+                            <span class="url">/languages</span>
+                        </div>
+                        <form class="test-form" id="languagesTestForm">
+                            <button type="submit" class="test-button" id="languagesTestButton">
+                                <span class="loader" id="languagesTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="languagesTestResponse"></div>
+                        <div class="response-controls" id="languagesTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="languagesTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/docs_scripts.js"></script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

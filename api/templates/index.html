@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC News API</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="description" content="A simple and yet easy-to-use API for BBC News.">
+    <meta property="og:title" content="BBC News API">
+    <meta property="og:description" content="A simple and yet easy-to-use API for BBC News.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/BBC%20News%20API.png">
+    <meta property="og:url" content="https://bbc-api.vercel.app/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BBC News API">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BBC News API">
+    <meta name="twitter:description" content="A simple and yet easy-to-use API for BBC News.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Sayad-Uddin-Tahsin/BBC-News-API/main/Assets/BBC%20News%20API.png">
+
+    <!-- Google Fonts: Poppins & Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- index.css for this page -->
+    <link rel="stylesheet" href="/static/styles.css">
+    <meta name="google-site-verification" content="oJ0xdJmdeQiOx01Pst8kdfyodeSWqjDE5IpxrP3uWT0" />
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <img src="/favicon.ico" alt="BBC News API Logo" class="navbar-logo">
+            <span class="navbar-title">BBC News API</span>
+        </div>
+        <button class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="navbar-links" id="navbar-links">
+            <a class="navbar-link" href="https://github.com/Sayad-Uddin-Tahsin/BBC-News-API/discussions" target="_blank"><i class="fa-regular fa-comments"></i> Discussions</a>
+            <a class="navbar-link" href="/documentation"><i class="fa-solid fa-book"></i> Documentation</a>
+            <button class="github-btn" onclick="window.open('https://github.com/Sayad-Uddin-Tahsin/BBC-News-API', '_blank')">
+                <i class="fab fa-github"></i> GitHub
+            </button>
+        </div>
+    </nav>
+    <header class="header">
+        <div class="header-content" id="header-content">
+            <div class="header-title">BBC News API</div>
+            <div class="header-motto">A simple and yet easy-to-use API for BBC News</div>
+            <a href="/documentation" class="get-started-btn">Get started</a>
+        </div>
+    </header>
+    <section class="features">
+        <div class="feature">
+            <div class="feature-title"><i class="fa-solid fa-language"></i> Multi-language Support</div>
+            <div class="feature-desc">Get BBC news in 30+ languages with a single API.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title"><i class="fa-solid fa-bolt"></i> Fast & Reliable</div>
+            <div class="feature-desc">Designed for speed and reliability, always up-to-date with BBC headlines.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title"><i class="fa-solid fa-plug"></i> Simple Integration</div>
+            <div class="feature-desc">Easy to use in any project, with clear documentation and examples.</div>
+        </div>
+        <div class="feature">
+            <div class="feature-title"><i class="fa-solid fa-lock-open"></i> Open & Free</div>
+            <div class="feature-desc">Open source, free to use, and no authentication required.</div>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-main">
+            This project is <b>open source</b> and free to use.
+        </div>
+        <div class="footer-made">
+            Made with <i class="fa-solid fa-heart" style="color:#e11d48;"></i> by <a href="https://sayad-uddin-tahsin.github.io" target="_blank">Sayad Uddin Tahsin</a>.
+        </div>
+        <div class="footer-made">
+            &copy; 2024 – <span id="year"></span>
+        </div>
+        <div class="footer-disclaimer">
+            BBC News API is not affiliated with the BBC. All trademarks belong to their respective owners.
+        </div>
+    </footer>
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        document.getElementById("year").textContent = currentYear;
+    </script>
+    <script src="/static/scripts.js"></script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
