@@ -61,16 +61,20 @@
             This project is <b>open source</b> and free to use.
         </div>
         <div class="footer-made">
-            Made with <i class="fa-solid fa-heart" style="color:#e11d48;"></i> by <a href="https://github.com/Sayad-Uddin-Tahsin" target="_blank">Sayad Uddin Tahsin</a> & contributors.
+            Made with <i class="fa-solid fa-heart" style="color:#e11d48;"></i> by <a href="https://sayad-uddin-tahsin.github.io" target="_blank">Sayad Uddin Tahsin</a>.
         </div>
         <div class="footer-made">
-            &copy; 2024-2025
+            &copy; 2024–<span id="year"></span>
         </div>
         <div class="footer-disclaimer">
             BBC News API is not affiliated with the BBC. All trademarks belong to their respective owners.
         </div>
     </footer>
-    <!-- index.js for this page -->
+
+    <script>
+        const currentYear = new Date().getFullYear();
+        document.getElementById("year").textContent = currentYear;
+    </script>
     <script src="/static/scripts.js"></script>
 </body>
 </html>
