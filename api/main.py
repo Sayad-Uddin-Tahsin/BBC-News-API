@@ -21,7 +21,7 @@ dotenv.load_dotenv()
 logger = logging.getLogger('BBC-API')
 logger.setLevel(logging.DEBUG)
 
-file_handler = RotatingFileHandler('/tmp/api.log', maxBytes=10 * 1024, backupCount=0)
+file_handler = RotatingFileHandler('./tmp/api.log', maxBytes=10 * 1024, backupCount=0)
 file_handler.setLevel(logging.DEBUG)  # Log all levels to the file
 
 console_handler = logging.StreamHandler()
@@ -88,7 +88,7 @@ logger.addHandler(console_handler)
 
 
 # ================ FLASK INITIATION ================
-app = Flask(__name__, static_folder="templates", static_url_path="static")
+app = Flask(__name__, static_folder="templates", static_url_path="/static")
 session = HTMLSession()
 
 # ================ DHAKA TIME ================
@@ -318,11 +318,11 @@ async def doc():
 
 @app.route('/favicon.ico')
 def favicon():
-    return send_from_directory(app.static_url_path, "favicon.ico", mimetype='image/vnd.microsoft.icon')
+    return send_from_directory(app.static_folder, "favicon.ico", mimetype='image/vnd.microsoft.icon')
 
 @app.route('/sitemap.xml')
-def favicon():
-    return send_from_directory(app.static_url_path, "sitemap.xml", mimetype='application/xml')
+def sitemap():
+    return send_from_directory(app.static_folder, "sitemap.xml", mimetype='application/xml')
 
 
 @app.route("/", defaults={"type": None})
@@ -415,7 +415,7 @@ async def news(type):
 @visit_register
 async def log(pin):
     if pin != None and int(pin) == int(os.environ["PIN"]):
-        with open("/tmp/api.log", "r", encoding="utf-8") as f:
+        with open("./tmp/api.log", "r", encoding="utf-8") as f:
             logs = f.read()
         logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
