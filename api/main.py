@@ -26,6 +26,36 @@ import html
 from logging.handlers import RotatingFileHandler  # Added for log rotation
 import tempfile
 from urllib.parse import urlparse
+import re as _re
+
+
+def _script_blocks(html_text: str):
+    """Yield script block contents (non-greedy), tolerant of spaces in end tags.
+
+    Uses a compiled regex with DOTALL/IGNORECASE so it matches variants like
+    </script>, </script >, and with attributes on the opening tag.
+    """
+    pattern = _re.compile(r"<script\b[^>]*>(.*?)</script\s*>", _re.IGNORECASE | _re.DOTALL)
+    for m in pattern.finditer(html_text):
+        yield m.group(1)
+
+
+def _is_ichef_url(u: str) -> bool:
+    try:
+        p = urlparse(u)
+        host = (p.hostname or "").lower()
+        return bool(p.scheme in ("http", "https") and (host == 'ichef.bbci.co.uk' or host.endswith('.ichef.bbci.co.uk')))
+    except Exception:
+        return False
+
+
+def _is_bbc_url(u: str) -> bool:
+    try:
+        p = urlparse(u)
+        host = (p.hostname or "").lower()
+        return bool(p.scheme in ("http", "https") and (host.endswith('bbc.com') or host.endswith('bbc.co.uk')))
+    except Exception:
+        return False
 logger = logging.getLogger("api")
 logger.setLevel(logging.DEBUG)
 
@@ -299,15 +329,12 @@ def parse_inline_image_urls(page_html: str) -> list:
     import re, json
 
     urls = []
-    # find all <script>...</script> blocks
-    for m in re.finditer(r"<script[^>]*>([\s\S]*?)</script>", page_html, re.IGNORECASE):
-        text = m.group(1).strip()
+    # find all <script> blocks robustly
+    for text in _script_blocks(page_html):
+        text = text.strip()
         if len(text) < 200:
             continue
-        low = text.lower()
-        if 'ichef' not in low and 'indeximage' not in low and 'pageprops' not in low and 'props' not in low:
-            continue
-        # try to load as JSON directly
+        # try to decode JSON objects embedded directly
         obj = None
         try:
             obj = json.loads(text)
@@ -320,9 +347,17 @@ def parse_inline_image_urls(page_html: str) -> list:
             except Exception:
                 obj = None
         if obj is None:
+            # as a fallback, scan the script text for absolute URLs and validate them
+            try:
+                for candidate in re.findall(r"https?://[^\s\'\"]+", text):
+                    # only keep ichef host images with valid file extensions
+                    if _is_ichef_url(candidate) and re.search(r"\.(?:jpg|png|webp)(?:$|\?)", candidate, re.IGNORECASE):
+                        urls.append(candidate)
+            except Exception as _e:
+                logger.debug("parse_inline_image_urls: fallback URL scan failed: %s", _e)
             continue
 
-        # walk the object and collect ichef urls
+        # walk the object and collect ichef urls safely
         def walk(o):
             if isinstance(o, dict):
                 for v in o.values():
@@ -331,15 +366,17 @@ def parse_inline_image_urls(page_html: str) -> list:
                 for i in o:
                     walk(i)
             elif isinstance(o, str):
-                if 'ichef.bbci.co.uk' in o:
-                    for url in re.findall(r"https?://ichef\.bbci\.co\.uk/[^\s\"']+\.(?:jpg|png|webp)", o):
-                        urls.append(url)
-
+                try:
+                    for url in re.findall(r"https?://[^\s\'\"]+", o):
+                        if _is_ichef_url(url) and re.search(r"\.(?:jpg|png|webp)(?:$|\?)", url, re.IGNORECASE):
+                            urls.append(url)
+                except Exception:
+                    pass
+        # execute the walker on the parsed object to collect any ichef image URLs
         try:
             walk(obj)
         except Exception as _e:
-            # ignore walk errors for robustness but log for diagnostics
-            logger.debug("parse_inline_image_urls: walk() failed: %s", _e)
+            logger.debug("parse_inline_image_urls: JSON walk failed: %s", _e)
 
     # de-duplicate while preserving order
     seen = set()
@@ -364,12 +401,9 @@ def map_pageprops_article_images(page_html: str) -> dict:
     # asset id -> best image url
     asset_images = {}
 
-    for m in re.finditer(r"<script[^>]*>([\s\S]*?)</script>", page_html, re.IGNORECASE):
-        text = m.group(1).strip()
+    for text in _script_blocks(page_html):
+        text = text.strip()
         if len(text) < 200:
-            continue
-        low = text.lower()
-        if 'props' not in low and 'pageprops' not in low and 'ichef' not in low:
             continue
         obj = None
         try:
@@ -382,6 +416,13 @@ def map_pageprops_article_images(page_html: str) -> dict:
             except Exception:
                 obj = None
         if obj is None:
+            # fallback: scan for ichef URLs in the script text
+            try:
+                for candidate in re.findall(r"https?://[^\s\'\"]+", text):
+                    if _is_ichef_url(candidate) and re.search(r"\.(?:jpg|png|webp)(?:$|\?)", candidate, re.IGNORECASE):
+                        asset_images[candidate] = candidate
+            except Exception as _e:
+                logger.debug("map_pageprops_article_images: fallback url scan failed: %s", _e)
             continue
 
         # First pass: collect image assets keyed by any id-like fields in the same dict
@@ -393,7 +434,7 @@ def map_pageprops_article_images(page_html: str) -> dict:
                     # common places
                     if 'image' in o and isinstance(o.get('image'), (dict, str)):
                         img_obj = o.get('image')
-                        if isinstance(img_obj, str) and 'ichef.bbci.co.uk' in img_obj:
+                        if isinstance(img_obj, str) and _is_ichef_url(img_obj):
                             src = img_obj
                         elif isinstance(img_obj, dict):
                             model = img_obj.get('model') or img_obj.get('data') or img_obj
@@ -403,17 +444,17 @@ def map_pageprops_article_images(page_html: str) -> dict:
                                     for b in blocks.values():
                                         if isinstance(b, dict):
                                             s = b.get('src') or b.get('url')
-                                            if isinstance(s, str) and 'ichef.bbci.co.uk' in s:
+                                            if isinstance(s, str) and _is_ichef_url(s):
                                                 src = s
                                                 break
                                 if not src:
                                     s = model.get('src') or model.get('url')
-                                    if isinstance(s, str) and 'ichef.bbci.co.uk' in s:
+                                    if isinstance(s, str) and _is_ichef_url(s):
                                         src = s
                     # also check direct keys
                     for k in ('src', 'url'):
                         v = o.get(k)
-                        if isinstance(v, str) and 'ichef.bbci.co.uk' in v:
+                        if isinstance(v, str) and _is_ichef_url(v):
                             src = v
                     if src:
                         # find any id-like keys in this dict to associate with
@@ -453,9 +494,23 @@ def map_pageprops_article_images(page_html: str) -> dict:
                 href = None
                 for k in ('href', 'uri', 'link'):
                     v = o.get(k)
-                    if isinstance(v, str) and ('/news' in v or '/audio' in v or 'bbc.com' in v or 'articles' in v):
-                        href = v
-                        break
+                    if isinstance(v, str):
+                        # consider it a candidate href if it looks like a BBC article path or a BBC URL
+                        try:
+                            if v.startswith('http'):
+                                if _is_bbc_url(v):
+                                    href = v
+                                    break
+                            else:
+                                # treat path-like entries containing /news, /audio, or /articles as candidate
+                                if any(seg in v for seg in ('/news', '/audio', '/articles')):
+                                    href = v
+                                    break
+                        except Exception:
+                            # fallback to original substring checks as last resort
+                            if ('/news' in v or '/audio' in v or 'bbc.com' in v or 'articles' in v):
+                                href = v
+                                break
                 # find any id-like token inside this dict that points to assets
                 referenced = set()
                 for k, v in o.items():
