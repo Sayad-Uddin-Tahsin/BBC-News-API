@@ -17,19 +17,54 @@ import json
 import logging
 import pytz
 from datetime import datetime
-import random
+import secrets
 import requests
 import functools
 import os
 import dotenv
 import html
 from logging.handlers import RotatingFileHandler  # Added for log rotation
+import tempfile
 from urllib.parse import urlparse
 logger = logging.getLogger("api")
 logger.setLevel(logging.DEBUG)
 
 # File handler (rotating)
-file_handler = RotatingFileHandler('/tmp/api.log', maxBytes=10 * 1024, backupCount=0)
+# Create a dedicated logs directory inside the project and use a file there.
+# This avoids predictable files in /tmp and gives us a controlled location.
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+logs_dir = os.path.join(base_dir, 'logs')
+try:
+    os.makedirs(logs_dir, exist_ok=True)
+    # restrict permissions on the logs directory where possible
+    try:
+        os.chmod(logs_dir, 0o700)
+    except Exception as _e:
+        logger.debug("failed to chmod logs_dir: %s", _e)
+    log_file = os.path.join(logs_dir, 'api.log')
+    # ensure the file exists
+    open(log_file, 'a').close()
+    try:
+        os.chmod(log_file, 0o600)
+    except Exception as _e:
+        logger.debug("failed to chmod log_file: %s", _e)
+except Exception as _e:
+    # fallback to a file next to this module if logs directory can't be created
+    logger.debug("Failed to create logs directory %s: %s", logs_dir, _e)
+    fallback_file = os.path.join(os.path.dirname(__file__), 'api.log')
+    try:
+        open(fallback_file, 'a').close()
+        log_file = fallback_file
+    except Exception:
+        # last resort: fall back to stdout by setting log_file to None
+        log_file = None
+# rotate but keep at most a few backups
+if log_file:
+    file_handler = RotatingFileHandler(log_file, maxBytes=10 * 1024, backupCount=3)
+else:
+    # If we could not create a file to write logs, attach a NullHandler to avoid exceptions
+    from logging import NullHandler
+    file_handler = NullHandler()
 file_handler.setLevel(logging.DEBUG)
 
 # Only file logging is used in production/dev container to avoid console clutter
@@ -95,13 +130,23 @@ def visit_register(func):
         result = await func(*args, **kwargs)
 
         if result[0].get("isBot") != "YES" and "Shields" not in str(result[0].get("User-Agent")):
-            requests.post(
-                f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
-                headers=json.loads(os.environ.get("HEADERS")),
-                json={
-                    'func_name': str(func.__name__)
-                }
-            )
+            try:
+                headers = {}
+                try:
+                    headers = json.loads(os.environ.get("HEADERS") or "{}")
+                except Exception as _e:
+                    logger.debug("visit_register: failed to parse HEADERS env: %s", _e)
+                requests.post(
+                    f"https://web-badge-psi.vercel.app/register-visit?api_key={os.environ.get('API_KEY')}",
+                    headers=headers,
+                    json={
+                        'func_name': str(func.__name__)
+                    },
+                    timeout=5,
+                )
+            except Exception as _e:
+                # Non-fatal: log and continue; visit registration is telemetry only
+                logger.debug("visit_register: telemetry post failed: %s", _e)
         return result[1]
     return wrapper
 
@@ -208,9 +253,9 @@ def best_image_from_element(img_el) -> str | None:
                         # stop early if we already found source candidates
                         if candidates:
                             break
-            except Exception:
+            except Exception as _e:
                 # ignore any lxml-related errors and continue with existing candidates
-                pass
+                logger.debug("best_image_from_element: lxml ancestor walk failed: %s", _e)
 
         # fallback to src
         src = img_el.attrs.get('src') if hasattr(img_el, 'attrs') else None
@@ -292,9 +337,9 @@ def parse_inline_image_urls(page_html: str) -> list:
 
         try:
             walk(obj)
-        except Exception:
-            # ignore walk errors for robustness
-            pass
+        except Exception as _e:
+            # ignore walk errors for robustness but log for diagnostics
+            logger.debug("parse_inline_image_urls: walk() failed: %s", _e)
 
     # de-duplicate while preserving order
     seen = set()
@@ -389,8 +434,8 @@ def map_pageprops_article_images(page_html: str) -> dict:
                                     ids.append(v)
                         for aid in ids:
                             asset_images[aid] = src
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("map_pageprops_article_images: inner collect_assets exception: %s", _e)
                 for k, v in o.items():
                     collect_assets(v, parent_keys + (k,))
             elif isinstance(o, list):
@@ -399,8 +444,8 @@ def map_pageprops_article_images(page_html: str) -> dict:
 
         try:
             collect_assets(obj)
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("map_pageprops_article_images: collect_assets failed: %s", _e)
 
         # Second pass: walk again and map href/uri objects to assets when referenced
         def map_articles(o, parent_keys=()):
@@ -432,8 +477,8 @@ def map_pageprops_article_images(page_html: str) -> dict:
                             from urllib.parse import urlparse as _up
                             p = _up(h).path
                             h = p
-                        except Exception:
-                            pass
+                        except Exception as _e:
+                            logger.debug("map_pageprops_article_images: urlparse failed for %s: %s", h, _e)
                     if not h.startswith('/'):
                         h = '/' + h
                     # pick best asset (largest width) among referenced
@@ -456,8 +501,8 @@ def map_pageprops_article_images(page_html: str) -> dict:
 
         try:
             map_articles(obj)
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("map_pageprops_article_images: map_articles failed: %s", _e)
 
     # de-duplicate while preserving order
     seen = set()
@@ -561,7 +606,7 @@ def _get(lang, latest):
             )
             return response
         with HTMLSession() as session:
-            r = session.get(lang)
+            r = session.get(lang, timeout=10)
             response["status"] = r.status_code
             if r.status_code == 200:
                 # parse inline JSON image URLs once for fallback use
@@ -612,8 +657,8 @@ def _get(lang, latest):
                                         alt = find_best_ichef_in_fragment(frag)
                                         if alt:
                                             image_link = alt
-                                except Exception:
-                                    pass
+                                except Exception as _e:
+                                    logger.debug("_get: fragment image scan failed: %s", _e)
                                 # if still missing, pick the first page-level ichef url as a last resort
                                 if not image_link and page_ichef_urls:
                                     image_link = page_ichef_urls[0]
@@ -652,8 +697,8 @@ def _get(lang, latest):
                                         alt = find_best_ichef_in_fragment(frag)
                                         if alt:
                                             image_link = alt
-                                except Exception:
-                                    pass
+                                except Exception as _e:
+                                    logger.debug("_get(method_2): fragment image scan failed: %s", _e)
                                 if not image_link and page_ichef_urls:
                                     image_link = page_ichef_urls[0]
                             title_tag = news_li.find('h3 a', first=True)
@@ -735,8 +780,8 @@ def get_eng(latest):
                     alt = find_best_ichef_in_fragment(frag)
                     if alt:
                         image_src = alt
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("get_eng.extract_info_from_div: fragment scan failed: %s", _e)
             # last resort: try page-level inline JSON (if available in enclosing scope `r`)
             try:
                 page_html = r.html.html if hasattr(r, 'html') and hasattr(r.html, 'html') else None
@@ -744,8 +789,8 @@ def get_eng(latest):
                     page_urls = parse_inline_image_urls(page_html)
                     if page_urls:
                         image_src = page_urls[0]
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("get_eng.extract_info_from_div: inline json parse failed: %s", _e)
         link = div.find('a', first=True)
         news_link = link.attrs['href'] if link else None
         # mapping from inline pageProps if available in enclosing scope `page_image_map`
@@ -754,8 +799,8 @@ def get_eng(latest):
                 mapped = page_image_map.get(urlparse(news_link).path) if news_link else None
                 if mapped:
                     image_src = mapped
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("get_eng.extract_info_from_div: mapping lookup failed: %s", _e)
         return heading_text, summary_text, image_src, news_link
 
     response = {}
@@ -764,7 +809,7 @@ def get_eng(latest):
         if not _REQUESTS_HTML_AVAILABLE or HTMLSession is None:
             return {"status": 500, "error": "Missing dependency: requests_html. Install requirements to enable scraping."}
         with HTMLSession() as session:
-            r = session.get('https://www.bbc.com/')
+            r = session.get('https://www.bbc.com/', timeout=10)
             if r.status_code != 200:
                 response["status"] = 503
                 response["error"] = f"Failed to retrieve content. BBC website returned status code: {r.status_code}"
@@ -921,8 +966,8 @@ def fetch_article_content(url: str) -> dict:
                 try:
                     if is_recommendation(img):
                         continue
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("fetch_article_content: is_recommendation check failed: %s", _e)
                 best = best_image_from_element(img)
                 if best:
                     # skip tracking/analytics urls
@@ -936,8 +981,8 @@ def fetch_article_content(url: str) -> dict:
                     og = r.html.find('meta[property="og:image"]', first=True)
                     if og and 'content' in og.attrs:
                         images.append(og.attrs.get('content'))
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("fetch_article_content: og:image extraction failed: %s", _e)
 
             # dedupe keeping order
             seen = set()
@@ -946,8 +991,8 @@ def fetch_article_content(url: str) -> dict:
             # remove obvious placeholder images (e.g., BBC grey placeholder)
             try:
                 images = [i for i in images if i and 'grey-placeholder' not in i]
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("fetch_article_content: filtering placeholders failed: %s", _e)
 
             # try to map article page images from inline JSON (prefer exact match)
             try:
@@ -962,11 +1007,11 @@ def fetch_article_content(url: str) -> dict:
                         try:
                             if mapped in images:
                                 images.remove(mapped)
-                        except Exception:
-                            pass
+                        except Exception as _e:
+                            logger.debug("fetch_article_content: removing mapped duplicate failed: %s", _e)
                         images.insert(0, mapped)
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("fetch_article_content: mapping lookup failed: %s", _e)
 
             # also try page-level fragment srcset scan as a fallback
             try:
@@ -976,11 +1021,11 @@ def fetch_article_content(url: str) -> dict:
                     try:
                         if frag_alt in images:
                             images.remove(frag_alt)
-                    except Exception:
-                        pass
+                    except Exception as _e:
+                        logger.debug("fetch_article_content: removing frag_alt duplicate failed: %s", _e)
                     images.insert(0, frag_alt)
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("fetch_article_content: fragment scan failed: %s", _e)
 
             # Now extract textual content in-order: prefer p and headings but skip recommendation nodes
             def is_recommendation(el):
@@ -1000,14 +1045,14 @@ def fetch_article_content(url: str) -> dict:
                             av = str(a_v).lower()
                             if any(k in av for k in ("recommend", "related", "promo", "most-read", "most-popular", "end-of", "skip")):
                                 return True
-                    except Exception:
-                        pass
+                    except Exception as _e:
+                        logger.debug("is_recommendation attr scan failed: %s", _e)
                     try:
                         eid = cur.attrs.get('id', '') if hasattr(cur, 'attrs') else ''
                         if eid and any(k in eid.lower() for k in ("recommend", "related", "promo", "end-of", "most-read")):
                             return True
-                    except Exception:
-                        pass
+                    except Exception as _e:
+                        logger.debug("is_recommendation id scan failed: %s", _e)
                     cur = getattr(cur, 'parent', None)
                 return False
 
@@ -1020,8 +1065,8 @@ def fetch_article_content(url: str) -> dict:
                     if extra:
                         # append in-document order
                         content_nodes = list(content_nodes) + list(extra)
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("fetch_article_content: extra text-block extraction failed: %s", _e)
             else:
                 main_el = r.html.find('main', first=True) or r.html.find('div[role="main"]', first=True)
                 if main_el:
@@ -1030,8 +1075,8 @@ def fetch_article_content(url: str) -> dict:
                         extra = main_el.find('div[data-component="text-block"]')
                         if extra:
                             content_nodes = list(content_nodes) + list(extra)
-                    except Exception:
-                        pass
+                    except Exception as _e:
+                        logger.debug("fetch_article_content: main extra text-block extraction failed: %s", _e)
                 else:
                     content_nodes = r.html.find('p, h1, h2, h3, h4')
 
@@ -1040,8 +1085,8 @@ def fetch_article_content(url: str) -> dict:
                 try:
                     if is_recommendation(node):
                         continue
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("fetch_article_content: is_recommendation check for node failed: %s", _e)
                 text = getattr(node, 'text', None)
                 if not text:
                     continue
@@ -1105,7 +1150,7 @@ async def ping():
 @app.route("/documentation")
 @app.route("/documentation/")
 async def doc():
-    lang = random.choice(list(urls.keys()))
+    lang = secrets.choice(list(urls.keys()))
     logger.info(f"{ctime()}: DOC endpoint called - 200")
     return flask.render_template("documentation.html", listOfLangs="\n".join([f"<li>{key.capitalize()}: <code>{key}</code></li>" for key in sorted(urls.keys())]), type="{type}", language="{language}", lang=lang.title(), urlForNews=f"https://{(flask.request.url).split('/')[2]}/news?lang={lang}", urlForLatest=f"https://{(flask.request.url).split('/')[2]}/latest?lang={lang}", currentYear=str(datetime.now(pytz.timezone("Asia/Dhaka")).year))
 
@@ -1208,8 +1253,14 @@ async def news(type):
 @visit_register
 async def log(pin):
     if pin is not None and int(pin) == int(os.environ.get("PIN", "0")):
-        with open("/tmp/api.log", "r", encoding="utf-8") as f:
-            logs = f.read()
+        # prefer to expose the log file managed by this process; fall back to module-local api.log
+        log_path = globals().get('log_file') or os.path.join(os.path.dirname(__file__), 'api.log')
+        try:
+            with open(log_path, "r", encoding="utf-8") as f:
+                logs = f.read()
+        except Exception as _e:
+            logger.debug("log endpoint: failed to read log file %s: %s", log_path, _e)
+            logs = ""
         logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
         return (safe_headers(), flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
@@ -1271,8 +1322,8 @@ async def article():
                 )
                 try:
                     resp.headers.update(safe_headers())
-                except Exception:
-                    pass
+                except Exception as _e:
+                    logger.debug("article: failed to update headers (invalid language): %s", _e)
                 return resp
             base = urls[str(lang).lower()]
             # ensure path begins with '/'
@@ -1287,13 +1338,13 @@ async def article():
             )
             try:
                 resp.headers.update(safe_headers())
-            except Exception:
-                pass
+            except Exception as _e:
+                logger.debug("article: failed to update headers (missing url/lang): %s", _e)
             return resp
         try:
             resp.headers.update(safe_headers())
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("article: failed to update headers: %s", _e)
         return resp
 
     # basic validation
@@ -1306,8 +1357,8 @@ async def article():
         )
         try:
             resp.headers.update(safe_headers())
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("article: failed to update headers: %s", _e)
         return resp
 
     response = fetch_article_content(url)
@@ -1320,9 +1371,9 @@ async def article():
     # attach safe headers
     try:
         resp.headers.update(safe_headers())
-    except Exception:
-        # if safe_headers fails (no request context), ignore
-        pass
+    except Exception as _e:
+        # if safe_headers fails (no request context), log and continue
+        logger.debug("article: failed to attach safe headers: %s", _e)
     return resp
 
 
@@ -1341,8 +1392,8 @@ async def article_by_language(language):
         )
         try:
             resp.headers.update(safe_headers())
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("article_by_language: failed to update headers: %s", _e)
         return resp
 
     ident = flask.request.args.get('id') or flask.request.args.get('path') or flask.request.args.get('article')
@@ -1354,8 +1405,8 @@ async def article_by_language(language):
         )
         try:
             resp.headers.update(safe_headers())
-        except Exception:
-            pass
+        except Exception as _e:
+            logger.debug("article_by_language: failed to update headers (missing id): %s", _e)
         return resp
 
     # ensure path starts with '/'
@@ -1372,8 +1423,8 @@ async def article_by_language(language):
     )
     try:
         resp.headers.update(safe_headers())
-    except Exception:
-        pass
+    except Exception as _e:
+        logger.debug("article_by_language: failed to update headers: %s", _e)
     return resp
 
 # Add this function after the visit_register decorator
@@ -1390,4 +1441,8 @@ def safe_headers():
     return {html.escape(k): html.escape(v) for k, v in flask.request.headers.items() if k in safe_header_keys}
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080, debug=True)
+    # For local development the host and debug can be configured via env vars.
+    host = os.environ.get('HOST', '127.0.0.1')
+    port = int(os.environ.get('PORT', '8080'))
+    debug_env = str(os.environ.get('FLASK_DEBUG', 'False')).lower() in ('1', 'true', 'yes')
+    app.run(host=host, port=port, debug=debug_env)

@@ -1,0 +1,5 @@
+2025-10-26 15:19:57,304 - main.py - INFO - 2025-10-26 21:19:57 : Ping endpoint called - 200
+2025-10-26 15:19:57,310 - main.py - INFO - 2025-10-26 21:19:57 : NEWS (Type: news) endpoint called - 400 (Language Parameter Missing)
+2025-10-26 15:19:57,313 - main.py - INFO - 2025-10-26 21:19:57 : NEWS (Type: news) endpoint called - 400 (Invalid Language)
+2025-10-26 15:19:57,315 - main.py - INFO - 2025-10-26 21:19:57 : NEWS (language: english, type: news) endpoint called - 200
+2025-10-26 15:19:57,318 - main.py - INFO - 2025-10-26 21:19:57 : NEWS (language: english, type: latest) endpoint called - 200
