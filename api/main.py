@@ -56,7 +56,12 @@ def _is_bbc_url(u: str) -> bool:
     try:
         p = urlparse(u)
         host = (p.hostname or "").lower()
-        return bool(p.scheme in ("http", "https") and (host.endswith('bbc.com') or host.endswith('bbc.co.uk')))
+        # Ensure we match bbc.com or bbc.co.uk as a domain or subdomain.
+        # Use equality or a leading-dot suffix to avoid accidental matches like
+        # "notbbc.com" which also endswith('bbc.com').
+        is_bbc_com = (host == 'bbc.com' or host.endswith('.bbc.com'))
+        is_bbc_couk = (host == 'bbc.co.uk' or host.endswith('.bbc.co.uk'))
+        return bool(p.scheme in ("http", "https") and (is_bbc_com or is_bbc_couk))
     except Exception:
         return False
 logger = logging.getLogger("api")
