@@ -35,7 +35,10 @@ def _script_blocks(html_text: str):
     Uses a compiled regex with DOTALL/IGNORECASE so it matches variants like
     </script>, </script >, and with attributes on the opening tag.
     """
-    pattern = _re.compile(r"<script\b[^>]*>(.*?)</script\s*>", _re.IGNORECASE | _re.DOTALL)
+    # Accept a closing </script> tag that may include stray whitespace or attributes
+    # (some HTML producers include unexpected characters). Use a word-boundary on
+    # the closing tag to be tolerant but avoid greedy over-matching.
+    pattern = _re.compile(r"<script\b[^>]*>(.*?)</script\b[^>]*>", _re.IGNORECASE | _re.DOTALL)
     for m in pattern.finditer(html_text):
         yield m.group(1)
 
@@ -498,19 +501,20 @@ def map_pageprops_article_images(page_html: str) -> dict:
                         # consider it a candidate href if it looks like a BBC article path or a BBC URL
                         try:
                             if v.startswith('http'):
+                                # full URL: validate using parsed hostname
                                 if _is_bbc_url(v):
                                     href = v
                                     break
                             else:
-                                # treat path-like entries containing /news, /audio, or /articles as candidate
-                                if any(seg in v for seg in ('/news', '/audio', '/articles')):
+                                # treat path-like entries that contain a top-level segment
+                                # like /news/, /audio/ or /articles/ as candidate article paths.
+                                # Use a regex that looks for these segments as path components
+                                # to avoid accidental matches in other tokens.
+                                if _re.search(r"(?:^|/)(?:news|audio|articles)(?:/|$)", v):
                                     href = v
                                     break
-                        except Exception:
-                            # fallback to original substring checks as last resort
-                            if ('/news' in v or '/audio' in v or 'bbc.com' in v or 'articles' in v):
-                                href = v
-                                break
+                        except Exception as _e:
+                            logger.debug("map_pageprops_article_images: href candidate check failed: %s", _e)
                 # find any id-like token inside this dict that points to assets
                 referenced = set()
                 for k, v in o.items():

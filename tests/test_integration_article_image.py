@@ -6,6 +6,7 @@ def test_article_first_image_is_ichef():
     fetch_article_content is an ichef URL and not the grey-placeholder.
     """
     from api.main import fetch_article_content
+    from urllib.parse import urlparse
 
     url = "https://www.bbc.com/news/articles/cze61zg7zzpo"
     res = fetch_article_content(url)
@@ -13,5 +14,6 @@ def test_article_first_image_is_ichef():
     imgs = res.get("images", [])
     assert imgs, "No images returned for article"
     first = imgs[0]
-    assert "ichef.bbci.co.uk" in first, f"Expected first image to be an ichef URL, got: {first}"
+    p = urlparse(first)
+    assert p.hostname and p.hostname.lower().endswith('ichef.bbci.co.uk'), f"Expected first image to be an ichef hostname, got: {first}"
     assert "grey-placeholder" not in first, "First image is still the grey-placeholder"
