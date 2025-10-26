@@ -294,8 +294,11 @@
                             const endpointUrl = input.closest('.endpoint-test').querySelector('.endpoint-url .url');
                             if (endpointUrl) {
                                 const baseUrl = endpointUrl.textContent.split('?')[0];
-                                endpointUrl.textContent = `${baseUrl}?lang=${selectedValue}`;
-                                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'true');
+                                // preserve any existing id value for article tester
+                                const idEl = document.getElementById('articleId');
+                                const idVal = idEl ? idEl.value.trim() : '';
+                                endpointUrl.textContent = `${baseUrl}?lang=${selectedValue}` + (idVal ? `&id=${idVal}` : '');
+                                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', (idVal ? 'true' : 'true'));
                             }
                             if (onChange) onChange(selectedValue);
                             toggleDropdown();
@@ -358,7 +361,34 @@
                         case 'languagesTestForm':
                             url = '/languages';
                             break;
-                    }
+                        case 'articleTestForm':
+                            // Use selected language from dropdown and articleId input
+                            const artLang = articleDropdown.getValue() || document.getElementById('articleLangSearch').value.toLowerCase();
+                            const artId = document.getElementById('articleId').value.trim();
+                            if (!artLang) {
+                                responseArea.textContent = 'Error: language is required';
+                                responseArea.style.display = 'block';
+                                controls.style.display = 'flex';
+                                endpointTest = responseArea.closest('.endpoint-test');
+                                if (endpointTest) endpointTest.classList.add('has-response');
+                                loader.style.display = 'none';
+                                button.disabled = false;
+                                return;
+                            }
+                            if (!artId) {
+                                responseArea.textContent = 'Error: article id/path is required';
+                                responseArea.style.display = 'block';
+                                controls.style.display = 'flex';
+                                endpointTest = responseArea.closest('.endpoint-test');
+                                if (endpointTest) endpointTest.classList.add('has-response');
+                                loader.style.display = 'none';
+                                button.disabled = false;
+                                return;
+                            }
+                            url = `/article/${encodeURIComponent(artLang)}`;
+                            params.id = artId;
+                            break;
+        }
 
                     const response = await fetch(url + (Object.keys(params).length ? '?' + new URLSearchParams(params) : ''));
                     const data = await response.json();
@@ -644,6 +674,30 @@
             }
         });
 
+        const articleDropdown = initializeDropdown('articleLangInput', 'articleLangList', 'articleLangSearch', 'articleLangOptions', (value) => {
+            document.getElementById('articleLangInput').value = value;
+            // Update the endpoint URL preview for article
+            const endpointUrl = document.querySelector('#article .endpoint-url .url');
+            if (endpointUrl) {
+                endpointUrl.textContent = `/article/${value}?id=`;
+                endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', 'false');
+            }
+        });
+
+        // Update preview when articleId input changes
+        const articleIdInput = document.getElementById('articleId');
+        if (articleIdInput) {
+            articleIdInput.addEventListener('input', (e) => {
+                const idVal = e.target.value.trim();
+                const langVal = articleDropdown.getValue();
+                const endpointUrl = document.querySelector('#article .endpoint-url .url');
+                if (endpointUrl) {
+                    endpointUrl.textContent = `/article/${langVal || '<language>'}?id=${idVal}`;
+                    endpointUrl.closest('.endpoint-url').setAttribute('data-copyable', (langVal && idVal) ? 'true' : 'false');
+                }
+            });
+        }
+
         // Add loading spinner to dropdowns
         const newsLangOptions = document.getElementById('newsLangOptions');
         const latestLangOptions = document.getElementById('latestLangOptions');
@@ -689,6 +743,7 @@
                 // Update dropdown options
                 newsDropdown.setOptions(languages);
                 latestDropdown.setOptions(languages);
+                articleDropdown.setOptions(languages);
                 
                 // Update Supported Languages section
                 const languagesList = document.getElementById('languagesList');

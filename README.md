@@ -40,6 +40,23 @@ The official BBC News API documentation can be found [here](http://bbc-news-api.
 ## Endpoints
 Types & Languages are at [Documentation/Supported Languages](http://bbc-news-api.vercel.app/documentation#languages)
 
+### Article endpoint
+You can fetch a full BBC article (title, content and images) in two ways:
+
+- By providing the full article URL:
+
+```text
+/article?url=https://www.bbc.com/news/articles/<article-id>
+```
+
+- By using the language + path form (recommended for linking from the news endpoints):
+
+```text
+/article/<language>?id=news/articles/<article-id>
+```
+
+The news listing endpoints (`/news` and `/latest`) now include a `news_content` field which is a relative API path to the article, for example: `/article/english?id=news/articles/xxxx`.
+
 ## Wrapper
 ### [bbc-news](https://pypi.org/project/bbc-news) for Python
 
