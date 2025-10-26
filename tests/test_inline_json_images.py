@@ -27,7 +27,9 @@ def test_parse_inline_image_urls_and_fragment():
     assert isinstance(urls, list)
     assert len(urls) >= 1
     p = urlparse(urls[0])
-    assert p.hostname and p.hostname.lower().endswith('ichef.bbci.co.uk')
+    # validate scheme and hostname explicitly to avoid naive substring checks
+    assert p.scheme in ("http", "https")
+    assert p.hostname and (p.hostname == 'ichef.bbci.co.uk' or p.hostname.endswith('.ichef.bbci.co.uk'))
 
     frag = '<img src="https://static.files.bbci.co.uk/.../grey-placeholder.png" srcset="https://ichef.bbci.co.uk/news/240/foo.jpg 240w, https://ichef.bbci.co.uk/news/800/foo.jpg 800w">'
     best = api_main.find_best_ichef_in_fragment(frag)

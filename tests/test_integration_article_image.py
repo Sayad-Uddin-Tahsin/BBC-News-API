@@ -15,5 +15,6 @@ def test_article_first_image_is_ichef():
     assert imgs, "No images returned for article"
     first = imgs[0]
     p = urlparse(first)
-    assert p.hostname and p.hostname.lower().endswith('ichef.bbci.co.uk'), f"Expected first image to be an ichef hostname, got: {first}"
+    assert p.scheme in ("http", "https")
+    assert p.hostname and (p.hostname == 'ichef.bbci.co.uk' or p.hostname.endswith('.ichef.bbci.co.uk')), f"Expected first image to be an ichef hostname, got: {first}"
     assert "grey-placeholder" not in first, "First image is still the grey-placeholder"
