@@ -6,13 +6,12 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    # Explicitly limit `GITHUB_TOKEN` permissions as recommended by
-    # github-advanced-security: minimal `contents: read` is sufficient
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
