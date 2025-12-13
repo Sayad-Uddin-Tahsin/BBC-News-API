@@ -24,6 +24,7 @@ import os
 import dotenv
 import html
 from logging.handlers import RotatingFileHandler  # Added for log rotation
+from collections import deque
 import tempfile
 from urllib.parse import urlparse
 import re as _re
@@ -67,6 +68,28 @@ def _is_bbc_url(u: str) -> bool:
 logger = logging.getLogger("api")
 logger.setLevel(logging.DEBUG)
 
+
+class RingBufferHandler(logging.Handler):
+    """A simple in-memory ring buffer handler to keep recent log messages.
+
+    This is useful in environments where file writing is unavailable (serverless),
+    so `/log` can still return recent log output.
+    """
+
+    def __init__(self, maxlen=500):
+        super().__init__()
+        self._deque = deque(maxlen=maxlen)
+
+    def emit(self, record):
+        try:
+            msg = self.format(record)
+            self._deque.append(msg)
+        except Exception:
+            pass
+
+    def get_logs(self):
+        return list(self._deque)
+
 # File handler (rotating)
 # Create a dedicated logs directory inside the project and use a file there.
 # This avoids predictable files in /tmp and gives us a controlled location.
@@ -109,6 +132,20 @@ file_handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(filename)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
+
+# Always keep recent logs in an in-memory ring buffer so the `/log` endpoint
+# works even when the filesystem is not writable (e.g. Vercel serverless).
+ring_handler = RingBufferHandler(maxlen=1000)
+ring_handler.setFormatter(formatter)
+logger.addHandler(ring_handler)
+
+# If file logging isn't available, also log to stdout so the platform's log
+# capture (e.g. Vercel) receives the messages.
+if not log_file or os.environ.get("VERCEL"):
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
 
 
 # ================ FLASK INITIATION ================
@@ -156,6 +193,7 @@ urls = {
     "tamil": "https://bbc.com/tamil",
     "uzbek": "https://bbc.com/uzbek",
     "english": "https://bbc.com",
+    "english-uk": "https://bbc.co.uk",
     "yoruba": "https://www.bbc.com/yoruba"
 }
 
@@ -1324,7 +1362,15 @@ async def log(pin):
                 logs = f.read()
         except Exception as _e:
             logger.debug("log endpoint: failed to read log file %s: %s", log_path, _e)
-            logs = ""
+            # fall back to any in-memory logs we have
+            logs_lines = []
+            for h in logger.handlers:
+                try:
+                    if hasattr(h, "get_logs"):
+                        logs_lines.extend(h.get_logs())
+                except Exception:
+                    continue
+            logs = "\n".join(logs_lines)
         logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
         return (safe_headers(), flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))
