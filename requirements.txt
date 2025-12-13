@@ -2,6 +2,6 @@ Flask==3.0.3
 requests-html==0.10.0
 asgiref==3.5.2
 pytz==2022.7.1
-Werkzeug==3.0.3
+Werkzeug==3.1.4
 lxml[html_clean]
 python-dotenv
