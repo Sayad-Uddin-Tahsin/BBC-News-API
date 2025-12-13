@@ -63,6 +63,7 @@
                 <li><a href="#news">News Endpoint</a></li>
                 <li><a href="#latest">Latest Endpoint</a></li>
                 <li><a href="#languages-endpoint">Languages Endpoint</a></li>
+                <li><a href="#article">Article Endpoint</a></li>
                     </ul>
                 </li>
                 <li><a href="#how-to-use">How to use?</a></li>
@@ -162,6 +163,21 @@
                         <div class="languages-loader">
                             <div class="loader"></div>
                         </div>
+                        <h2><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h2>
+                        <div class="error-codes">
+                            <div class="error-item">
+                                <code>400</code>
+                                <p>Bad Request - Missing or invalid article URL / language / id parameter</p>
+                            </div>
+                            <div class="error-item">
+                                <code>503</code>
+                                <p>Service Unavailable - Failed to retrieve content from BBC website</p>
+                            </div>
+                            <div class="error-item">
+                                <code>500</code>
+                                <p>Internal Server Error - An unexpected error occurred while scraping or parsing the article</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
         </section>
@@ -202,8 +218,9 @@
         {
             "title": "News Title",
             "summary": "News Summary",
-            "image_link": "https://...",
-            "news_link": "https://..."
+                "image_link": "https://...",
+                "news_link": "https://...",
+                "news_content": "/article/english?id=news/articles/xxxx"
         }
     ],
     "elapsed time": "0.123s",
@@ -260,6 +277,95 @@
                 </div>
         </section>
 
+            <!-- Article Endpoint Section -->
+            <section id="article" class="content-section">
+                <h1>Article Endpoint</h1>
+                <p>Fetch a full BBC article (title, textual content and image list).</p>
+
+                <div class="endpoint-tester">
+                    <div class="endpoint-docs">
+                        <h2><i class="fa-solid fa-code"></i> Endpoint Details</h2>
+                        <p><strong>URL:</strong> <code>/article</code></p>
+                        <p><strong>Method:</strong> GET</p>
+
+                        <div class="parameters-section">
+                            <h3><i class="fa-solid fa-list"></i> Parameters</h3>
+                            <ul class="parameter-list">
+                                <li class="parameter-item">
+                                    <div class="parameter-name"><code>url</code></div>
+                                    <div class="parameter-details"><p class="type">String</p>
+                                        <p>Full article URL (must be a BBC domain). Example: <code>https://www.bbc.com/news/articles/xxxx</code></p>
+                                    </div>
+                                </li>
+                                <li class="parameter-item">
+                                    <div class="parameter-name"><code>language</code> + <code>id</code></div>
+                                    <div class="parameter-details"><p class="type">String</p>
+                                        <p>Use <code>/article/&lt;language&gt;?id=news/articles/xxxx</code> to fetch by language + relative path.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <h2><i class="fa-solid fa-reply"></i> Sample Response</h2>
+                        <div class="code-block">
+                            <pre>{
+    "status": 200,
+    "title": "Article title",
+    "content": "Full article text...",
+    "images": [
+        "https://ichef.bbci.co.uk/news/1536/...jpg",
+        "https://ichef.bbci.co.uk/news/480/...jpg"
+    ],
+    "elapsed time": "0.123s",
+    "timestamp": 1234567890
+}</pre>
+                        </div>
+                    </div>
+                    <div class="endpoint-test">
+                        <div class="endpoint-url" data-copyable="false">
+                            <span class="method">GET</span>
+                            <span class="url">/article/&lt;language&gt;?id=</span>
+                        </div>
+                        <form class="test-form" id="articleTestForm">
+                            <div class="form-group">
+                                <label for="articleLang">Language:</label>
+                                <div class="custom-dropdown">
+                                    <div class="dropdown-input" id="articleLangInput">
+                                        <input type="text" placeholder="Search or select language..." id="articleLangSearch" spellcheck="false" autocomplete="off" aria-autocomplete="none">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="dropdown-list" id="articleLangList">
+                                        <div class="dropdown-options" id="articleLangOptions">
+                                            <!-- Options populated dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="parameter-required">
+                                    <span class="required">Required</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="articleId">Article ID / Path:</label>
+                                <input type="text" id="articleId" placeholder="news/articles/xxxxx" class="input-field">
+                                <div class="parameter-required">
+                                    <span class="required">Required</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="test-button" id="articleTestButton">
+                                <span class="loader" id="articleTestButtonLoader"></span>
+                                <span>Execute</span>
+                            </button>
+                        </form>
+                        <div class="response-area" id="articleTestResponse"></div>
+                        <div class="response-controls" id="articleTestResponseControls" style="display: none;">
+                            <button class="view-toggle" id="articleTestViewToggle">Switch to Tree View</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Latest Endpoint Section -->
             <section id="latest" class="content-section">
                 <h1>Latest Endpoint</h1>
@@ -297,7 +403,8 @@
             "title": "News Title",
             "summary": "News Summary",
             "image_link": "https://...",
-            "news_link": "https://..."
+            "news_link": "https://...",
+            "news_content": "/article/english?id=news/articles/xxxx"
         }
     ],
     "elapsed time": "0.123s",
