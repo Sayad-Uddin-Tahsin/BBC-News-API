@@ -71,7 +71,7 @@ logger.setLevel(logging.DEBUG)
 # Create a dedicated logs directory inside the project and use a file there.
 # This avoids predictable files in /tmp and gives us a controlled location.
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-logs_dir = os.path.join(base_dir, 'logs')
+logs_dir = os.path.join(base_dir, 'tmp')
 try:
     os.makedirs(logs_dir, exist_ok=True)
     # restrict permissions on the logs directory where possible
