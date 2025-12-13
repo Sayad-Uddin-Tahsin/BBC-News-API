@@ -24,7 +24,6 @@ import os
 import dotenv
 import html
 from logging.handlers import RotatingFileHandler  # Added for log rotation
-from collections import deque
 import tempfile
 from urllib.parse import urlparse
 import re as _re
@@ -69,32 +68,33 @@ logger = logging.getLogger("api")
 logger.setLevel(logging.DEBUG)
 
 
-class RingBufferHandler(logging.Handler):
-    """A simple in-memory ring buffer handler to keep recent log messages.
-
-    This is useful in environments where file writing is unavailable (serverless),
-    so `/log` can still return recent log output.
-    """
-
-    def __init__(self, maxlen=500):
-        super().__init__()
-        self._deque = deque(maxlen=maxlen)
-
-    def emit(self, record):
-        try:
-            msg = self.format(record)
-            self._deque.append(msg)
-        except Exception:
-            pass
-
-    def get_logs(self):
-        return list(self._deque)
+# In-memory ring buffer logging was removed per user preference.
 
 # File handler (rotating)
 # Create a dedicated logs directory inside the project and use a file there.
 # This avoids predictable files in /tmp and gives us a controlled location.
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-logs_dir = os.path.join(base_dir, 'tmp')
+def get_preferred_logs_dir(base_dir: str | None = None) -> str:
+    """Return a good logs directory to use.
+
+    Preference order:
+    - `LOG_DIR` env var if set
+    - On serverless platforms (VERCEL or AWS Lambda), use `/tmp`
+    - If `/tmp` exists and is writable, prefer it
+    - Otherwise use a project-local `tmp` directory under `base_dir`
+    """
+    if base_dir is None:
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+    env_dir = os.environ.get('LOG_DIR')
+    if env_dir:
+        return env_dir
+    if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+        return '/tmp'
+    if os.path.exists('/tmp') and os.access('/tmp', os.W_OK):
+        return '/tmp'
+    return os.path.join(base_dir, 'tmp')
+
+logs_dir = get_preferred_logs_dir(base_dir)
 try:
     os.makedirs(logs_dir, exist_ok=True)
     # restrict permissions on the logs directory where possible
@@ -133,14 +133,8 @@ formatter = logging.Formatter('%(asctime)s - %(filename)s - %(levelname)s - %(me
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-# Always keep recent logs in an in-memory ring buffer so the `/log` endpoint
-# works even when the filesystem is not writable (e.g. Vercel serverless).
-ring_handler = RingBufferHandler(maxlen=1000)
-ring_handler.setFormatter(formatter)
-logger.addHandler(ring_handler)
-
 # If file logging isn't available, also log to stdout so the platform's log
-# capture (e.g. Vercel) receives the messages.
+# capture (e.g. Vercel) receives the messages. We don't keep in-memory logs.
 if not log_file or os.environ.get("VERCEL"):
     stream_handler = logging.StreamHandler()
     stream_handler.setLevel(logging.DEBUG)
@@ -1357,20 +1351,34 @@ async def log(pin):
     if pin is not None and int(pin) == int(os.environ.get("PIN", "0")):
         # prefer to expose the log file managed by this process; fall back to module-local api.log
         log_path = globals().get('log_file') or os.path.join(os.path.dirname(__file__), 'api.log')
-        try:
-            with open(log_path, "r", encoding="utf-8") as f:
-                logs = f.read()
-        except Exception as _e:
-            logger.debug("log endpoint: failed to read log file %s: %s", log_path, _e)
-            # fall back to any in-memory logs we have
-            logs_lines = []
-            for h in logger.handlers:
-                try:
-                    if hasattr(h, "get_logs"):
-                        logs_lines.extend(h.get_logs())
-                except Exception:
-                    continue
-            logs = "\n".join(logs_lines)
+        # If the configured log file path doesn't exist (common on serverless
+        # platforms like Vercel), avoid trying to open it (which causes a
+        # noisy FileNotFoundError in platform logs). Instead, fall back to the
+        # in-memory buffer immediately.
+        if log_path and os.path.exists(log_path):
+            try:
+                with open(log_path, "r", encoding="utf-8") as f:
+                    logs = f.read()
+            except Exception as _e:
+                logger.debug("log endpoint: failed to read log file %s: %s", log_path, _e)
+                # fall back to any in-memory logs we have
+                logs_lines = []
+                for h in logger.handlers:
+                    try:
+                        if hasattr(h, "get_logs"):
+                            logs_lines.extend(h.get_logs())
+                    except Exception:
+                        continue
+                logs = "\n".join(logs_lines)
+        else:
+            # No file to read; return a clear 404 response instead of attempting
+            # to provide in-memory logs.
+            logger.info(f"{ctime()}: LOG endpoint called - 404 (Logs not available)")
+            return (safe_headers(), flask.Response(
+                json.dumps({"status": 404, "error": "Logs not available"}, ensure_ascii=False),
+                mimetype="application/json; charset=utf-8",
+                status=404,
+            ))
         logs = html.escape(logs).replace("\n", "<br>")
         logger.info(f"{ctime()}: LOG endpoint called - 200")
         return (safe_headers(), flask.Response(logs, mimetype="text/html; charset=utf-8", status=200))

@@ -2,19 +2,16 @@ import os
 import api.main as api_main
 
 
-def test_log_endpoint_falls_back_to_memory_buffer(client, monkeypatch):
+def test_log_endpoint_returns_404_when_no_file(client, monkeypatch):
     # ensure PIN is set
     monkeypatch.setenv("PIN", "1234")
     # simulate environment where no file is available
     monkeypatch.setattr(api_main, "log_file", None)
 
-    # write a message into the logger (should be picked up by ring handler)
-    api_main.logger.info("test-memory-log-entry")
-
     res = client.get("/log/1234")
-    assert res.status_code == 200
-    text = res.get_data(as_text=True)
-    assert "test-memory-log-entry" in text
+    assert res.status_code == 404
+    data = res.get_json()
+    assert data.get("error") == "Logs not available"
 
 
 def test_log_endpoint_denies_wrong_pin(client, monkeypatch):
@@ -36,3 +33,32 @@ def test_log_endpoint_reads_file_when_present(client, monkeypatch, tmp_path):
     assert res.status_code == 200
     text = res.get_data(as_text=True)
     assert "line-from-file" in text
+
+
+def test_log_endpoint_returns_404_when_path_missing(client, monkeypatch):
+    monkeypatch.setenv("PIN", "555")
+    # point to a non-existent file path
+    monkeypatch.setattr(api_main, "log_file", "/non/existent/path/api.log")
+
+    res = client.get("/log/555")
+    assert res.status_code == 404
+    data = res.get_json()
+    assert data.get("error") == "Logs not available"
+
+
+def test_prefer_tmp_on_vercel(monkeypatch):
+    monkeypatch.setenv("VERCEL", "1")
+    import importlib
+    import api.main as m
+    # reload module to pick up new env and recompute log_file
+    importlib.reload(m)
+    # when VERCEL is present, log_file should be somewhere under /tmp
+    assert m.log_file is None or str(m.log_file).startswith('/tmp')
+
+
+def test_log_dir_respects_LOG_DIR_env(monkeypatch, tmp_path):
+    monkeypatch.setenv("LOG_DIR", str(tmp_path))
+    import importlib
+    import api.main as m
+    importlib.reload(m)
+    assert str(m.log_file).startswith(str(tmp_path))
