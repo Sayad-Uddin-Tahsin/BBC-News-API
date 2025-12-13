@@ -9,6 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Explicitly limit `GITHUB_TOKEN` permissions as recommended by
+    # github-advanced-security: minimal `contents: read` is sufficient
     permissions:
       contents: read
     steps:
